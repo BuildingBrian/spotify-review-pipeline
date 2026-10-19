@@ -1,0 +1,224 @@
+{
+  "agreement": {
+    "intent": 0.9,
+    "severity": 0.95,
+    "topic": 0.9
+  },
+  "disagreement_counts": {
+    "intent": 2,
+    "severity": 1,
+    "topic": 2
+  },
+  "examples": [
+    {
+      "enrich_intent": "complaint",
+      "enrich_needs_review": true,
+      "enrich_severity": 3,
+      "enrich_topic": "billing",
+      "intent_agree": true,
+      "review_id": "89a8e180-7846-4421-a2b6-fa7787e9d0d2",
+      "review_text": "Too much restrictions",
+      "severity_abs_diff": 1,
+      "severity_agree": false,
+      "topic_agree": false,
+      "verified": true,
+      "verify_intent": "complaint",
+      "verify_needs_review": true,
+      "verify_severity": 2,
+      "verify_topic": "other"
+    },
+    {
+      "enrich_intent": "praise",
+      "enrich_needs_review": false,
+      "enrich_severity": 1,
+      "enrich_topic": "other",
+      "intent_agree": false,
+      "review_id": "ff14ea84-fdec-4363-9b1b-a23dcab287c5",
+      "review_text": "Good at all",
+      "severity_abs_diff": 0,
+      "severity_agree": true,
+      "topic_agree": true,
+      "verified": true,
+      "verify_intent": "unclear",
+      "verify_needs_review": true,
+      "verify_severity": 1,
+      "verify_topic": "other"
+    },
+    {
+      "enrich_intent": "praise",
+      "enrich_needs_review": false,
+      "enrich_severity": 1,
+      "enrich_topic": "usability",
+      "intent_agree": true,
+      "review_id": "e25cf0b6-0285-4cc9-9a4a-5a8a05be929e",
+      "review_text": "Awesome music app can def see y everyone loves it so much best part to me personally is the categories suggested for you personally",
+      "severity_abs_diff": 0,
+      "severity_agree": true,
+      "topic_agree": false,
+      "verified": true,
+      "verify_intent": "praise",
+      "verify_needs_review": false,
+      "verify_severity": 1,
+      "verify_topic": "catalog"
+    },
+    {
+      "enrich_intent": "praise",
+      "enrich_needs_review": true,
+      "enrich_severity": 1,
+      "enrich_topic": "other",
+      "intent_agree": false,
+      "review_id": "084077ee-f9be-446a-9935-9e58550d5153",
+      "review_text": "Thik thak hi hai",
+      "severity_abs_diff": 0,
+      "severity_agree": true,
+      "topic_agree": true,
+      "verified": true,
+      "verify_intent": "unclear",
+      "verify_needs_review": true,
+      "verify_severity": 1,
+      "verify_topic": "other"
+    }
+  ],
+  "planted_error_test": {
+    "cases": [
+      {
+        "flagged": true,
+        "planted_topic": "downloads",
+        "review_id": "32fb340f-4f9f-4551-8dae-755221e58d6a",
+        "true_enrich_topic": "access",
+        "verifier_topic": "access"
+      },
+      {
+        "flagged": true,
+        "planted_topic": "playback",
+        "review_id": "9d851b7f-a738-449b-a841-de8076f13276",
+        "true_enrich_topic": "other",
+        "verifier_topic": "other"
+      },
+      {
+        "flagged": true,
+        "planted_topic": "playback",
+        "review_id": "9e3a706c-f502-4664-a23f-33f3480eca64",
+        "true_enrich_topic": "other",
+        "verifier_topic": "other"
+      },
+      {
+        "flagged": true,
+        "planted_topic": "playback",
+        "review_id": "4aee0d75-6901-426e-b0f7-11d042ccc73e",
+        "true_enrich_topic": "other",
+        "verifier_topic": "other"
+      },
+      {
+        "flagged": true,
+        "planted_topic": "other",
+        "review_id": "0658feaa-5bec-416e-b6b0-3de2a4c14580",
+        "true_enrich_topic": "catalog",
+        "verifier_topic": "catalog"
+      },
+      {
+        "flagged": true,
+        "planted_topic": "playback",
+        "review_id": "23de7958-ccb0-4356-bc12-094935e6857d",
+        "true_enrich_topic": "other",
+        "verifier_topic": "other"
+      },
+      {
+        "flagged": true,
+        "planted_topic": "playback",
+        "review_id": "67b21b33-e6b9-4d1a-b874-86bc182b9ada",
+        "true_enrich_topic": "other",
+        "verifier_topic": "other"
+      },
+      {
+        "flagged": true,
+        "planted_topic": "playback",
+        "review_id": "5d4d3f47-4b3c-4be4-8f11-6cca41d27068",
+        "true_enrich_topic": "other",
+        "verifier_topic": "other"
+      },
+      {
+        "flagged": true,
+        "planted_topic": "playback",
+        "review_id": "aeee488a-2077-489d-8914-1e01d5f7672f",
+        "true_enrich_topic": "other",
+        "verifier_topic": "other"
+      },
+      {
+        "flagged": true,
+        "planted_topic": "catalog",
+        "review_id": "c2738a4f-e57c-46bc-a4ad-8ec5a4b5d5cd",
+        "true_enrich_topic": "usability",
+        "verifier_topic": "usability"
+      },
+      {
+        "flagged": true,
+        "planted_topic": "playback",
+        "review_id": "ff14ea84-fdec-4363-9b1b-a23dcab287c5",
+        "true_enrich_topic": "other",
+        "verifier_topic": "other"
+      },
+      {
+        "flagged": true,
+        "planted_topic": "playback",
+        "review_id": "51bfd887-24a0-4741-8b59-68e0a726dd7a",
+        "true_enrich_topic": "other",
+        "verifier_topic": "other"
+      },
+      {
+        "flagged": true,
+        "planted_topic": "playback",
+        "review_id": "06a45bd5-3ed9-43af-b7f2-8b9487e2ffff",
+        "true_enrich_topic": "other",
+        "verifier_topic": "other"
+      },
+      {
+        "flagged": true,
+        "planted_topic": "other",
+        "review_id": "47becad0-8ae5-4a10-9731-fde8f2091862",
+        "true_enrich_topic": "catalog",
+        "verifier_topic": "catalog"
+      },
+      {
+        "flagged": true,
+        "planted_topic": "billing",
+        "review_id": "6c257eba-3dca-49f6-b7f0-4c4484d81e26",
+        "true_enrich_topic": "playback",
+        "verifier_topic": "playback"
+      },
+      {
+        "flagged": true,
+        "planted_topic": "playback",
+        "review_id": "084077ee-f9be-446a-9935-9e58550d5153",
+        "true_enrich_topic": "other",
+        "verifier_topic": "other"
+      },
+      {
+        "flagged": true,
+        "planted_topic": "playback",
+        "review_id": "5bc203df-dac3-41ae-8b8d-ee0e8b9d9f50",
+        "true_enrich_topic": "other",
+        "verifier_topic": "other"
+      },
+      {
+        "flagged": true,
+        "planted_topic": "playback",
+        "review_id": "dc73ecd9-3293-4ede-90d5-dd6cd1e8d087",
+        "true_enrich_topic": "other",
+        "verifier_topic": "other"
+      }
+    ],
+    "caught": 18,
+    "planted": 18,
+    "synthetic": true
+  },
+  "procedure": "Separate verify-v1 prompt re-labels a declared random sample (lowest SHA-256('verify-v1:'+id) among directly-labeled completed records) WITHOUT seeing the enrichment answer; code compares.",
+  "sample_fraction_declared": 0.2,
+  "sample_size": 20,
+  "severity_mae": 0.05,
+  "topic_confusion": {
+    "billing->other": 1,
+    "usability->catalog": 1
+  },
+  "verified": 20
+}

@@ -1,0 +1,6 @@
+anthropic==1.15.0
+fastapi==0.148.0
+psycopg==3.3.6
+psycopg-binary==3.3.6
+python-dotenv==1.2.4
+uvicorn==0.54.0

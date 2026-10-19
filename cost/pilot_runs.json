@@ -1,0 +1,34 @@
+{
+  "input_file": "data/dataset/cost_100.csv (unchanged)",
+  "input_sha256": "c884ac3b9be5066995d5063f96ad9af6e5e082975788c1684c4f6b6ea661dd0e",
+  "unique_texts": 100,
+  "cold": {
+    "run_id": "run-20261019-105458",
+    "wall_clock_seconds": 61.087,
+    "stage_seconds": {
+      "prepare": 0.126,
+      "enrich": 37.585,
+      "verify": 3.952,
+      "group": 7.293,
+      "rank": 0.005,
+      "memo": 12.12
+    },
+    "workers": 1,
+    "result_cache": "empty (fresh workdir)"
+  },
+  "warm": {
+    "run_id": "run-20261019-105627",
+    "wall_clock_seconds": 0.023,
+    "stage_seconds": {
+      "enrich": 0.004,
+      "verify": 0.002,
+      "group": 0.003,
+      "rank": 0.005,
+      "memo": 0.007
+    },
+    "workers": 1,
+    "enrich_calls": 0,
+    "enrich_cache_hits": 100,
+    "note": "All 100 IDs already completed under the same label_config -> 0 enrichment calls; verify/group/memo skipped because their input fingerprints were unchanged."
+  }
+}

@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Spotify Review Priorities</title>
+<style>
+:root{--bg:#f6f5f1;--card:#ffffff;--ink:#1b1b19;--mute:#68675f;--line:#e2e0d8;--acc:#1d7a58;--acc-soft:#e3f2ea;--warn:#b4540a;--bar:#2f6f9f;--bar2:#c7d7e4}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121211;--card:#1c1c1a;--ink:#eceae4;--mute:#9a988f;--line:#302f2b;--acc:#4cc398;--acc-soft:#173326;--warn:#f59e4b;--bar:#6aa8d6;--bar2:#2a3a47}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif}
+.w{max-width:1180px;margin:0 auto;padding:24px 16px 60px}
+h1{font-size:26px;margin:0}h2{font-size:17px;margin:0 0 12px}.m{color:var(--mute);font-size:13px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-top:16px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:18px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px}.kpi b{display:block;font-size:22px;font-variant-numeric:tabular-nums}
+.rec{border-left:4px solid var(--acc)}.badge{display:inline-block;background:var(--acc-soft);color:var(--acc);border-radius:999px;padding:2px 10px;font-size:12px;font-weight:600}
+.memo h1{font-size:19px;margin:10px 0}.memo h2{font-size:15px;margin:16px 0 6px}.memo p,.memo li{max-width:80ch}
+.chip{display:inline-block;border:1px solid var(--acc);color:var(--acc);border-radius:6px;padding:0 5px;font-size:12px;cursor:pointer;text-decoration:none}
+a.rid{color:var(--bar);cursor:pointer;font-family:ui-monospace,Menlo,monospace;font-size:12px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media (max-width:860px){.grid2{grid-template-columns:1fr}}
+.brow{display:grid;grid-template-columns:92px 1fr 64px;gap:8px;align-items:center;margin:6px 0;font-size:13px}
+.track{background:var(--bar2);border-radius:4px;height:14px;overflow:hidden}.fill{background:var(--bar);height:100%}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:8px 6px;border-top:1px solid var(--line);vertical-align:top}
+th{font-size:12px;color:var(--mute);font-weight:600;border-top:0}td.n{text-align:right;font-variant-numeric:tabular-nums}
+tbody tr{cursor:pointer}tbody tr:hover{background:var(--acc-soft)}
+.tablewrap{overflow-x:auto}
+.cols{display:flex;align-items:flex-end;gap:3px;height:120px;margin-top:8px}.cols div{flex:1;background:var(--bar);border-radius:3px 3px 0 0;min-height:2px}
+.cols-l{display:flex;gap:3px;font-size:10px;color:var(--mute)}.cols-l span{flex:1;text-align:center;overflow:hidden}
+#drawer{position:fixed;inset:0 0 0 auto;width:min(620px,100%);background:var(--card);border-left:1px solid var(--line);transform:translateX(100%);transition:.2s;overflow:auto;padding:20px;z-index:5;box-shadow:-8px 0 30px rgba(0,0,0,.15)}
+#drawer.open{transform:none}.x{float:right;cursor:pointer;border:1px solid var(--line);background:none;color:var(--ink);border-radius:6px;padding:2px 10px}
+.q{background:var(--acc-soft);border-radius:3px}.rv{border-top:1px solid var(--line);padding:10px 0}
+button.pg{border:1px solid var(--line);background:none;color:var(--ink);border-radius:6px;padding:4px 10px;cursor:pointer}
+.ok{color:var(--acc)}.bad{color:var(--warn)}
+</style></head><body><div class="w">
+<div class="m">Product-priority analysis · Spotify Google Play reviews, May 2022 – Nov 2023</div>
+<h1>Where should next quarter's product effort go?</h1>
+<div class="m" id="sub">Loading from the database…</div>
+<div class="kpis" id="kpis"></div>
+
+<div class="card rec" id="rec"><h2>AI-generated recommendation</h2><div class="m">loading…</div></div>
+
+<div class="grid2">
+ <div class="card"><h2>Complaints by product area</h2><div class="m">Complaint + cancellation reviews by topic; bar = count, right = mean severity (1–5).</div><div id="topics"></div></div>
+ <div class="card"><h2>Complaint share by month</h2><div class="m">Complaints ÷ classified reviews per month. First and last months are partial.</div><div id="months"></div></div>
+</div>
+
+<div class="card"><h2>Issue ranking (baseline)</h2>
+<div class="m">priority_score = complaint_count × mean_severity (= severity sum). Ties → issue ID. Click an issue to see its reviews.</div>
+<div class="tablewrap"><table><thead><tr><th>#</th><th>Issue</th><th>ID</th><th class="n">Complaints</th><th class="n">Mean severity</th><th class="n">Priority</th></tr></thead><tbody id="rank"></tbody></table></div></div>
+
+<div class="card"><h2>Method and evidence</h2><div id="method" class="m"></div></div>
+</div>
+<div id="drawer"></div>
+<script>
+const $=id=>document.getElementById(id), f=n=>n==null?"—":Number(n).toLocaleString();
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const get=async u=>{const r=await fetch(u);if(!r.ok)throw new Error(u+" "+r.status);return r.json()};
+const UUID=/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g;
+let claims={};
+
+function md(text){ // small, safe markdown subset: headings, lists, bold, claim chips, review/issue links
+  const lines=esc(text).split("\n"); let out="",inList=false;
+  for(let l of lines){
+    l=l.replace(/\*\*(.+?)\*\*/g,"<b>$1</b>")
+       .replace(/\[(C\d+)\]/g,"\u0001$1\u0002")  // placeholder so later passes can't touch chip markup
+       .replace(UUID,id=>`<a class="rid" onclick="openReview('${id}')">${id.slice(0,8)}…</a>`)
+       .replace(/(^|[^\w'])((?:access|usability|playback|downloads|catalog|billing|support|other)\.[a-z_]+)\b/g,`$1<a class="rid" onclick="openIssue('$2')">$2</a>`)
+       .replace(/\u0001(C\d+)\u0002/g,(m,c)=>{const k=claims[c];return `<span class="chip" title="${k?esc(k.metric+" = "+k.value):""}" onclick="openIssue(claims['${c}']?.issue_id)">${c}</span>`});
+    if(/^\s*[-*] /.test(l)){if(!inList){out+="<ul>";inList=true}out+="<li>"+l.replace(/^\s*[-*] /,"")+"</li>";continue}
+    if(inList){out+="</ul>";inList=false}
+    if(l.startsWith("## "))out+="<h2>"+l.slice(3)+"</h2>";else if(l.startsWith("# "))out+="<h1>"+l.slice(2)+"</h1>";else if(l.trim())out+="<p>"+l+"</p>";
+  }
+  return out+(inList?"</ul>":"");
+}
+
+async function load(){
+  const [ov,rk,rec]=await Promise.all([get("/api/overview"),get("/api/ranking?limit=30"),get("/api/recommendation")]);
+  const m=ov.metrics;
+  $("sub").textContent=`${f(m.completed)} reviews classified from a ${f(m.rows_ingested)}-row corpus · data loaded ${new Date(m.loaded_at).toLocaleString()}`;
+  const k=[["Rows ingested",f(m.rows_ingested)],["Classified",f(m.completed)],["Quarantined",f(m.quarantined)],["Complaints + cancellations",f(m.complaints)],
+    ["Issues ranked",f(m.issues)],["API spend","$"+(m.api_spend_usd??0).toFixed(2)],
+    ["Verifier agreement (topic)",m.verifier_agreement?Math.round(m.verifier_agreement.topic*100)+"%":"—"],
+    ["Golden-50 agreement (topic)",m.golden_agreement?Math.round(m.golden_agreement.topic*100)+"%":"pending"]];
+  $("kpis").innerHTML=k.map(([a,b])=>`<div class="kpi"><span class="m">${a}</span><b>${b}</b></div>`).join("");
+
+  claims=Object.fromEntries((rec.claims||[]).map(c=>[c.claim_id,c]));
+  const ck=rec.check||{};
+  $("rec").innerHTML=`<h2>AI-generated recommendation <span class="badge">${esc(rec.recommended_area)}</span></h2>
+   <div class="m">Written by <code>${esc(rec.model)}</code> from saved aggregates and a bounded evidence pack only. Code check:
+   <span class="${ck.claims_ok===ck.claims?"ok":"bad"}">${ck.claims_ok}/${ck.claims} claims match recalculated values</span> ·
+   <span class="${(ck.unsupported_numbers||[]).length?"bad":"ok"}">${(ck.unsupported_numbers||[]).length} untraceable numbers</span> ·
+   <span class="${(ck.bad_review_ids||[]).length?"bad":"ok"}">${(ck.bad_review_ids||[]).length} uncited review IDs</span>. Click a [C#] chip or ID to trace it.</div>
+   <div class="memo">${md(rec.memo_markdown)}</div>`;
+
+  const max=Math.max(...ov.topics.map(t=>t.complaint_count),1);
+  $("topics").innerHTML=ov.topics.map(t=>`<div class="brow"><span>${t.topic}</span><div class="track"><div class="fill" style="width:${t.complaint_count/max*100}%"></div></div>
+    <span class="m" title="${f(t.cancellation_count)} cancellations · ${f(t.severe_4_or_5)} severity 4–5">${f(t.complaint_count)} · ${t.mean_severity?Number(t.mean_severity).toFixed(2):"—"}</span></div>`).join("");
+
+  const mm=ov.monthly.map(x=>({m:x.month,s:x.completed?x.complaints/x.completed:0,n:x.completed}));const ms=Math.max(...mm.map(x=>x.s),.01);
+  $("months").innerHTML=`<div class="cols">${mm.map(x=>`<div title="${x.m}: ${(x.s*100).toFixed(1)}% of ${f(x.n)}" style="height:${x.s/ms*100}%"></div>`).join("")}</div>
+   <div class="cols-l">${mm.map(x=>`<span>${x.m.slice(2).replace("-","/")}</span>`).join("")}</div>`;
+
+  $("rank").innerHTML=rk.map(r=>`<tr onclick="openIssue('${r.issue_id}')"><td>${r.rank}</td><td><b>${esc(r.name)}</b><div class="m">${esc(r.description)}</div></td>
+   <td><code>${r.issue_id}</code></td><td class="n">${f(r.complaint_count)}</td><td class="n">${Number(r.mean_severity).toFixed(2)}</td><td class="n"><b>${f(r.priority_score)}</b></td></tr>`).join("");
+
+  $("method").innerHTML=`Models: ${(m.models||[]).map(x=>"<code>"+esc(x)+"</code>").join(", ")} · ${f(m.model_calls)} model calls (${f(m.failed_calls)} failed attempts, retried) ·
+   ${f(m.cache_reuses)} exact-duplicate texts reused a saved result · verifier sample ${f(m.verifier_sample)} reviews ·
+   golden set ${m.golden_cases?f(m.golden_cases)+" hand-labeled reviews":"pending"}.<br>
+   Every number here is read from the database the pipeline loaded; this page makes no model calls. Code, evidence and the grading export:
+   <a href="${esc(m.repo_url)}" target="_blank" rel="noopener">${esc(m.repo_url)}</a>`;
+}
+
+async function openIssue(id,offset=0){
+  if(!id)return; const d=await get(`/api/issues/${encodeURIComponent(id)}?offset=${offset}&limit=20`), i=d.issue;
+  const myClaims=Object.values(claims).filter(c=>c.issue_id===id);
+  $("drawer").innerHTML=`<button class="x" onclick="closeD()">Close</button><div class="m">Issue · rank ${i.rank}</div><h2>${esc(i.name)}</h2>
+   <div class="m"><code>${i.issue_id}</code> · ${f(i.complaint_count)} complaints · mean severity ${Number(i.mean_severity).toFixed(2)} · priority ${f(i.priority_score)}</div>
+   <p>${esc(i.description)}</p>
+   ${myClaims.length?`<div class="m">Memo claims: ${myClaims.map(c=>`<span class="chip">${c.claim_id}</span> ${c.metric} = ${c.value}`).join(" · ")}</div>`:""}
+   <div class="m">Severity mix: ${d.severity_mix.map(s=>`${s.severity}: ${f(s.n)}`).join(" · ")}</div>
+   <h2 style="margin-top:14px">Member reviews <span class="m">(most helpful votes first)</span></h2>
+   ${d.members.map(r=>`<div class="rv"><div>${hl(r.review_text,r.evidence_quote)}</div>
+     <div class="m">${r.intent} · severity ${r.severity} · ★${r.review_rating} · ${f(r.review_likes)} helpful · ${r.review_timestamp.slice(0,10)} · <a class="rid" onclick="openReview('${r.review_id}')">${r.review_id.slice(0,8)}…</a></div></div>`).join("")}
+   <div style="margin-top:10px">${offset?`<button class="pg" onclick="openIssue('${id}',${offset-20})">← Prev</button> `:""}${d.members.length===20?`<button class="pg" onclick="openIssue('${id}',${offset+20})">Next →</button>`:""}</div>`;
+  $("drawer").classList.add("open");$("drawer").scrollTop=0;
+}
+function hl(text,quote){const t=esc(text),q=esc(quote||"");return q&&t.includes(q)?t.replace(q,`<span class="q">${q}</span>`):t}
+async function openReview(id){
+  const r=await get(`/api/reviews/${id}`);
+  $("drawer").innerHTML=`<button class="x" onclick="closeD()">Close</button><div class="m">Review trace</div><h2><code>${r.review_id}</code></h2>
+   <p>${hl(r.review_text,r.evidence_quote)}</p>
+   <table><tbody>
+   <tr><td>Source</td><td>★${r.review_rating} · ${f(r.review_likes)} helpful · ${esc(r.review_timestamp)} · app ${esc(r.app_version||"—")}</td></tr>
+   <tr><td>Enrichment</td><td>${r.status}${r.reason?" ("+esc(r.reason)+")":""} · <b>${r.topic}.${r.subtopic}</b> · ${r.intent} · severity ${r.severity} · sentiment ${r.sentiment} ${r.needs_review?"· needs review":""}</td></tr>
+   <tr><td>Evidence quote</td><td><span class="q">${esc(r.evidence_quote)}</span></td></tr>
+   <tr><td>Entities</td><td>${(r.entities||[]).map(esc).join(", ")||"—"}</td></tr>
+   <tr><td>Label config</td><td><code>${esc(r.label_config)}</code>${r.cache_source_id?`<br>reused saved result of <a class="rid" onclick="openReview('${r.cache_source_id}')">${r.cache_source_id.slice(0,8)}…</a> (identical text)`:""}</td></tr>
+   <tr><td>Issue</td><td>${r.issue?`<a class="rid" onclick="openIssue('${r.issue.issue_id}')">${r.issue.issue_id}</a> · rank ${r.issue.rank} · priority ${f(r.issue.priority_score)}`:"not a complaint (not ranked)"}</td></tr>
+   <tr><td>Memo claims</td><td>${(r.memo_claims||[]).map(c=>`${c.claim_id}: ${c.metric} = ${c.value}`).join("<br>")||"—"}</td></tr>
+   </tbody></table>`;
+  $("drawer").classList.add("open");$("drawer").scrollTop=0;
+}
+function closeD(){$("drawer").classList.remove("open")}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeD()});
+load().catch(e=>{$("sub").textContent="Could not load data: "+e.message});
+</script></body></html>

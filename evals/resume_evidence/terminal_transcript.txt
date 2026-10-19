@@ -1,0 +1,40 @@
+Real interruption and resume of the main enrichment run (Mon 2026-10-19, ~11:02-11:05 AM ET).
+Captured verbatim from the terminal panel. The run was stopped with Ctrl+C to restart at 6 workers;
+the same command was then rerun. Checkpoint snapshots: state/checkpoints/enrich-20261019-110200-end.json
+(23,096 completed IDs) == enrich-20261019-110459-start.json (the resume run's starting point).
+Middle batches 9-33 elided for length (identical format; full call log in grading/calls.jsonl).
+
+% cd ~/Developer/spotify-review-pipeline && caffeinate -i .venv/bin/python -m pipeline enrich --paid --upto 149000 --workers 4 --cap 15
+[enrich-20261019-110200] enrich claude-haiku-5-5+thinking-disabled+enrich-v1-a43a4634+schema-v1
+  phase=initial, completed under this config at start=0, workers=4, batch=50, cap=$15.00 (spent so far $0.0000)
+  batch 1: +49 done, 0 quarantined, 1 to retry | in target: 2323 completed, 146677 pending | spend $0.0060
+  batch 2: +50 done, 0 quarantined, 0 to retry | in target: 6733 completed, 142267 pending | spend $0.0121
+  batch 3: +50 done, 0 quarantined, 0 to retry | in target: 7594 completed, 141406 pending | spend $0.0121
+  batch 4: +50 done, 0 quarantined, 0 to retry | in target: 8330 completed, 140670 pending | spend $0.0121
+  batch 5: +50 done, 0 quarantined, 0 to retry | in target: 9642 completed, 139358 pending | spend $0.0146
+  batch 6: +50 done, 0 quarantined, 0 to retry | in target: 10824 completed, 138176 pending | spend $0.0171
+  batch 7: +50 done, 0 quarantined, 0 to retry | in target: 12128 completed, 136872 pending | spend $0.0225
+  batch 8: +49 done, 0 quarantined, 1 to retry | in target: 13506 completed, 135494 pending | spend $0.0225
+  [... batches 9-33 ...]
+  batch 34: +50 done, 0 quarantined, 0 to retry | in target: 22397 completed, 126603 pending | spend $0.0914
+  batch 35: +50 done, 0 quarantined, 0 to retry | in target: 22467 completed, 126533 pending | spend $0.0914
+  batch 36: +50 done, 0 quarantined, 0 to retry | in target: 22595 completed, 126405 pending | spend $0.0939
+^C
+interrupted (Ctrl+C): finishing in-flight batches, then saving — press Ctrl+C again to abort immediately (in-flight work stays pending)
+  batch 37: +49 done, 0 quarantined, 1 to retry | in target: 22738 completed, 126262 pending | spend $0.0965
+  batch 38: +49 done, 0 quarantined, 1 to retry | in target: 22898 completed, 126102 pending | spend $0.0992
+  batch 39: +50 done, 0 quarantined, 0 to retry | in target: 23040 completed, 125960 pending | spend $0.1018
+  batch 40: +49 done, 0 quarantined, 1 to retry | in target: 23096 completed, 125904 pending | spend $0.1045
+[enrich-20261019-110200] stopped: interrupted (Ctrl+C): finishing in-flight batches, then saving
+  completed under config: 0 -> 23096; cache reuses this run: 21102; in target: {'completed': 23096, 'pending': 125904}; calls 40 (0 failed); run spend $0.1045
+% caffeinate -i .venv/bin/python -m pipeline enrich --paid --upto 149000 --workers 6 --cap 15
+[enrich-20261019-110459] enrich claude-haiku-5-5+thinking-disabled+enrich-v1-a43a4634+schema-v1
+  phase=resume, completed under this config at start=23096, workers=6, batch=50, cap=$15.00 (spent so far $0.1045)
+  batch 1: +50 done, 0 quarantined, 0 to retry | in target: 23178 completed, 125822 pending | spend $0.1146
+  batch 2: +49 done, 1 quarantined, 0 to retry | in target: 23341 completed, 125658 pending | spend $0.1146
+  batch 3: +50 done, 0 quarantined, 0 to retry | in target: 23647 completed, 125352 pending | spend $0.1172
+  batch 4: +49 done, 0 quarantined, 1 to retry | in target: 23930 completed, 125069 pending | spend $0.1198
+  batch 5: +50 done, 0 quarantined, 0 to retry | in target: 24056 completed, 124943 pending | spend $0.1198
+  batch 6: +50 done, 0 quarantined, 0 to retry | in target: 24131 completed, 124868 pending | spend $0.1198
+
+Check at 11:06 AM (code, from state/calls.jsonl): 18 resume-phase enrichment calls so far, 0 already-completed IDs re-sent.

@@ -1,0 +1,19 @@
+.env
+.env.*
+!.env.example
+data/
+__pycache__/
+*.pyc
+.DS_Store
+
+# private working notes (not for the public repo)
+ASSIGNMENT_BRIEF.md
+HANDOFF.md
+CLAUDE.md
+.venv/
+state/
+*.sqlite
+*.sqlite-*
+evals/golden_human_labels.backup-*.json
+dashboard/local.sqlite
+evals/checker/local-reference.json

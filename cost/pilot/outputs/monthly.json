@@ -1,0 +1,107 @@
+{
+  "2022-06": {
+    "complaints": 2,
+    "completed": 5,
+    "topic_catalog": 1,
+    "topic_downloads": 1
+  },
+  "2022-07": {
+    "complaints": 3,
+    "completed": 5,
+    "topic_other": 1,
+    "topic_playback": 1,
+    "topic_usability": 1
+  },
+  "2022-08": {
+    "complaints": 1,
+    "completed": 6,
+    "topic_usability": 1
+  },
+  "2022-09": {
+    "complaints": 1,
+    "completed": 5,
+    "topic_usability": 1
+  },
+  "2022-10": {
+    "complaints": 2,
+    "completed": 4,
+    "topic_billing": 1,
+    "topic_catalog": 1
+  },
+  "2022-11": {
+    "complaints": 1,
+    "completed": 1,
+    "topic_usability": 1
+  },
+  "2022-12": {
+    "complaints": 0,
+    "completed": 2
+  },
+  "2023-01": {
+    "complaints": 3,
+    "completed": 4,
+    "topic_access": 1,
+    "topic_other": 1,
+    "topic_playback": 1
+  },
+  "2023-02": {
+    "complaints": 2,
+    "completed": 4,
+    "topic_playback": 1,
+    "topic_usability": 1
+  },
+  "2023-03": {
+    "complaints": 3,
+    "completed": 7,
+    "topic_playback": 1,
+    "topic_usability": 2
+  },
+  "2023-04": {
+    "complaints": 1,
+    "completed": 4,
+    "topic_usability": 1
+  },
+  "2023-05": {
+    "complaints": 2,
+    "completed": 5,
+    "topic_playback": 1,
+    "topic_usability": 1
+  },
+  "2023-06": {
+    "complaints": 3,
+    "completed": 4,
+    "topic_other": 2,
+    "topic_playback": 1
+  },
+  "2023-07": {
+    "complaints": 5,
+    "completed": 11,
+    "topic_downloads": 1,
+    "topic_other": 4
+  },
+  "2023-08": {
+    "complaints": 1,
+    "completed": 3,
+    "topic_access": 1
+  },
+  "2023-09": {
+    "complaints": 2,
+    "completed": 6,
+    "topic_other": 1,
+    "topic_usability": 1
+  },
+  "2023-10": {
+    "complaints": 15,
+    "completed": 19,
+    "topic_billing": 4,
+    "topic_catalog": 4,
+    "topic_other": 2,
+    "topic_usability": 5
+  },
+  "2023-11": {
+    "complaints": 3,
+    "completed": 5,
+    "topic_other": 1,
+    "topic_usability": 2
+  }
+}

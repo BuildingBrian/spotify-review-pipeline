@@ -1,0 +1,55 @@
+{
+  "malformed": {
+    "attempts_on_bad_record": 2,
+    "calls": [
+      {
+        "attempt": 1,
+        "error": null,
+        "outcome": "succeeded",
+        "request_id": "msg_fake_1"
+      },
+      {
+        "attempt": 1,
+        "error": null,
+        "outcome": "succeeded",
+        "request_id": "msg_fake_2"
+      }
+    ],
+    "quarantine_reasons": {
+      "bad_severity": 1
+    },
+    "statuses": {
+      "completed": 7,
+      "quarantined": 1
+    },
+    "synthetic": true
+  },
+  "transient_429": {
+    "attempts_on_bad_record": 1,
+    "calls": [
+      {
+        "attempt": 1,
+        "error": "RateLimitError: rate limited (simulated)",
+        "outcome": "failed",
+        "request_id": "local-725dd88d2428408fb7ba2878a6d8e808"
+      },
+      {
+        "attempt": 2,
+        "error": "RateLimitError: rate limited (simulated)",
+        "outcome": "failed",
+        "request_id": "local-3db6ab7d6090495094ced506f016a409"
+      },
+      {
+        "attempt": 3,
+        "error": null,
+        "outcome": "succeeded",
+        "request_id": "msg_fake_3"
+      }
+    ],
+    "quarantine_reasons": {},
+    "statuses": {
+      "completed": 8
+    },
+    "synthetic": true
+  }
+}

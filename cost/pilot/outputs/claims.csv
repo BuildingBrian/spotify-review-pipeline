@@ -1,0 +1,11 @@
+claim_id,issue_id,metric,value
+C1,other.general_criticism,priority_score,24
+C2,usability.ads_frequency,priority_score,15
+C3,usability.ads_frequency,mean_severity,2.142857
+C4,usability.controls_widgets,complaint_count,4
+C5,usability.controls_widgets,priority_score,12
+C6,usability.playlist_queue_management,complaint_count,3
+C7,usability.playlist_queue_management,priority_score,9
+C8,billing.premium_only_restrictions,priority_score,15
+C9,access.login_failure,priority_score,8
+C10,playback.crashes,priority_score,8

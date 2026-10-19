@@ -1,0 +1,74 @@
+{
+  "access.login_failure": {
+    "description": "Customers are unable to log in, with password entry rejected and login blocked by ads.",
+    "name": "Cannot log into account"
+  },
+  "billing.premium_only_restrictions": {
+    "description": "Customers feel basic features like choosing specific songs and skipping are now restricted to premium subscribers.",
+    "name": "Features locked behind premium"
+  },
+  "catalog.lyrics": {
+    "description": "Customers find lyrics appear for some songs but not others, or fail to display at all.",
+    "name": "Lyrics missing or inconsistent"
+  },
+  "catalog.missing_content": {
+    "description": "Customers report that many songs and certain genres such as gospel music are not available.",
+    "name": "Songs and genres missing"
+  },
+  "catalog.recommendations_shuffle": {
+    "description": "Customers do not want recommended content inserted into their own playlists and feel recommendations have degraded.",
+    "name": "Unwanted recommendations interrupting playlists"
+  },
+  "downloads.download_failure": {
+    "description": "Customers find song downloads stall in the background until the app is reopened.",
+    "name": "Downloads get stuck"
+  },
+  "downloads.offline_mode": {
+    "description": "Customers report that offline mode does not function as expected.",
+    "name": "Offline mode not working"
+  },
+  "other.general_criticism": {
+    "description": "Customers broadly criticize the app as worst or useless, especially after a recent update, without naming a specific problem.",
+    "name": "General dissatisfaction with app"
+  },
+  "playback.audio_quality": {
+    "description": "Customers find music audio adjustment settings do not work properly.",
+    "name": "Audio adjustment settings not working"
+  },
+  "playback.connection_errors": {
+    "description": "Customers cannot connect over Wi-Fi although mobile data works.",
+    "name": "Wi-Fi connection failures"
+  },
+  "playback.crashes": {
+    "description": "Customers report the app crashes after updates or gets stuck on the loading screen.",
+    "name": "App crashes or freezes on launch"
+  },
+  "playback.device_integration": {
+    "description": "Customers say Google Assistant reports playing their Spotify playlist but no songs play.",
+    "name": "Google Assistant playback failure"
+  },
+  "playback.stops_or_pauses": {
+    "description": "Customers find music keeps stopping partway through songs and does not resume where it left off.",
+    "name": "Playback stops midway"
+  },
+  "usability.ads_frequency": {
+    "description": "Customers feel ads play too often, between nearly every song, and are too loud, pushing them toward premium.",
+    "name": "Excessive and loud ads"
+  },
+  "usability.controls_widgets": {
+    "description": "Customers lost basic player controls such as skipping, going back, repeating, or replaying a specific part of a song.",
+    "name": "Player controls removed or limited"
+  },
+  "usability.other": {
+    "description": "Customers are frustrated that songs from a playlist play in random order rather than as they expect.",
+    "name": "Playlist plays songs randomly"
+  },
+  "usability.playlist_queue_management": {
+    "description": "Customers cannot play chosen songs, queue tracks, or skip freely, and are forced through shuffled playlists.",
+    "name": "Cannot choose or queue songs"
+  },
+  "usability.ui_redesign": {
+    "description": "Customers dislike the new homescreen design and automatically playing audio elements that cannot be turned off.",
+    "name": "Disliked homescreen redesign and autoplay"
+  }
+}

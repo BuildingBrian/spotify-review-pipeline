@@ -1,0 +1,16 @@
+{
+  "finished_at": "2026-10-19T14:56:27.887036+00:00",
+  "record_counts": {
+    "completed": 100
+  },
+  "run_id": "run-20261019-105627",
+  "stage_seconds": {
+    "enrich": 0.004,
+    "group": 0.003,
+    "memo": 0.007,
+    "rank": 0.005,
+    "verify": 0.002
+  },
+  "status": "finished",
+  "wall_clock_seconds": 0.023
+}

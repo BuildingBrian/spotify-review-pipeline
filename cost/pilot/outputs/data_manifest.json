@@ -1,0 +1,14 @@
+{
+  "analysis_scope": {
+    "rows": 100,
+    "sha256": "c884ac3b9be5066995d5063f96ad9af6e5e082975788c1684c4f6b6ea661dd0e"
+  },
+  "prepared_at": "2026-10-19T14:54:58.005295+00:00",
+  "source": {
+    "bytes": 15466,
+    "dataset_link": "https://drive.google.com/file/d/1P0rUoAS_wVjp3BYKqXMEyD4u0uJP1Bvf/view",
+    "file": "cost_100.csv",
+    "origin": "BwandoWando, 3.4 Million Spotify Google Store Reviews v2 (Kaggle, CC0)",
+    "sha256": "c884ac3b9be5066995d5063f96ad9af6e5e082975788c1684c4f6b6ea661dd0e"
+  }
+}

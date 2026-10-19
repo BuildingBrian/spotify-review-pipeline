@@ -1,0 +1,9 @@
+provider,model,item,unit,usd_per_unit,usd_per_million,source,checked_on,notes
+anthropic,claude-haiku-5-5,input_tokens,token,0.0000001,0.10,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-18,"standard tier, prompts <=100k tokens"
+anthropic,claude-haiku-5-5,cache_write_input_tokens,token,0.000000125,0.125,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-18,5-minute cache write
+anthropic,claude-haiku-5-5,cache_read_input_tokens,token,0.00000001,0.01,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-18,cache hit
+anthropic,claude-haiku-5-5,output_tokens,token,0.0000005,0.50,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-18,includes any thinking tokens (thinking disabled)
+anthropic,claude-sonnet-5-5,input_tokens,token,0.000002,2.00,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-18,standard tier
+anthropic,claude-sonnet-5-5,cache_write_input_tokens,token,0.0000025,2.50,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-18,5-minute cache write
+anthropic,claude-sonnet-5-5,cache_read_input_tokens,token,0.0000001,0.10,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-18,cache hit
+anthropic,claude-sonnet-5-5,output_tokens,token,0.00001,10.00,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-18,

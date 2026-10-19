@@ -1,0 +1,11 @@
+{
+  "analysis_count": 8,
+  "analysis_csv": "state/analysis_scope.csv (regenerate with: python -m pipeline prepare)",
+  "analysis_sha256": "afe10c46c3a24d5104508a86405cb79567e03c7339f57d5f2bcb3acd68e27c20",
+  "empty_quarantined": 0,
+  "nonempty_in_scope": 8,
+  "parts": {
+    "golden": 8
+  },
+  "seed": "berkeley-fall-2026-assignment-5-v1"
+}

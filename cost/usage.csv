@@ -1,0 +1,7 @@
+run,request_id,role,model,outcome,attempt,reviews,input_tokens,cache_write_input_tokens,cache_read_input_tokens,output_tokens,latency_s,cost_usd
+cold,msg_011CgBnhDst7a3rVnGR64wSc,enrich,claude-haiku-5-5,succeeded,1,50,2128,3893,0,4536,16.996,0.00296743
+cold,msg_011CgBniQbaxsVUahap2fnLy,enrich,claude-haiku-5-5,succeeded,1,50,2171,0,3893,4751,14.833,0.00263153
+cold,msg_011CgBnjW3HZwaKuGgXbDdEA,enrich,claude-haiku-5-5,succeeded,1,2,292,0,3893,225,3.267,0.00018063
+cold,msg_011CgBnjk6NuUpKptXpX2Y9w,verify,claude-haiku-5-5,succeeded,1,20,547,3129,0,688,3.946,0.00078982
+cold,msg_011CgBnk2xebkFkfGucu6z1p,group,claude-haiku-5-5,succeeded,1,0,1615,537,0,1149,7.287,0.00080312
+cold,msg_011CgBnkaHKDpoNUeSW3fKQb,memo,claude-sonnet-5-5,succeeded,1,0,3885,1099,0,1532,12.105,0.0258375

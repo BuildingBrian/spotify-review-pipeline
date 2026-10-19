@@ -1,0 +1,53 @@
+{
+  "brief_expected_vs_observed": {},
+  "course_helper_profile_counts_match": true,
+  "every_row_accounted_for": {
+    "in_classification_scope": 8,
+    "outside_declared_scope": 0,
+    "quarantined_empty_text": 0,
+    "rows_read": 8
+  },
+  "input": {
+    "bytes": 1033,
+    "path": "evals/system_tests/synthetic_reviews.csv",
+    "sha256": "15f51ed9386a67da8fc04ca906b181ff5b498d96f3a4f1b8313eb0ae48ad1dc5"
+  },
+  "profile": {
+    "counts": {
+      "duplicate_review_ids": 0,
+      "empty_review_text": 0,
+      "missing_app_version": 8,
+      "records": 8
+    },
+    "distinct_nonempty_texts": 8,
+    "first_review": "2023-11-01 00:00:00",
+    "last_review": "2023-11-01 00:00:00",
+    "nonempty_rows_sharing_text_with_another_row": 0,
+    "reviews_by_month": {
+      "2023-11": 8
+    },
+    "reviews_by_rating": {
+      "3": 8
+    }
+  },
+  "scope": {
+    "core_end_rank": 1000000000,
+    "course_file_nesting": {},
+    "distinct_texts_in_scope": 8,
+    "extension": 0,
+    "golden": 50,
+    "method": "Extend the course sample order: lowest SHA-256(seed + ':' + review_id) among unique nonempty valid-rating records; take the first core+extension; add all empty-text rows.",
+    "parts": {
+      "golden": 8
+    },
+    "scope_by_month": {
+      "2023-11": 8
+    },
+    "seed": "berkeley-fall-2026-assignment-5-v1"
+  },
+  "seconds": 0.1,
+  "started_at": "2026-10-19T15:08:39.789159+00:00",
+  "state_status_counts": {
+    "pending": 8
+  }
+}

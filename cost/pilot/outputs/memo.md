@@ -1,0 +1,25 @@
+# Recommendation: Focus next quarter on usability (ads, player controls, queue management)
+
+## Why
+Usability is the largest actionable topic in the classified sample: 17 complaints, a severity sum of 43, and 34% of complaints and cancellations (topic aggregate). The top-ranked issue, other.general_criticism (12 complaints, priority 24) [C1], is generic and not actionable, so we treat it as a signal of overall sentiment only.
+
+Three usability issues sit in the top five of the baseline ranking:
+- usability.ads_frequency: 7 complaints, priority_score 15 [C2], mean severity 2.142857 [C3].
+- usability.controls_widgets: 4 complaints [C4], priority_score 12 [C5], mean severity 3.000000.
+- usability.playlist_queue_management: 3 complaints [C6], priority_score 9 [C7].
+
+Many of these reviews describe free-tier limits such as skip, back and queue restrictions. That overlaps with billing.premium_only_restrictions (5 complaints, priority_score 15) [C8], so product and monetization decisions are intertwined.
+
+## Representative customer evidence
+- 3e8bdc92-4934-457e-85cc-8b9d14bf51c0: "it's always every 1 or 2 song then instant ads"
+- a3605554-5c3a-441d-836e-e9fdea83eb2e: "The ability to skip a song or go to previous song has been removed from non subscribed users."
+- 9e5f9745-f8be-48d3-b9de-4d118507d94a: "We can't even go back few second to play music?" (cancellation intent)
+- 89ea2c30-db8b-459d-8ab7-bbcb7f92c774: queue and skip frustration.
+
+## Alternatives considered
+- Access: access.login_failure is the most severe issue (mean 4.000000, priority_score 8) [C9], but it has only 2 complaints, so its reach in the sample is small. It is a candidate for a targeted fix.
+- Playback: playback.crashes has 2 complaints and priority_score 8 [C10]. Playback is severe (mean 3.500000 across 6 complaints) but small in volume.
+- Billing/support: billing is 10% of complaints, and support has 0 complaints in the sample. The premium-lock complaints are better addressed through usability and monetization design than through support work.
+
+## Limitations
+The data are self-selected public Google Play reviews from May 2022 to Nov 2023, a classified sample of 100. They include no revenue, plan-tier or churn data. Cancellation language is expressed intent, not observed churn. Counts are small, so rankings are directional only.

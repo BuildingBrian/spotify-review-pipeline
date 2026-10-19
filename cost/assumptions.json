@@ -1,0 +1,24 @@
+{
+  "_note": "Editable. Measured pilot values come from pilot_calls.jsonl/pilot_runs.json and are never changed by these assumptions.",
+  "projection": {
+    "scope_rows": 150013,
+    "nonempty_rows": 150000,
+    "distinct_text_fraction": 0.7703,
+    "_distinct_source": "115,541 distinct texts among the 150,000 scoped nonempty rows (outputs/ingestion_report.json)",
+    "batch_size": 50,
+    "base_retry_rate": 0.03,
+    "conservative_retry_rate": 0.10,
+    "verify_frac": 0.02,
+    "verify_min": 20,
+    "verify_max": 3000,
+    "effective_workers": 4
+  },
+  "full_corpus_reference": {"nonempty_rows": 660609, "distinct_nonempty_texts": 484189},
+  "controls": {
+    "spend_cap_usd": 15,
+    "output_token_cap_per_request": 7800,
+    "max_workers": 6,
+    "transient_max_attempts": 4,
+    "fallback_fraction": 0.0
+  }
+}

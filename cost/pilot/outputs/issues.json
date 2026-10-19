@@ -1,0 +1,110 @@
+[
+  {
+    "description": "Customers are unable to log in, with password entry rejected and login blocked by ads.",
+    "issue_id": "access.login_failure",
+    "member_count": 2,
+    "name": "Cannot log into account"
+  },
+  {
+    "description": "Customers feel basic features like choosing specific songs and skipping are now restricted to premium subscribers.",
+    "issue_id": "billing.premium_only_restrictions",
+    "member_count": 5,
+    "name": "Features locked behind premium"
+  },
+  {
+    "description": "Customers find lyrics appear for some songs but not others, or fail to display at all.",
+    "issue_id": "catalog.lyrics",
+    "member_count": 2,
+    "name": "Lyrics missing or inconsistent"
+  },
+  {
+    "description": "Customers report that many songs and certain genres such as gospel music are not available.",
+    "issue_id": "catalog.missing_content",
+    "member_count": 2,
+    "name": "Songs and genres missing"
+  },
+  {
+    "description": "Customers do not want recommended content inserted into their own playlists and feel recommendations have degraded.",
+    "issue_id": "catalog.recommendations_shuffle",
+    "member_count": 2,
+    "name": "Unwanted recommendations interrupting playlists"
+  },
+  {
+    "description": "Customers find song downloads stall in the background until the app is reopened.",
+    "issue_id": "downloads.download_failure",
+    "member_count": 1,
+    "name": "Downloads get stuck"
+  },
+  {
+    "description": "Customers report that offline mode does not function as expected.",
+    "issue_id": "downloads.offline_mode",
+    "member_count": 1,
+    "name": "Offline mode not working"
+  },
+  {
+    "description": "Customers broadly criticize the app as worst or useless, especially after a recent update, without naming a specific problem.",
+    "issue_id": "other.general_criticism",
+    "member_count": 12,
+    "name": "General dissatisfaction with app"
+  },
+  {
+    "description": "Customers find music audio adjustment settings do not work properly.",
+    "issue_id": "playback.audio_quality",
+    "member_count": 1,
+    "name": "Audio adjustment settings not working"
+  },
+  {
+    "description": "Customers cannot connect over Wi-Fi although mobile data works.",
+    "issue_id": "playback.connection_errors",
+    "member_count": 1,
+    "name": "Wi-Fi connection failures"
+  },
+  {
+    "description": "Customers report the app crashes after updates or gets stuck on the loading screen.",
+    "issue_id": "playback.crashes",
+    "member_count": 2,
+    "name": "App crashes or freezes on launch"
+  },
+  {
+    "description": "Customers say Google Assistant reports playing their Spotify playlist but no songs play.",
+    "issue_id": "playback.device_integration",
+    "member_count": 1,
+    "name": "Google Assistant playback failure"
+  },
+  {
+    "description": "Customers find music keeps stopping partway through songs and does not resume where it left off.",
+    "issue_id": "playback.stops_or_pauses",
+    "member_count": 1,
+    "name": "Playback stops midway"
+  },
+  {
+    "description": "Customers feel ads play too often, between nearly every song, and are too loud, pushing them toward premium.",
+    "issue_id": "usability.ads_frequency",
+    "member_count": 7,
+    "name": "Excessive and loud ads"
+  },
+  {
+    "description": "Customers lost basic player controls such as skipping, going back, repeating, or replaying a specific part of a song.",
+    "issue_id": "usability.controls_widgets",
+    "member_count": 4,
+    "name": "Player controls removed or limited"
+  },
+  {
+    "description": "Customers are frustrated that songs from a playlist play in random order rather than as they expect.",
+    "issue_id": "usability.other",
+    "member_count": 1,
+    "name": "Playlist plays songs randomly"
+  },
+  {
+    "description": "Customers cannot play chosen songs, queue tracks, or skip freely, and are forced through shuffled playlists.",
+    "issue_id": "usability.playlist_queue_management",
+    "member_count": 3,
+    "name": "Cannot choose or queue songs"
+  },
+  {
+    "description": "Customers dislike the new homescreen design and automatically playing audio elements that cannot be turned off.",
+    "issue_id": "usability.ui_redesign",
+    "member_count": 2,
+    "name": "Disliked homescreen redesign and autoplay"
+  }
+]
