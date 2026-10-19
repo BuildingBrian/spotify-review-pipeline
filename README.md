@@ -172,4 +172,4 @@ Full details are in [cost/report.md](cost/report.md); it is regenerated offline 
 
 `pipeline/` stages and CLI · `prompts/` role prompts (enrich, verify, group, memo) · `labels/` shared definitions · `outputs/` saved handoffs (manifest, ingestion, scope, verification, issues, membership, aggregates, ranking, memo pack, memo check, run log) · `grading/` standardized export · `evals/` golden set, checker report, system tests, resume evidence · `cost/` calculator and pilot evidence · `dashboard/` backend and frontend · `memo.md` the decision memo.
 
-Built with Claude Code (Claude Opus 5.5) as a coding assistant. Brian chose the scope and tools, hand-labeled the golden set and adjudicated the disagreements.
+Built with Claude Code (Claude Opus 5.5) as a coding assistant. Brian chose the scope and tools, hand-labeled the golden set, adjudicated the disagreements, and reviewed and agreed with the memo's recommendation.
