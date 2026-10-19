@@ -1,0 +1,17 @@
+{
+  "finished_at": "2026-10-19T16:55:27.573145+00:00",
+  "record_counts": {
+    "completed": 149972,
+    "quarantined": 41
+  },
+  "run_id": "run-20261019-125016",
+  "stage_seconds": {
+    "enrich": 0.649,
+    "group": 15.919,
+    "memo": 17.326,
+    "rank": 3.739,
+    "verify": 272.888
+  },
+  "status": "finished",
+  "wall_clock_seconds": 310.998
+}

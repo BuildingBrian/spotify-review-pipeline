@@ -1,0 +1,182 @@
+{
+  "access.account_locked_or_hacked": {
+    "description": "Customers find their accounts logged out, altered, hacked, or deleted and struggle to recover them.",
+    "name": "Account locked, hacked, or deleted"
+  },
+  "access.login_failure": {
+    "description": "Customers cannot get past the login screen or are repeatedly logged out despite entering correct credentials.",
+    "name": "Unable to log in"
+  },
+  "access.other": {
+    "description": "The app reports no internet connection or fails to load features even when the customer's network is working.",
+    "name": "False no-internet connection errors"
+  },
+  "access.password_reset": {
+    "description": "Customers are repeatedly forced to reset passwords or are unable to get old or new passwords to work.",
+    "name": "Password reset problems and repeated prompts"
+  },
+  "access.signup": {
+    "description": "Customers are unable to create a new account and receive generic errors or slow, difficult sign-up processes.",
+    "name": "Account signup failures"
+  },
+  "access.third_party_login": {
+    "description": "Customers fail to sign in through Google or Facebook accounts or get conflicting account-exists messages.",
+    "name": "Google and Facebook login issues"
+  },
+  "billing.charges_refunds": {
+    "description": "Customers are charged unexpectedly, continue being billed after cancelling, or cannot get refunds.",
+    "name": "Unexpected charges and refund problems"
+  },
+  "billing.other": {
+    "description": "Customers feel pressured by upsells, face download limits without upgrading, or have trouble with payment methods.",
+    "name": "Miscellaneous billing and upsell complaints"
+  },
+  "billing.plans_family_student": {
+    "description": "Customers on family, duo, or student plans find features missing for some members or face rejected verification.",
+    "name": "Family, duo, and student plan problems"
+  },
+  "billing.premium_only_restrictions": {
+    "description": "Customers feel basic features like skipping, searching, and repeating are locked behind Premium.",
+    "name": "Free tier features too restricted"
+  },
+  "billing.price": {
+    "description": "Customers feel the Premium subscription costs too much for the value they receive.",
+    "name": "Premium subscription price too high"
+  },
+  "billing.subscription_activation": {
+    "description": "Customers cannot activate or renew Premium, facing payment declines, errors, or sudden loss of access.",
+    "name": "Premium activation and payment failures"
+  },
+  "catalog.lyrics": {
+    "description": "Customers find lyrics not loading, missing, or incorrect for many songs.",
+    "name": "Lyrics missing or inaccurate"
+  },
+  "catalog.missing_content": {
+    "description": "Customers find songs removed, greyed out, or unavailable from their playlists and libraries.",
+    "name": "Songs missing or unplayable"
+  },
+  "catalog.other": {
+    "description": "Customers see incorrect playlist contents, unwanted added songs, or missing features like Wrapped.",
+    "name": "Playlist and catalog display issues"
+  },
+  "catalog.podcasts": {
+    "description": "Customers find podcasts poorly organized, showing wrong release dates, not playing in order, or failing to play video.",
+    "name": "Podcast playback and organization problems"
+  },
+  "catalog.recommendations_shuffle": {
+    "description": "Customers are frustrated by recommended tracks inserted into their playlists and shuffle that repeats or ignores their choices.",
+    "name": "Unwanted recommendations and shuffle behavior"
+  },
+  "catalog.search": {
+    "description": "Customers experience slow search, wrong songs playing, and albums mixed with other content.",
+    "name": "Search and wrong-track playback"
+  },
+  "downloads.download_failure": {
+    "description": "Customers cannot download music, or downloads stall, need repeated retries, or crash the app.",
+    "name": "Downloads fail or get stuck"
+  },
+  "downloads.downloads_disappearing": {
+    "description": "Customers find their downloaded songs and liked songs removed or no longer visible without explanation.",
+    "name": "Downloaded songs disappearing"
+  },
+  "downloads.offline_mode": {
+    "description": "Customers cannot play downloaded music offline, with the app hanging, crashing, or showing incorrect offline status.",
+    "name": "Offline mode playback failures"
+  },
+  "downloads.other": {
+    "description": "Customers have trouble with local files being greyed out or unplayable and with download navigation and notifications.",
+    "name": "Local files and download notification issues"
+  },
+  "downloads.storage": {
+    "description": "Customers find the app does not recognize their SD card or keeps moving downloads back to internal storage.",
+    "name": "SD card download storage problems"
+  },
+  "other.general_criticism": {
+    "description": "Customers express broad negative sentiment about the app, citing it as buggy or disappointing without a specific issue.",
+    "name": "General dissatisfaction with the app"
+  },
+  "other.general_praise": {
+    "description": "Customers mostly praise the app while mentioning minor glitches or small wishes.",
+    "name": "General praise with minor complaints"
+  },
+  "other.other": {
+    "description": "Customers report the app stopped working after updates or that their Wrapped summary is missing.",
+    "name": "Post-update breakage and missing Wrapped"
+  },
+  "other.unrelated_or_political": {
+    "description": "Customers criticize the platform over political figures, misinformation, or religious content unrelated to app functionality.",
+    "name": "Off-topic political or religious complaints"
+  },
+  "playback.audio_quality": {
+    "description": "Customers report subpar sound quality, sudden volume changes, and audio dropping or stopping mid-song.",
+    "name": "Poor audio quality and volume issues"
+  },
+  "playback.battery_resources": {
+    "description": "Customers find the app drains battery, overheats devices, and keeps running in the background after closing.",
+    "name": "Excessive battery and resource drain"
+  },
+  "playback.buffering_lag": {
+    "description": "Customers experience slow app response, long load times, and playback that keeps buffering.",
+    "name": "Buffering, lag, and slow performance"
+  },
+  "playback.connection_errors": {
+    "description": "Customers are shown as offline or unable to play despite having a working internet connection.",
+    "name": "Connection errors and false offline status"
+  },
+  "playback.crashes": {
+    "description": "Customers find the app crashing, freezing on a black screen, or losing key controls.",
+    "name": "App crashes and freezes"
+  },
+  "playback.device_integration": {
+    "description": "Customers have problems with playback controls and playback switching across Bluetooth, car systems, and speakers.",
+    "name": "Device, Bluetooth, and casting issues"
+  },
+  "playback.other": {
+    "description": "Customers encounter playback failed errors, liked songs not opening, and other unexplained playback problems.",
+    "name": "Miscellaneous playback failures"
+  },
+  "playback.skipping_glitches": {
+    "description": "Customers find songs skipping unexpectedly, the next track starting early, or playlists playing out of order.",
+    "name": "Songs skipping or playing wrong tracks"
+  },
+  "playback.stops_or_pauses": {
+    "description": "Customers find playback stops, stalls at zero, or plays a different song than selected.",
+    "name": "Playback stopping or wrong song playing"
+  },
+  "support.no_response": {
+    "description": "Customers feel support is unreachable, with no human contact or replies to their questions.",
+    "name": "No response from customer support"
+  },
+  "support.other": {
+    "description": "Customers share varied support experiences, including review solicitation and Wrapped access issues.",
+    "name": "Mixed feedback on customer support"
+  },
+  "support.unhelpful_response": {
+    "description": "Customers say support contacts were unable to fix their problems despite repeated attempts.",
+    "name": "Support fails to resolve issues"
+  },
+  "usability.ads_frequency": {
+    "description": "Customers find ads too frequent, back-to-back, or intrusive, especially when trying to listen uninterrupted.",
+    "name": "Excessive and disruptive ads"
+  },
+  "usability.controls_widgets": {
+    "description": "Customers find controls like seeking, shuffle, loop, and the heart button removed or unavailable.",
+    "name": "Missing playback controls and options"
+  },
+  "usability.navigation_layout": {
+    "description": "Customers find the home screen, navigation gestures, and song scrolling clumsy or hard to use.",
+    "name": "Confusing navigation and layout"
+  },
+  "usability.other": {
+    "description": "Customers are annoyed by forced shuffle defaults, autoplay, and inability to preview or rewind songs.",
+    "name": "Unwanted autoplay and default settings"
+  },
+  "usability.playlist_queue_management": {
+    "description": "Customers cannot manage queues, play playlists in order, or control shuffle and song sequencing.",
+    "name": "Limited queue and playlist control"
+  },
+  "usability.ui_redesign": {
+    "description": "Customers dislike recent interface changes that moved buttons, removed features, or made the app harder to use.",
+    "name": "Disliked UI redesign and removed features"
+  }
+}

@@ -1,0 +1,364 @@
+{
+  "evidence": [
+    {
+      "helpful_votes": 846,
+      "intent": "complaint",
+      "issue_id": "other.general_criticism",
+      "month": "2023-09",
+      "quote": "You only brought the new features to ios first? That's just stupid.",
+      "review_id": "8ead8dfb-78bc-45e8-82d2-953ea2870b87",
+      "severity": 2
+    },
+    {
+      "helpful_votes": 345,
+      "intent": "complaint",
+      "issue_id": "other.general_criticism",
+      "month": "2023-07",
+      "quote": "I hate this app",
+      "review_id": "30ac8728-8a7a-476e-baca-55a8eae7d588",
+      "severity": 2
+    },
+    {
+      "helpful_votes": 246,
+      "intent": "cancellation",
+      "issue_id": "other.general_criticism",
+      "month": "2023-04",
+      "quote": "This is the worst, buggiest app I think I've ever used by such a large margin.",
+      "review_id": "b24290fc-281e-4a79-8bb1-652f207e642c",
+      "severity": 2
+    },
+    {
+      "helpful_votes": 2922,
+      "intent": "complaint",
+      "issue_id": "billing.premium_only_restrictions",
+      "month": "2023-09",
+      "quote": "using the app without the membership is not fun. It will play songs that you don't have on your playlists, as well as constant ads",
+      "review_id": "3bee1604-8014-4a7d-86fd-54bf00a0e85f",
+      "severity": 3
+    },
+    {
+      "helpful_votes": 1694,
+      "intent": "cancellation",
+      "issue_id": "billing.premium_only_restrictions",
+      "month": "2023-11",
+      "quote": "will look for alternative apps or platforms instead of Spotify",
+      "review_id": "221709a4-4026-4324-a13c-ad80e23d85d9",
+      "severity": 4
+    },
+    {
+      "helpful_votes": 1603,
+      "intent": "complaint",
+      "issue_id": "billing.premium_only_restrictions",
+      "month": "2023-03",
+      "quote": "on phone it's so limited without premium. Only 6 skips per hour, you can't adjust the place on the song",
+      "review_id": "257eb4dc-0261-444b-8af0-6316558c08ca",
+      "severity": 3
+    },
+    {
+      "helpful_votes": 2768,
+      "intent": "cancellation",
+      "issue_id": "usability.ads_frequency",
+      "month": "2023-10",
+      "quote": "I'm so close to deleting Spotify and downloading another app for music.",
+      "review_id": "4ba8c8db-3245-404a-9bc1-91a00da579ba",
+      "severity": 2
+    },
+    {
+      "helpful_votes": 2718,
+      "intent": "complaint",
+      "issue_id": "usability.ads_frequency",
+      "month": "2023-10",
+      "quote": "They are literally unbearable now.",
+      "review_id": "d5847305-f4db-4336-97f5-30743c222042",
+      "severity": 3
+    },
+    {
+      "helpful_votes": 1811,
+      "intent": "complaint",
+      "issue_id": "usability.ads_frequency",
+      "month": "2023-07",
+      "quote": "I had gotten an ad after every song. It was very annoying, and another thing I have a problem with is when I connect to my alexa, the 30 minute ad free option just doesnt work.",
+      "review_id": "6aad6ff8-0be2-4408-964d-0388320aa34b",
+      "severity": 3
+    },
+    {
+      "helpful_votes": 384,
+      "intent": "complaint",
+      "issue_id": "access.login_failure",
+      "month": "2023-01",
+      "quote": "now it won't even let me log in. My email's right, my password's right, it just keeps saying that there's a problem.",
+      "review_id": "6d3a0837-1a26-499c-989e-256c20f03f7b",
+      "severity": 4
+    },
+    {
+      "helpful_votes": 358,
+      "intent": "complaint",
+      "issue_id": "access.login_failure",
+      "month": "2023-05",
+      "quote": "My account automatically gets logged out and when I try to log in again it shows an error.",
+      "review_id": "4bbf7b92-e22e-40ff-a51f-3c92eee94546",
+      "severity": 4
+    },
+    {
+      "helpful_votes": 340,
+      "intent": "complaint",
+      "issue_id": "access.login_failure",
+      "month": "2022-10",
+      "quote": "I'm not able to even log-in, neither through email not with mobile number",
+      "review_id": "b779884d-eea9-4468-ae70-04b64141b79a",
+      "severity": 4
+    },
+    {
+      "helpful_votes": 3230,
+      "intent": "complaint",
+      "issue_id": "playback.stops_or_pauses",
+      "month": "2023-09",
+      "quote": "When we select a song to play, it ends up playing a different song.",
+      "review_id": "205e4cbe-a19e-41ae-bff4-ef9a3804e2a4",
+      "severity": 3
+    },
+    {
+      "helpful_votes": 2028,
+      "intent": "complaint",
+      "issue_id": "playback.stops_or_pauses",
+      "month": "2023-06",
+      "quote": "Since the last update, I've had issue with the song playing and then the app going dead.",
+      "review_id": "24b23f3e-9521-4820-9393-c91405561288",
+      "severity": 3
+    },
+    {
+      "helpful_votes": 1849,
+      "intent": "cancellation",
+      "issue_id": "playback.stops_or_pauses",
+      "month": "2022-09",
+      "quote": "the app will stop working if my screen goes dark, and I will get 6+ ads at a time",
+      "review_id": "f9cd83c9-1208-406f-9471-b522d192f95a",
+      "severity": 4
+    },
+    {
+      "helpful_votes": 3152,
+      "intent": "complaint",
+      "issue_id": "usability.controls_widgets",
+      "month": "2022-08",
+      "quote": "the option to access Spotify Canvas doesn't appear under the settings for me",
+      "review_id": "2dd0985f-25bf-4db8-aa25-f4f904f27080",
+      "severity": 2
+    },
+    {
+      "helpful_votes": 592,
+      "intent": "complaint",
+      "issue_id": "usability.controls_widgets",
+      "month": "2022-12",
+      "quote": "Many options are unavailable now you like before you were able to rewind the track or you can seek forward or backward now it's not available.",
+      "review_id": "d76348d7-2cc7-4ce9-aab7-ddf1a23fedef",
+      "severity": 4
+    },
+    {
+      "helpful_votes": 444,
+      "intent": "complaint",
+      "issue_id": "usability.controls_widgets",
+      "month": "2023-09",
+      "quote": "We cannot go to any desired time in a song. We cannot disable shuffle mode. We cannot apply loop mode.",
+      "review_id": "f0e3ac13-1f4b-4218-9a2c-c89de2362245",
+      "severity": 4
+    }
+  ],
+  "ranking_top": [
+    {
+      "complaint_count": 20437,
+      "issue_id": "other.general_criticism",
+      "mean_severity": "1.981406",
+      "name": "General dissatisfaction with the app",
+      "priority_score": 40494,
+      "rank": 1,
+      "severity_sum": 40494
+    },
+    {
+      "complaint_count": 9469,
+      "issue_id": "billing.premium_only_restrictions",
+      "mean_severity": "2.755096",
+      "name": "Free tier features too restricted",
+      "priority_score": 26088,
+      "rank": 2,
+      "severity_sum": 26088
+    },
+    {
+      "complaint_count": 8073,
+      "issue_id": "usability.ads_frequency",
+      "mean_severity": "2.139106",
+      "name": "Excessive and disruptive ads",
+      "priority_score": 17269,
+      "rank": 3,
+      "severity_sum": 17269
+    },
+    {
+      "complaint_count": 1877,
+      "issue_id": "access.login_failure",
+      "mean_severity": "3.910495",
+      "name": "Unable to log in",
+      "priority_score": 7340,
+      "rank": 4,
+      "severity_sum": 7340
+    },
+    {
+      "complaint_count": 2200,
+      "issue_id": "playback.stops_or_pauses",
+      "mean_severity": "3.258636",
+      "name": "Playback stopping or wrong song playing",
+      "priority_score": 7169,
+      "rank": 5,
+      "severity_sum": 7169
+    },
+    {
+      "complaint_count": 2438,
+      "issue_id": "usability.controls_widgets",
+      "mean_severity": "2.763331",
+      "name": "Missing playback controls and options",
+      "priority_score": 6737,
+      "rank": 6,
+      "severity_sum": 6737
+    },
+    {
+      "complaint_count": 1629,
+      "issue_id": "playback.crashes",
+      "mean_severity": "3.367096",
+      "name": "App crashes and freezes",
+      "priority_score": 5485,
+      "rank": 7,
+      "severity_sum": 5485
+    },
+    {
+      "complaint_count": 1659,
+      "issue_id": "usability.playlist_queue_management",
+      "mean_severity": "2.710066",
+      "name": "Limited queue and playlist control",
+      "priority_score": 4496,
+      "rank": 8,
+      "severity_sum": 4496
+    },
+    {
+      "complaint_count": 1797,
+      "issue_id": "usability.ui_redesign",
+      "mean_severity": "2.461881",
+      "name": "Disliked UI redesign and removed features",
+      "priority_score": 4424,
+      "rank": 9,
+      "severity_sum": 4424
+    },
+    {
+      "complaint_count": 1647,
+      "issue_id": "catalog.missing_content",
+      "mean_severity": "2.572556",
+      "name": "Songs missing or unplayable",
+      "priority_score": 4237,
+      "rank": 10,
+      "severity_sum": 4237
+    },
+    {
+      "complaint_count": 1275,
+      "issue_id": "playback.skipping_glitches",
+      "mean_severity": "2.941176",
+      "name": "Songs skipping or playing wrong tracks",
+      "priority_score": 3750,
+      "rank": 11,
+      "severity_sum": 3750
+    },
+    {
+      "complaint_count": 1185,
+      "issue_id": "playback.other",
+      "mean_severity": "2.965401",
+      "name": "Miscellaneous playback failures",
+      "priority_score": 3514,
+      "rank": 12,
+      "severity_sum": 3514
+    }
+  ],
+  "scope_note": "Self-selected public Google Play reviews, May 2022-Nov 2023, classified sample (149972 completed classifications). No revenue, plan tier or churn data.",
+  "topic_aggregates": [
+    {
+      "cancellation_count": "144",
+      "complaint_count": "2817",
+      "completed": "2949",
+      "mean_severity": "3.797302",
+      "severe_4_or_5": "2310",
+      "severity_sum": "10697",
+      "share_of_complaints": "0.041810",
+      "topic": "access"
+    },
+    {
+      "cancellation_count": "1249",
+      "complaint_count": "15502",
+      "completed": "19125",
+      "mean_severity": "2.370404",
+      "severe_4_or_5": "430",
+      "severity_sum": "36746",
+      "share_of_complaints": "0.230079",
+      "topic": "usability"
+    },
+    {
+      "cancellation_count": "517",
+      "complaint_count": "8806",
+      "completed": "10838",
+      "mean_severity": "3.073359",
+      "severe_4_or_5": "2310",
+      "severity_sum": "27064",
+      "share_of_complaints": "0.130697",
+      "topic": "playback"
+    },
+    {
+      "cancellation_count": "78",
+      "complaint_count": "1649",
+      "completed": "2468",
+      "mean_severity": "3.161916",
+      "severe_4_or_5": "528",
+      "severity_sum": "5214",
+      "share_of_complaints": "0.024474",
+      "topic": "downloads"
+    },
+    {
+      "cancellation_count": "175",
+      "complaint_count": "5012",
+      "completed": "14035",
+      "mean_severity": "2.474062",
+      "severe_4_or_5": "187",
+      "severity_sum": "12400",
+      "share_of_complaints": "0.074387",
+      "topic": "catalog"
+    },
+    {
+      "cancellation_count": "2419",
+      "complaint_count": "12169",
+      "completed": "14026",
+      "mean_severity": "2.707946",
+      "severe_4_or_5": "791",
+      "severity_sum": "32953",
+      "share_of_complaints": "0.180611",
+      "topic": "billing"
+    },
+    {
+      "cancellation_count": "16",
+      "complaint_count": "143",
+      "completed": "249",
+      "mean_severity": "2.594406",
+      "severe_4_or_5": "16",
+      "severity_sum": "371",
+      "share_of_complaints": "0.002122",
+      "topic": "support"
+    },
+    {
+      "cancellation_count": "1680",
+      "complaint_count": "21279",
+      "completed": "86282",
+      "mean_severity": "1.969218",
+      "severe_4_or_5": "86",
+      "severity_sum": "41903",
+      "share_of_complaints": "0.315820",
+      "topic": "other"
+    }
+  ],
+  "totals": {
+    "complaints_and_cancellations": 67377,
+    "completed": 149972,
+    "issues": 45
+  }
+}

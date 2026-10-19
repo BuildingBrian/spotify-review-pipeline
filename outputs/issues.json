@@ -1,0 +1,272 @@
+[
+  {
+    "description": "Customers find their accounts logged out, altered, hacked, or deleted and struggle to recover them.",
+    "issue_id": "access.account_locked_or_hacked",
+    "member_count": 262,
+    "name": "Account locked, hacked, or deleted"
+  },
+  {
+    "description": "Customers cannot get past the login screen or are repeatedly logged out despite entering correct credentials.",
+    "issue_id": "access.login_failure",
+    "member_count": 1877,
+    "name": "Unable to log in"
+  },
+  {
+    "description": "The app reports no internet connection or fails to load features even when the customer's network is working.",
+    "issue_id": "access.other",
+    "member_count": 445,
+    "name": "False no-internet connection errors"
+  },
+  {
+    "description": "Customers are repeatedly forced to reset passwords or are unable to get old or new passwords to work.",
+    "issue_id": "access.password_reset",
+    "member_count": 46,
+    "name": "Password reset problems and repeated prompts"
+  },
+  {
+    "description": "Customers are unable to create a new account and receive generic errors or slow, difficult sign-up processes.",
+    "issue_id": "access.signup",
+    "member_count": 104,
+    "name": "Account signup failures"
+  },
+  {
+    "description": "Customers fail to sign in through Google or Facebook accounts or get conflicting account-exists messages.",
+    "issue_id": "access.third_party_login",
+    "member_count": 83,
+    "name": "Google and Facebook login issues"
+  },
+  {
+    "description": "Customers are charged unexpectedly, continue being billed after cancelling, or cannot get refunds.",
+    "issue_id": "billing.charges_refunds",
+    "member_count": 349,
+    "name": "Unexpected charges and refund problems"
+  },
+  {
+    "description": "Customers feel pressured by upsells, face download limits without upgrading, or have trouble with payment methods.",
+    "issue_id": "billing.other",
+    "member_count": 199,
+    "name": "Miscellaneous billing and upsell complaints"
+  },
+  {
+    "description": "Customers on family, duo, or student plans find features missing for some members or face rejected verification.",
+    "issue_id": "billing.plans_family_student",
+    "member_count": 262,
+    "name": "Family, duo, and student plan problems"
+  },
+  {
+    "description": "Customers feel basic features like skipping, searching, and repeating are locked behind Premium.",
+    "issue_id": "billing.premium_only_restrictions",
+    "member_count": 9469,
+    "name": "Free tier features too restricted"
+  },
+  {
+    "description": "Customers feel the Premium subscription costs too much for the value they receive.",
+    "issue_id": "billing.price",
+    "member_count": 1443,
+    "name": "Premium subscription price too high"
+  },
+  {
+    "description": "Customers cannot activate or renew Premium, facing payment declines, errors, or sudden loss of access.",
+    "issue_id": "billing.subscription_activation",
+    "member_count": 447,
+    "name": "Premium activation and payment failures"
+  },
+  {
+    "description": "Customers find lyrics not loading, missing, or incorrect for many songs.",
+    "issue_id": "catalog.lyrics",
+    "member_count": 1106,
+    "name": "Lyrics missing or inaccurate"
+  },
+  {
+    "description": "Customers find songs removed, greyed out, or unavailable from their playlists and libraries.",
+    "issue_id": "catalog.missing_content",
+    "member_count": 1647,
+    "name": "Songs missing or unplayable"
+  },
+  {
+    "description": "Customers see incorrect playlist contents, unwanted added songs, or missing features like Wrapped.",
+    "issue_id": "catalog.other",
+    "member_count": 264,
+    "name": "Playlist and catalog display issues"
+  },
+  {
+    "description": "Customers find podcasts poorly organized, showing wrong release dates, not playing in order, or failing to play video.",
+    "issue_id": "catalog.podcasts",
+    "member_count": 136,
+    "name": "Podcast playback and organization problems"
+  },
+  {
+    "description": "Customers are frustrated by recommended tracks inserted into their playlists and shuffle that repeats or ignores their choices.",
+    "issue_id": "catalog.recommendations_shuffle",
+    "member_count": 1384,
+    "name": "Unwanted recommendations and shuffle behavior"
+  },
+  {
+    "description": "Customers experience slow search, wrong songs playing, and albums mixed with other content.",
+    "issue_id": "catalog.search",
+    "member_count": 475,
+    "name": "Search and wrong-track playback"
+  },
+  {
+    "description": "Customers cannot download music, or downloads stall, need repeated retries, or crash the app.",
+    "issue_id": "downloads.download_failure",
+    "member_count": 450,
+    "name": "Downloads fail or get stuck"
+  },
+  {
+    "description": "Customers find their downloaded songs and liked songs removed or no longer visible without explanation.",
+    "issue_id": "downloads.downloads_disappearing",
+    "member_count": 407,
+    "name": "Downloaded songs disappearing"
+  },
+  {
+    "description": "Customers cannot play downloaded music offline, with the app hanging, crashing, or showing incorrect offline status.",
+    "issue_id": "downloads.offline_mode",
+    "member_count": 561,
+    "name": "Offline mode playback failures"
+  },
+  {
+    "description": "Customers have trouble with local files being greyed out or unplayable and with download navigation and notifications.",
+    "issue_id": "downloads.other",
+    "member_count": 107,
+    "name": "Local files and download notification issues"
+  },
+  {
+    "description": "Customers find the app does not recognize their SD card or keeps moving downloads back to internal storage.",
+    "issue_id": "downloads.storage",
+    "member_count": 124,
+    "name": "SD card download storage problems"
+  },
+  {
+    "description": "Customers express broad negative sentiment about the app, citing it as buggy or disappointing without a specific issue.",
+    "issue_id": "other.general_criticism",
+    "member_count": 20437,
+    "name": "General dissatisfaction with the app"
+  },
+  {
+    "description": "Customers mostly praise the app while mentioning minor glitches or small wishes.",
+    "issue_id": "other.general_praise",
+    "member_count": 112,
+    "name": "General praise with minor complaints"
+  },
+  {
+    "description": "Customers report the app stopped working after updates or that their Wrapped summary is missing.",
+    "issue_id": "other.other",
+    "member_count": 226,
+    "name": "Post-update breakage and missing Wrapped"
+  },
+  {
+    "description": "Customers criticize the platform over political figures, misinformation, or religious content unrelated to app functionality.",
+    "issue_id": "other.unrelated_or_political",
+    "member_count": 504,
+    "name": "Off-topic political or religious complaints"
+  },
+  {
+    "description": "Customers report subpar sound quality, sudden volume changes, and audio dropping or stopping mid-song.",
+    "issue_id": "playback.audio_quality",
+    "member_count": 413,
+    "name": "Poor audio quality and volume issues"
+  },
+  {
+    "description": "Customers find the app drains battery, overheats devices, and keeps running in the background after closing.",
+    "issue_id": "playback.battery_resources",
+    "member_count": 157,
+    "name": "Excessive battery and resource drain"
+  },
+  {
+    "description": "Customers experience slow app response, long load times, and playback that keeps buffering.",
+    "issue_id": "playback.buffering_lag",
+    "member_count": 475,
+    "name": "Buffering, lag, and slow performance"
+  },
+  {
+    "description": "Customers are shown as offline or unable to play despite having a working internet connection.",
+    "issue_id": "playback.connection_errors",
+    "member_count": 547,
+    "name": "Connection errors and false offline status"
+  },
+  {
+    "description": "Customers find the app crashing, freezing on a black screen, or losing key controls.",
+    "issue_id": "playback.crashes",
+    "member_count": 1629,
+    "name": "App crashes and freezes"
+  },
+  {
+    "description": "Customers have problems with playback controls and playback switching across Bluetooth, car systems, and speakers.",
+    "issue_id": "playback.device_integration",
+    "member_count": 925,
+    "name": "Device, Bluetooth, and casting issues"
+  },
+  {
+    "description": "Customers encounter playback failed errors, liked songs not opening, and other unexplained playback problems.",
+    "issue_id": "playback.other",
+    "member_count": 1185,
+    "name": "Miscellaneous playback failures"
+  },
+  {
+    "description": "Customers find songs skipping unexpectedly, the next track starting early, or playlists playing out of order.",
+    "issue_id": "playback.skipping_glitches",
+    "member_count": 1275,
+    "name": "Songs skipping or playing wrong tracks"
+  },
+  {
+    "description": "Customers find playback stops, stalls at zero, or plays a different song than selected.",
+    "issue_id": "playback.stops_or_pauses",
+    "member_count": 2200,
+    "name": "Playback stopping or wrong song playing"
+  },
+  {
+    "description": "Customers feel support is unreachable, with no human contact or replies to their questions.",
+    "issue_id": "support.no_response",
+    "member_count": 38,
+    "name": "No response from customer support"
+  },
+  {
+    "description": "Customers share varied support experiences, including review solicitation and Wrapped access issues.",
+    "issue_id": "support.other",
+    "member_count": 21,
+    "name": "Mixed feedback on customer support"
+  },
+  {
+    "description": "Customers say support contacts were unable to fix their problems despite repeated attempts.",
+    "issue_id": "support.unhelpful_response",
+    "member_count": 84,
+    "name": "Support fails to resolve issues"
+  },
+  {
+    "description": "Customers find ads too frequent, back-to-back, or intrusive, especially when trying to listen uninterrupted.",
+    "issue_id": "usability.ads_frequency",
+    "member_count": 8073,
+    "name": "Excessive and disruptive ads"
+  },
+  {
+    "description": "Customers find controls like seeking, shuffle, loop, and the heart button removed or unavailable.",
+    "issue_id": "usability.controls_widgets",
+    "member_count": 2438,
+    "name": "Missing playback controls and options"
+  },
+  {
+    "description": "Customers find the home screen, navigation gestures, and song scrolling clumsy or hard to use.",
+    "issue_id": "usability.navigation_layout",
+    "member_count": 720,
+    "name": "Confusing navigation and layout"
+  },
+  {
+    "description": "Customers are annoyed by forced shuffle defaults, autoplay, and inability to preview or rewind songs.",
+    "issue_id": "usability.other",
+    "member_count": 815,
+    "name": "Unwanted autoplay and default settings"
+  },
+  {
+    "description": "Customers cannot manage queues, play playlists in order, or control shuffle and song sequencing.",
+    "issue_id": "usability.playlist_queue_management",
+    "member_count": 1659,
+    "name": "Limited queue and playlist control"
+  },
+  {
+    "description": "Customers dislike recent interface changes that moved buttons, removed features, or made the app harder to use.",
+    "issue_id": "usability.ui_redesign",
+    "member_count": 1797,
+    "name": "Disliked UI redesign and removed features"
+  }
+]

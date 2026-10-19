@@ -138,7 +138,8 @@ CREATE TABLE IF NOT EXISTS records (
     label_config    TEXT,
     cache_source_id TEXT,
     phase           TEXT,                  -- initial | resume (enrichment run phase)
-    updated_at      TEXT
+    updated_at      TEXT,
+    recovery_tried  INTEGER
 );
 CREATE INDEX IF NOT EXISTS records_status ON records(status, scope_rank);
 CREATE INDEX IF NOT EXISTS records_text ON records(text_sha256);

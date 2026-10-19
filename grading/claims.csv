@@ -1,0 +1,10 @@
+claim_id,issue_id,metric,value
+C1,billing.premium_only_restrictions,complaint_count,9469
+C2,billing.premium_only_restrictions,severity_sum,26088
+C3,billing.premium_only_restrictions,mean_severity,2.755096
+C4,other.general_criticism,severity_sum,40494
+C5,access.login_failure,priority_score,7340
+C6,usability.ads_frequency,priority_score,17269
+C7,access.login_failure,mean_severity,3.910495
+C8,access.login_failure,complaint_count,1877
+C9,playback.stops_or_pauses,priority_score,7169

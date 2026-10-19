@@ -28,6 +28,8 @@ def main():
     p.add_argument("--cap", type=float, default=15.0, help="Hard spend cap in USD across all runs (ledger)")
     p.add_argument("--max-minutes", type=float)
     p.add_argument("--stop-after", type=int, help="Planned interruption after N batches (resume demo)")
+    p.add_argument("--recovery", action="store_true",
+                   help="Declared one-time recovery pass over quote_not_in_source quarantines (fuzzy source-span repair)")
 
     p = sub.add_parser("run", help="All stages (PAID): prepare if needed -> enrich -> verify -> group -> rank -> memo")
     p.add_argument("--paid", action="store_true")
@@ -67,9 +69,10 @@ def main():
             raise SystemExit("enrich calls a paid API. Re-run with --paid to confirm.")
         from datetime import datetime
         from . import enrich
-        run_id = "enrich-" + datetime.now().strftime("%Y%m%d-%H%M%S")
+        run_id = ("recovery-" if args.recovery else "enrich-") + datetime.now().strftime("%Y%m%d-%H%M%S")
         enrich.Enricher(run_id=run_id, upto_rank=args.upto, batch_size=args.batch_size, workers=args.workers,
-                        cap_usd=args.cap, max_minutes=args.max_minutes, stop_after_batches=args.stop_after).run()
+                        cap_usd=args.cap, max_minutes=args.max_minutes, stop_after_batches=args.stop_after,
+                        recovery=args.recovery).run()
     elif args.command == "run":
         if not args.paid:
             raise SystemExit("run calls a paid API. Re-run with --paid to confirm.")

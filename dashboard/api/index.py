@@ -9,9 +9,21 @@ sys.path.insert(0, os.path.dirname(__file__))
 from fastapi import FastAPI, HTTPException, Query  # noqa: E402
 from fastapi.responses import FileResponse  # noqa: E402
 
-from db import connect, q  # noqa: E402
+from _db import connect, q  # noqa: E402
 
-app = FastAPI(title="Spotify review pipeline API")
+api = FastAPI(title="Spotify review pipeline API")
+
+
+async def app(scope, receive, send):
+    """Vercel rewrites /api/<path> to this one function as /api/index?__path=<path>; restore the original path."""
+    if scope["type"] == "http" and scope.get("path") == "/api/index":
+        from urllib.parse import parse_qsl, urlencode
+        params = parse_qsl(scope.get("query_string", b"").decode())
+        orig = next((v for k, v in params if k == "__path"), None)
+        if orig is not None:
+            scope = {**scope, "path": "/api/" + orig, "raw_path": ("/api/" + orig).encode(),
+                     "query_string": urlencode([(k, v) for k, v in params if k != "__path"]).encode()}
+    await api(scope, receive, send)
 _conn = None
 PUBLIC = os.path.join(os.path.dirname(__file__), "..", "public")
 
@@ -27,24 +39,24 @@ def metrics():
     return {r["key"]: json.loads(r["value"]) for r in q(db(), "SELECT key, value FROM metrics")}
 
 
-@app.get("/api/health")
+@api.get("/api/health")
 def health():
     return {"ok": True, "reviews": q(db(), "SELECT COUNT(*) AS n FROM reviews")[0]["n"]}
 
 
-@app.get("/api/overview")
+@api.get("/api/overview")
 def overview():
     return {"metrics": metrics(),
             "topics": q(db(), "SELECT * FROM topic_aggregates ORDER BY complaint_count DESC"),
             "monthly": q(db(), "SELECT * FROM monthly ORDER BY month")}
 
 
-@app.get("/api/ranking")
+@api.get("/api/ranking")
 def ranking(limit: int = Query(25, ge=1, le=200)):
     return q(db(), "SELECT * FROM issues ORDER BY rank LIMIT %s", (limit,))
 
 
-@app.get("/api/issues/{issue_id}")
+@api.get("/api/issues/{issue_id}")
 def issue(issue_id: str, offset: int = Query(0, ge=0), limit: int = Query(20, ge=1, le=100)):
     rows = q(db(), "SELECT * FROM issues WHERE issue_id = %s", (issue_id,))
     if not rows:
@@ -58,7 +70,7 @@ def issue(issue_id: str, offset: int = Query(0, ge=0), limit: int = Query(20, ge
     return {"issue": rows[0], "severity_mix": sev, "members": members, "offset": offset}
 
 
-@app.get("/api/recommendation")
+@api.get("/api/recommendation")
 def recommendation():
     rows = q(db(), "SELECT * FROM recommendation WHERE id = 1")
     if not rows:
@@ -69,7 +81,7 @@ def recommendation():
     return r
 
 
-@app.get("/api/reviews/{review_id}")
+@api.get("/api/reviews/{review_id}")
 def review(review_id: str):
     rows = q(db(), "SELECT * FROM reviews WHERE review_id = %s", (review_id,))
     if not rows:
@@ -81,6 +93,6 @@ def review(review_id: str):
     return r
 
 
-@app.get("/")
+@api.get("/")
 def index():
     return FileResponse(os.path.join(PUBLIC, "index.html"))

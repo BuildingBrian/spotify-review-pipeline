@@ -16,7 +16,7 @@ def load(database_url=None):
     if database_url:
         os.environ["DATABASE_URL"] = database_url
     sys.path.insert(0, str(c.ROOT / "dashboard" / "api"))
-    import db as dash  # dashboard/api/db.py (same adapter the backend uses)
+    import _db as dash  # dashboard/api/_db.py (same adapter the backend uses)
     dash.URL = os.environ.get("DATABASE_URL", "")
     conn = dash.connect()
     pg = dash.is_pg(conn)

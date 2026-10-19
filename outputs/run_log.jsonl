@@ -1,0 +1,12 @@
+{"run_id": "run-20261019-124145", "stage": "enrich", "started_at": "2026-10-19T16:41:45.910171+00:00", "seconds": 59.157, "status": "finished", "stop_reason": null, "calls": 17, "failed_calls": 0, "spend_usd": 0.040734, "records_done": 767}
+{"run_id": "run-20261019-124145", "stage": "verify", "started_at": "2026-10-19T16:42:45.105538+00:00", "seconds": 277.761, "calls": 47}
+{"run_id": "run-20261019-124145", "stage": "group", "started_at": "2026-10-19T16:47:22.867213+00:00", "seconds": 17.769, "calls": 1}
+{"run_id": "run-20261019-124145", "stage": "rank", "started_at": "2026-10-19T16:47:40.636527+00:00", "seconds": 3.789, "calls": 0}
+{"run_id": "run-20261019-124145", "stage": "memo", "started_at": "2026-10-19T16:47:44.426491+00:00", "seconds": 16.396, "calls": 1}
+{"run_id": "run-20261019-124145", "stage": "summary", "status": "finished", "wall_clock_seconds": 375.399, "stage_seconds": {"enrich": 59.157, "verify": 277.761, "group": 17.769, "rank": 3.789, "memo": 16.396}, "record_counts": {"completed": 149924, "quarantined": 89}, "finished_at": "2026-10-19T16:48:00.835573+00:00"}
+{"run_id": "run-20261019-125016", "stage": "enrich", "started_at": "2026-10-19T16:50:17.007806+00:00", "seconds": 0.649, "status": "finished", "stop_reason": null, "calls": 0, "failed_calls": 0, "spend_usd": 0.0, "records_done": 0}
+{"run_id": "run-20261019-125016", "stage": "verify", "started_at": "2026-10-19T16:50:17.688073+00:00", "seconds": 272.888, "calls": 47}
+{"run_id": "run-20261019-125016", "stage": "group", "started_at": "2026-10-19T16:54:50.576542+00:00", "seconds": 15.919, "calls": 1}
+{"run_id": "run-20261019-125016", "stage": "rank", "started_at": "2026-10-19T16:55:06.495501+00:00", "seconds": 3.739, "calls": 0}
+{"run_id": "run-20261019-125016", "stage": "memo", "started_at": "2026-10-19T16:55:10.234337+00:00", "seconds": 17.326, "calls": 1}
+{"run_id": "run-20261019-125016", "stage": "summary", "status": "finished", "wall_clock_seconds": 310.998, "stage_seconds": {"enrich": 0.649, "verify": 272.888, "group": 15.919, "rank": 3.739, "memo": 17.326}, "record_counts": {"completed": 149972, "quarantined": 41}, "finished_at": "2026-10-19T16:55:27.573145+00:00"}

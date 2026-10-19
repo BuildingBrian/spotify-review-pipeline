@@ -12,6 +12,10 @@
   "ambiguous_cases_marked_by_human": 13,
   "cases": [
     {
+      "adjudication": {
+        "at": "2026-10-19T16:45:45.951Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "topic=banned songs",
       "human": {
         "entities": [],
@@ -57,6 +61,10 @@
       ]
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:49:02.364Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "topic=praise",
       "human": {
         "entities": [],
@@ -95,6 +103,10 @@
       "unsupported_entities": []
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:49:08.818Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -328,6 +340,10 @@
       "unsupported_entities": []
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:49:18.205Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -370,6 +386,10 @@
       ]
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:49:26.273Z",
+        "verdict": "both_ok"
+      },
       "also_acceptable": "ads",
       "human": {
         "entities": [],
@@ -411,6 +431,10 @@
       "unsupported_entities": []
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:49:36.257Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "complaint=usability issue",
       "human": {
         "entities": [
@@ -457,6 +481,10 @@
       ]
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:49:42.808Z",
+        "verdict": "both_ok"
+      },
       "also_acceptable": "Bug fix, positive customer experiences",
       "human": {
         "entities": [
@@ -501,6 +529,10 @@
       "unsupported_entities": []
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:49:47.041Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -658,6 +690,10 @@
       "unsupported_entities": []
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:49:52.041Z",
+        "verdict": "both_ok"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -738,6 +774,10 @@
       "unsupported_entities": []
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:50:10.309Z",
+        "verdict": "model_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -818,6 +858,10 @@
       "unsupported_entities": []
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:50:20.858Z",
+        "verdict": "model_error"
+      },
       "also_acceptable": "topic=religion",
       "human": {
         "entities": [
@@ -940,6 +984,10 @@
       "unsupported_entities": []
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:50:25.125Z",
+        "verdict": "both_ok"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -1136,6 +1184,10 @@
       "unsupported_entities": []
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:50:31.659Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -1180,6 +1232,10 @@
       ]
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:50:35.759Z",
+        "verdict": "both_ok"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -1221,6 +1277,10 @@
       "unsupported_entities": []
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:50:43.126Z",
+        "verdict": "model_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -1262,6 +1322,10 @@
       "unsupported_entities": []
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:50:46.675Z",
+        "verdict": "both_ok"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -1305,6 +1369,10 @@
       ]
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:50:51.659Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -1348,6 +1416,10 @@
       ]
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:50:57.176Z",
+        "verdict": "both_ok"
+      },
       "also_acceptable": "Unclear quote",
       "human": {
         "entities": [],
@@ -1465,6 +1537,10 @@
       "unsupported_entities": []
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:51:04.242Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [
@@ -1507,6 +1583,10 @@
       "unsupported_entities": []
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:51:10.226Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -1627,6 +1707,10 @@
       "unsupported_entities": []
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:51:15.109Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -1672,6 +1756,10 @@
       ]
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:51:17.142Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -1710,6 +1798,10 @@
       "unsupported_entities": []
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:51:19.676Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -1752,6 +1844,10 @@
       "unsupported_entities": []
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:51:22.975Z",
+        "verdict": "both_ok"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -1795,6 +1891,10 @@
       ]
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:51:33.509Z",
+        "verdict": "model_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -1838,6 +1938,10 @@
       ]
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:51:44.326Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -1880,6 +1984,10 @@
       ]
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:51:48.359Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -1924,6 +2032,10 @@
       ]
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:51:50.525Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -2093,6 +2205,10 @@
   },
   "disagreements": [
     {
+      "adjudication": {
+        "at": "2026-10-19T16:45:45.951Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "topic=banned songs",
       "human": {
         "entities": [],
@@ -2138,6 +2254,10 @@
       ]
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:49:02.364Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "topic=praise",
       "human": {
         "entities": [],
@@ -2176,6 +2296,10 @@
       "unsupported_entities": []
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:49:08.818Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -2214,6 +2338,10 @@
       "unsupported_entities": []
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:49:18.205Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -2256,6 +2384,10 @@
       ]
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:49:26.273Z",
+        "verdict": "both_ok"
+      },
       "also_acceptable": "ads",
       "human": {
         "entities": [],
@@ -2297,6 +2429,10 @@
       "unsupported_entities": []
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:49:36.257Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "complaint=usability issue",
       "human": {
         "entities": [
@@ -2343,6 +2479,10 @@
       ]
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:49:42.808Z",
+        "verdict": "both_ok"
+      },
       "also_acceptable": "Bug fix, positive customer experiences",
       "human": {
         "entities": [
@@ -2387,6 +2527,10 @@
       "unsupported_entities": []
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:49:47.041Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -2425,6 +2569,10 @@
       "unsupported_entities": []
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:49:52.041Z",
+        "verdict": "both_ok"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -2467,6 +2615,10 @@
       ]
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:50:10.309Z",
+        "verdict": "model_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -2509,6 +2661,10 @@
       ]
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:50:20.858Z",
+        "verdict": "model_error"
+      },
       "also_acceptable": "topic=religion",
       "human": {
         "entities": [
@@ -2552,6 +2708,10 @@
       "unsupported_entities": []
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:50:25.125Z",
+        "verdict": "both_ok"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -2592,6 +2752,10 @@
       "unsupported_entities": []
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:50:31.659Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -2636,6 +2800,10 @@
       ]
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:50:35.759Z",
+        "verdict": "both_ok"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -2677,6 +2845,10 @@
       "unsupported_entities": []
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:50:43.126Z",
+        "verdict": "model_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -2718,6 +2890,10 @@
       "unsupported_entities": []
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:50:46.675Z",
+        "verdict": "both_ok"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -2761,6 +2937,10 @@
       ]
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:50:51.659Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -2804,6 +2984,10 @@
       ]
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:50:57.176Z",
+        "verdict": "both_ok"
+      },
       "also_acceptable": "Unclear quote",
       "human": {
         "entities": [],
@@ -2845,6 +3029,10 @@
       "unsupported_entities": []
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:51:04.242Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [
@@ -2887,6 +3075,10 @@
       "unsupported_entities": []
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:51:10.226Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -2931,6 +3123,10 @@
       ]
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:51:15.109Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -2976,6 +3172,10 @@
       ]
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:51:17.142Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -3014,6 +3214,10 @@
       "unsupported_entities": []
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:51:19.676Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -3056,6 +3260,10 @@
       "unsupported_entities": []
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:51:22.975Z",
+        "verdict": "both_ok"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -3099,6 +3307,10 @@
       ]
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:51:33.509Z",
+        "verdict": "model_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -3142,6 +3354,10 @@
       ]
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:51:44.326Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -3184,6 +3400,10 @@
       ]
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:51:48.359Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -3228,6 +3448,10 @@
       ]
     },
     {
+      "adjudication": {
+        "at": "2026-10-19T16:51:50.525Z",
+        "verdict": "human_error"
+      },
       "also_acceptable": "",
       "human": {
         "entities": [],
@@ -3316,6 +3540,16 @@
       "both": 2,
       "human_count": 10,
       "predicted_count": 7
+    }
+  },
+  "post_hoc_adjudication": {
+    "all_three_fields_acceptable_after_adjudication": 0.92,
+    "blind_all_three_fields_agree": 0.44,
+    "disclosure": "Made by the same labeler AFTER seeing model predictions; reported separately from the blind result.",
+    "verdicts": {
+      "both_ok": 8,
+      "human_error": 16,
+      "model_error": 4
     }
   },
   "predictions_available": 50,

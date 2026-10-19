@@ -1,0 +1,95 @@
+{
+  "bad_review_ids": [],
+  "cited_review_ids": [
+    "221709a4-4026-4324-a13c-ad80e23d85d9",
+    "257eb4dc-0261-444b-8af0-6316558c08ca",
+    "3bee1604-8014-4a7d-86fd-54bf00a0e85f"
+  ],
+  "claim_results": [
+    {
+      "claim_id": "C1",
+      "expected": "9469",
+      "issue_id": "billing.premium_only_restrictions",
+      "metric": "complaint_count",
+      "ok": true,
+      "value": "9469"
+    },
+    {
+      "claim_id": "C2",
+      "expected": "26088",
+      "issue_id": "billing.premium_only_restrictions",
+      "metric": "severity_sum",
+      "ok": true,
+      "value": "26088"
+    },
+    {
+      "claim_id": "C3",
+      "expected": "2.755096",
+      "issue_id": "billing.premium_only_restrictions",
+      "metric": "mean_severity",
+      "ok": true,
+      "value": "2.755096"
+    },
+    {
+      "claim_id": "C4",
+      "expected": "40494",
+      "issue_id": "other.general_criticism",
+      "metric": "severity_sum",
+      "ok": true,
+      "value": "40494"
+    },
+    {
+      "claim_id": "C5",
+      "expected": "7340",
+      "issue_id": "access.login_failure",
+      "metric": "priority_score",
+      "ok": true,
+      "value": "7340"
+    },
+    {
+      "claim_id": "C6",
+      "expected": "17269",
+      "issue_id": "usability.ads_frequency",
+      "metric": "priority_score",
+      "ok": true,
+      "value": "17269"
+    },
+    {
+      "claim_id": "C7",
+      "expected": "3.910495",
+      "issue_id": "access.login_failure",
+      "metric": "mean_severity",
+      "ok": true,
+      "value": "3.910495"
+    },
+    {
+      "claim_id": "C8",
+      "expected": "1877",
+      "issue_id": "access.login_failure",
+      "metric": "complaint_count",
+      "ok": true,
+      "value": "1877"
+    },
+    {
+      "claim_id": "C9",
+      "expected": "7169",
+      "issue_id": "playback.stops_or_pauses",
+      "metric": "priority_score",
+      "ok": true,
+      "value": "7169"
+    }
+  ],
+  "claims": 9,
+  "claims_ok": 9,
+  "issue_ids_in_prose": [
+    "access.login_failure",
+    "billing.premium_only_restrictions",
+    "other.general_criticism",
+    "playback.stops_or_pauses",
+    "usability.ads_frequency"
+  ],
+  "note": "Automated checks cover numbers and IDs; a person must still judge whether the argument holds.",
+  "numbers_in_prose": 17,
+  "unknown_issue_ids": [],
+  "unsupported_numbers": []
+}

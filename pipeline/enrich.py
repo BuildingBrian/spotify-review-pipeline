@@ -74,7 +74,24 @@ def exact_span(quote, text):
     return (m.group(0), True) if m else (None, False)
 
 
-def validate(item, text):
+def fuzzy_span(quote, text, min_ratio=0.85):
+    """Recovery only: the model 'corrected' typos while quoting. Find the source span that best matches and
+    return that EXACT source text (never the model's wording). None if nothing is similar enough."""
+    import difflib
+    q = quote.strip()
+    if not q:
+        return None
+    sm = difflib.SequenceMatcher(None, q.lower(), text.lower(), autojunk=False)
+    blocks = [b for b in sm.get_matching_blocks() if b.size]
+    if not blocks:
+        return None
+    start, end = blocks[0].b, blocks[-1].b + blocks[-1].size
+    span = text[start:end].strip()
+    ratio = difflib.SequenceMatcher(None, q.lower(), span.lower(), autojunk=False).ratio()
+    return span if span and ratio >= min_ratio else None
+
+
+def validate(item, text, recovery=False):
     """Returns (labels, problem). Code is the judge of validity; the model only proposes."""
     if item.get("topic") not in c.TOPICS:
         return None, "bad_topic"
@@ -92,6 +109,8 @@ def validate(item, text):
     if not isinstance(ents, list) or not all(isinstance(e, str) for e in ents):
         return None, "bad_entities"
     quote, repaired = exact_span(item.get("evidence_quote") or "", text)
+    if quote is None and recovery:
+        quote, repaired = fuzzy_span(item.get("evidence_quote") or "", text), True
     if quote is None:
         return None, "quote_not_in_source"
     sub = item.get("subtopic")
@@ -104,11 +123,14 @@ def validate(item, text):
 
 class Enricher:
     def __init__(self, *, run_id, upto_rank, batch_size=50, workers=1, cap_usd=15.0, max_minutes=None,
-                 stop_after_batches=None, calls_log=None, progress_path=None):
+                 stop_after_batches=None, calls_log=None, progress_path=None, recovery=False):
         self.db = c.connect()
         self.run_id, self.upto_rank, self.batch_size, self.workers = run_id, upto_rank, min(batch_size, 50), workers
         self.max_minutes, self.stop_after = max_minutes, stop_after_batches
         self.system, self.config = system_prompt(), label_config()
+        self.recovery = recovery
+        if recovery:  # declared recovery pass: own label tag so these records stay distinguishable
+            self.config += "+recovery-fuzzyquote"
         self.calls_log = calls_log or (c.STATE / "calls.jsonl")
         self.progress_path = progress_path or (c.STATE / "progress.json")
         self.log_lock = threading.Lock()
@@ -181,8 +203,10 @@ class Enricher:
     # ---------- batches ----------
     def next_batch(self, in_flight_texts):
         rows, texts = [], set()
-        for r in self.db.execute("""SELECT review_id, review_text, text_sha256, attempts FROM records
-                                    WHERE status='pending' AND scope_rank < ? ORDER BY scope_rank""", (self.upto_rank,)):
+        where = ("status='quarantined' AND reason='quote_not_in_source' AND recovery_tried IS NULL" if self.recovery
+                 else "status='pending'")
+        for r in self.db.execute(f"""SELECT review_id, review_text, text_sha256, attempts FROM records
+                                    WHERE {where} AND scope_rank < ? ORDER BY scope_rank""", (self.upto_rank,)):
             if r["text_sha256"] in in_flight_texts or r["text_sha256"] in texts:
                 continue  # one representative per distinct text; duplicates reuse its result afterwards
             rows.append(dict(r))
@@ -222,7 +246,20 @@ class Enricher:
                 elif len(items) != 1:
                     labels, problem = None, "missing_key" if not items else "duplicate_key"
                 else:
-                    labels, problem = validate(items[0], r["review_text"])
+                    labels, problem = validate(items[0], r["review_text"], recovery=self.recovery)
+                if self.recovery:
+                    self.db.execute("UPDATE records SET recovery_tried=1 WHERE review_id=?", (r["review_id"],))
+                    if labels:
+                        self.db.execute("""UPDATE records SET status='completed', labels_json=?, label_config=?, attempts=?,
+                                           phase=?, reason=NULL, updated_at=? WHERE review_id=?""",
+                                        (json.dumps(labels, ensure_ascii=False), self.config, attempts, self.phase, now,
+                                         r["review_id"]))
+                        completed += 1
+                    else:
+                        self.db.execute("UPDATE records SET attempts=?, reason=?, updated_at=? WHERE review_id=?",
+                                        (attempts, problem + " (after recovery pass)", now, r["review_id"]))
+                        quarantined += 1
+                    continue
                 if labels:
                     self.db.execute("""UPDATE records SET status='completed', labels_json=?, label_config=?, attempts=?,
                                        phase=?, reason=NULL, updated_at=? WHERE review_id=? AND status='pending'""",
