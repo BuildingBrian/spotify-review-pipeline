@@ -1,0 +1,698 @@
+{
+ "generated_from": "github.com/BuildingBrian/spotify-review-pipeline @ 4ec916f",
+ "complaints_total": 67377,
+ "severity_max": 5,
+ "themes": [
+  {
+   "id": "other.general_criticism",
+   "name": "General dissatisfaction with the app",
+   "desc": "Customers express broad negative sentiment about the app, citing it as buggy or disappointing without a specific issue.",
+   "n": 20437,
+   "share": 30.3,
+   "mean": 1.98,
+   "kind": "catchall",
+   "quotes": [
+    {
+     "text": "You only brought the new features to ios first? That's just stupid.",
+     "month": "Sep 2023",
+     "helpful": 846,
+     "ref": "8ead8dfb"
+    },
+    {
+     "text": "I hate this app",
+     "month": "Jul 2023",
+     "helpful": 345,
+     "ref": "30ac8728"
+    },
+    {
+     "text": "This is the worst, buggiest app I think I've ever used by such a large margin.",
+     "month": "Apr 2023",
+     "helpful": 246,
+     "ref": "b24290fc"
+    }
+   ]
+  },
+  {
+   "id": "billing.premium_only_restrictions",
+   "name": "Free tier features too restricted",
+   "desc": "Customers feel basic features like skipping, searching, and repeating are locked behind Premium.",
+   "n": 9469,
+   "share": 14.1,
+   "mean": 2.76,
+   "kind": "pick",
+   "quotes": [
+    {
+     "text": "using the app without the membership is not fun. It will play songs that you don't have on your playlists, as well as constant ads",
+     "month": "Sep 2023",
+     "helpful": 2922,
+     "ref": "3bee1604"
+    },
+    {
+     "text": "will look for alternative apps or platforms instead of Spotify",
+     "month": "Nov 2023",
+     "helpful": 1694,
+     "ref": "221709a4"
+    },
+    {
+     "text": "on phone it's so limited without premium. Only 6 skips per hour, you can't adjust the place on the song",
+     "month": "Mar 2023",
+     "helpful": 1603,
+     "ref": "257eb4dc"
+    }
+   ]
+  },
+  {
+   "id": "usability.ads_frequency",
+   "name": "Excessive and disruptive ads",
+   "desc": "Customers find ads too frequent, back-to-back, or intrusive, especially when trying to listen uninterrupted.",
+   "n": 8073,
+   "share": 12.0,
+   "mean": 2.14,
+   "kind": "other",
+   "quotes": [
+    {
+     "text": "I'm so close to deleting Spotify and downloading another app for music.",
+     "month": "Oct 2023",
+     "helpful": 2768,
+     "ref": "4ba8c8db"
+    },
+    {
+     "text": "They are literally unbearable now.",
+     "month": "Oct 2023",
+     "helpful": 2718,
+     "ref": "d5847305"
+    },
+    {
+     "text": "There's a song or two thrown in between ads which disturbs my ad listening experience",
+     "month": "Sep 2022",
+     "helpful": 1074,
+     "ref": "74a66637"
+    }
+   ]
+  },
+  {
+   "id": "usability.controls_widgets",
+   "name": "Missing playback controls and options",
+   "desc": "Customers find controls like seeking, shuffle, loop, and the heart button removed or unavailable.",
+   "n": 2438,
+   "share": 3.6,
+   "mean": 2.76,
+   "kind": "other",
+   "quotes": [
+    {
+     "text": "the option to access Spotify Canvas doesn't appear under the settings for me",
+     "month": "Aug 2022",
+     "helpful": 3152,
+     "ref": "2dd0985f"
+    },
+    {
+     "text": "Many options are unavailable now you like before you were able to rewind the track or you can seek forward or backward now it's not available.",
+     "month": "Dec 2022",
+     "helpful": 592,
+     "ref": "d76348d7"
+    },
+    {
+     "text": "We cannot go to any desired time in a song. We cannot disable shuffle mode. We cannot apply loop mode.",
+     "month": "Sep 2023",
+     "helpful": 444,
+     "ref": "f0e3ac13"
+    }
+   ]
+  },
+  {
+   "id": "playback.stops_or_pauses",
+   "name": "Playback stopping or wrong song playing",
+   "desc": "Customers find playback stops, stalls at zero, or plays a different song than selected.",
+   "n": 2200,
+   "share": 3.3,
+   "mean": 3.26,
+   "kind": "other",
+   "quotes": [
+    {
+     "text": "When we select a song to play, it ends up playing a different song.",
+     "month": "Sep 2023",
+     "helpful": 3230,
+     "ref": "205e4cbe"
+    },
+    {
+     "text": "Since the last update, I've had issue with the song playing and then the app going dead.",
+     "month": "Jun 2023",
+     "helpful": 2028,
+     "ref": "24b23f3e"
+    },
+    {
+     "text": "the app will stop working if my screen goes dark, and I will get 6+ ads at a time",
+     "month": "Sep 2022",
+     "helpful": 1849,
+     "ref": "f9cd83c9"
+    }
+   ]
+  },
+  {
+   "id": "access.login_failure",
+   "name": "Unable to log in",
+   "desc": "Customers cannot get past the login screen or are repeatedly logged out despite entering correct credentials.",
+   "n": 1877,
+   "share": 2.8,
+   "mean": 3.91,
+   "kind": "other",
+   "quotes": [
+    {
+     "text": "now it won't even let me log in. My email's right, my password's right, it just keeps saying that there's a problem.",
+     "month": "Jan 2023",
+     "helpful": 384,
+     "ref": "6d3a0837"
+    },
+    {
+     "text": "My account automatically gets logged out and when I try to log in again it shows an error.",
+     "month": "May 2023",
+     "helpful": 358,
+     "ref": "4bbf7b92"
+    },
+    {
+     "text": "I'm not able to even log-in, neither through email not with mobile number",
+     "month": "Oct 2022",
+     "helpful": 340,
+     "ref": "b779884d"
+    }
+   ]
+  },
+  {
+   "id": "usability.ui_redesign",
+   "name": "Disliked UI redesign and removed features",
+   "desc": "Customers dislike recent interface changes that moved buttons, removed features, or made the app harder to use.",
+   "n": 1797,
+   "share": 2.7,
+   "mean": 2.46,
+   "kind": "other",
+   "quotes": [
+    {
+     "text": "They put the play button back in the middle.",
+     "month": "Dec 2022",
+     "helpful": 1155,
+     "ref": "43834cfb"
+    },
+    {
+     "text": "all things got messed up. Some buttons at the top, some at the corner, can't go to album when you click on the track name",
+     "month": "Feb 2023",
+     "helpful": 828,
+     "ref": "a3b5a78c"
+    },
+    {
+     "text": "I can no longer skip the songs or listen to the previous songs.",
+     "month": "Nov 2022",
+     "helpful": 746,
+     "ref": "fa577bc7"
+    }
+   ]
+  },
+  {
+   "id": "usability.playlist_queue_management",
+   "name": "Limited queue and playlist control",
+   "desc": "Customers cannot manage queues, play playlists in order, or control shuffle and song sequencing.",
+   "n": 1659,
+   "share": 2.5,
+   "mean": 2.71,
+   "kind": "other",
+   "quotes": [
+    {
+     "text": "one can't make a queue, turn off shuffle, play the previous song etc.",
+     "month": "Jun 2023",
+     "helpful": 2307,
+     "ref": "f9f3efc5"
+    },
+    {
+     "text": "I can't even listen to my playlist and some random songs just pop up! I can't even listen to songs without them being in shuffle mode!",
+     "month": "Sep 2023",
+     "helpful": 2292,
+     "ref": "4f8d3287"
+    },
+    {
+     "text": "can't even play it in order and have to listen all kind of unknown song for no reason",
+     "month": "Oct 2023",
+     "helpful": 1371,
+     "ref": "1fa54b85"
+    }
+   ]
+  }
+ ],
+ "trend": {
+  "labels": [
+   "May 2022",
+   "Jun 2022",
+   "Jul 2022",
+   "Aug 2022",
+   "Sep 2022",
+   "Oct 2022",
+   "Nov 2022",
+   "Dec 2022",
+   "Jan 2023",
+   "Feb 2023",
+   "Mar 2023",
+   "Apr 2023",
+   "May 2023",
+   "Jun 2023",
+   "Jul 2023",
+   "Aug 2023",
+   "Sep 2023",
+   "Oct 2023",
+   "Nov 2023"
+  ],
+  "pct": [
+   1.9,
+   1.7,
+   2.2,
+   2.0,
+   1.9,
+   1.8,
+   2.3,
+   1.9,
+   1.9,
+   2.2,
+   2.0,
+   2.0,
+   3.1,
+   5.1,
+   1.5,
+   3.2,
+   12.1,
+   22.8,
+   16.2
+  ],
+  "n": [
+   67,
+   120,
+   166,
+   144,
+   117,
+   111,
+   141,
+   137,
+   120,
+   104,
+   126,
+   115,
+   199,
+   319,
+   295,
+   227,
+   1157,
+   4558,
+   1246
+  ],
+  "classified": [
+   3572,
+   6882,
+   7453,
+   7038,
+   6087,
+   6258,
+   6110,
+   7186,
+   6452,
+   4654,
+   6224,
+   5745,
+   6364,
+   6221,
+   19412,
+   7038,
+   9586,
+   20016,
+   7674
+  ],
+  "peak_label": "Oct 2023"
+ },
+ "sources": {
+  "reviews_ingested": {
+   "value": 660622,
+   "file": "outputs/ingestion_report.json",
+   "how": "profile.counts.records"
+  },
+  "busiest_month_reviews": {
+   "value": 89104,
+   "file": "outputs/ingestion_report.json",
+   "how": "profile.reviews_by_month[2023-10] (the largest month)"
+  },
+  "five_star_share_pct": {
+   "value": 45.3,
+   "file": "outputs/ingestion_report.json",
+   "how": "profile.reviews_by_rating[5] / records"
+  },
+  "one_star_share_pct": {
+   "value": 36.7,
+   "file": "outputs/ingestion_report.json",
+   "how": "profile.reviews_by_rating[1] / records"
+  },
+  "review_window": {
+   "value": "May 2022 to November 2023",
+   "file": "outputs/ingestion_report.json",
+   "how": "profile.first_review, profile.last_review"
+  },
+  "reviews_in_scope": {
+   "value": 150013,
+   "file": "outputs/scope.json",
+   "how": "analysis_count"
+  },
+  "sample_size": {
+   "value": 150000,
+   "file": "outputs/scope.json",
+   "how": "nonempty_in_scope"
+  },
+  "reviews_classified": {
+   "value": 149972,
+   "file": "grading/records.jsonl.gz",
+   "how": "count of records with status = completed (also outputs/summary.json completed)"
+  },
+  "reviews_set_aside": {
+   "value": 41,
+   "file": "grading/records.jsonl.gz",
+   "how": "count of records with status = quarantined"
+  },
+  "set_aside_empty": {
+   "value": 13,
+   "file": "grading/records.jsonl.gz",
+   "how": "reason = empty_review_text"
+  },
+  "set_aside_quote_mismatch": {
+   "value": 28,
+   "file": "grading/records.jsonl.gz",
+   "how": "reason starts with quote_not_in_source"
+  },
+  "identical_text_reuse": {
+   "value": 34459,
+   "file": "grading/records.jsonl.gz",
+   "how": "records with cache_source_id"
+  },
+  "complaints_or_leaving": {
+   "value": 67377,
+   "file": "outputs/summary.json",
+   "how": "complaints_and_cancellations"
+  },
+  "complaints_share_of_classified_pct": {
+   "value": 44.9,
+   "file": "outputs/summary.json",
+   "how": "complaints_and_cancellations / completed"
+  },
+  "issues": {
+   "value": 45,
+   "file": "outputs/summary.json",
+   "how": "issues (rows in outputs/ranking.csv)"
+  },
+  "pick_n": {
+   "value": 9469,
+   "file": "outputs/ranking.csv",
+   "how": "billing.premium_only_restrictions: complaint_count"
+  },
+  "pick_mean": {
+   "value": 2.76,
+   "file": "outputs/ranking.csv",
+   "how": "billing.premium_only_restrictions: mean_severity, rounded to 2 decimals"
+  },
+  "pick_score": {
+   "value": 26088,
+   "file": "outputs/ranking.csv",
+   "how": "billing.premium_only_restrictions: priority_score"
+  },
+  "pick_share": {
+   "value": 14.1,
+   "file": "outputs/ranking.csv + outputs/summary.json",
+   "how": "billing.premium_only_restrictions: complaint_count / complaints_and_cancellations"
+  },
+  "ads_n": {
+   "value": 8073,
+   "file": "outputs/ranking.csv",
+   "how": "usability.ads_frequency: complaint_count"
+  },
+  "ads_mean": {
+   "value": 2.14,
+   "file": "outputs/ranking.csv",
+   "how": "usability.ads_frequency: mean_severity, rounded to 2 decimals"
+  },
+  "ads_score": {
+   "value": 17269,
+   "file": "outputs/ranking.csv",
+   "how": "usability.ads_frequency: priority_score"
+  },
+  "ads_share": {
+   "value": 12.0,
+   "file": "outputs/ranking.csv + outputs/summary.json",
+   "how": "usability.ads_frequency: complaint_count / complaints_and_cancellations"
+  },
+  "login_n": {
+   "value": 1877,
+   "file": "outputs/ranking.csv",
+   "how": "access.login_failure: complaint_count"
+  },
+  "login_mean": {
+   "value": 3.91,
+   "file": "outputs/ranking.csv",
+   "how": "access.login_failure: mean_severity, rounded to 2 decimals"
+  },
+  "login_score": {
+   "value": 7340,
+   "file": "outputs/ranking.csv",
+   "how": "access.login_failure: priority_score"
+  },
+  "login_share": {
+   "value": 2.8,
+   "file": "outputs/ranking.csv + outputs/summary.json",
+   "how": "access.login_failure: complaint_count / complaints_and_cancellations"
+  },
+  "playback_n": {
+   "value": 2200,
+   "file": "outputs/ranking.csv",
+   "how": "playback.stops_or_pauses: complaint_count"
+  },
+  "playback_mean": {
+   "value": 3.26,
+   "file": "outputs/ranking.csv",
+   "how": "playback.stops_or_pauses: mean_severity, rounded to 2 decimals"
+  },
+  "playback_score": {
+   "value": 7169,
+   "file": "outputs/ranking.csv",
+   "how": "playback.stops_or_pauses: priority_score"
+  },
+  "playback_share": {
+   "value": 3.3,
+   "file": "outputs/ranking.csv + outputs/summary.json",
+   "how": "playback.stops_or_pauses: complaint_count / complaints_and_cancellations"
+  },
+  "catchall_n": {
+   "value": 20437,
+   "file": "outputs/ranking.csv",
+   "how": "other.general_criticism: complaint_count"
+  },
+  "catchall_mean": {
+   "value": 1.98,
+   "file": "outputs/ranking.csv",
+   "how": "other.general_criticism: mean_severity, rounded to 2 decimals"
+  },
+  "catchall_score": {
+   "value": 40494,
+   "file": "outputs/ranking.csv",
+   "how": "other.general_criticism: priority_score"
+  },
+  "catchall_share": {
+   "value": 30.3,
+   "file": "outputs/ranking.csv + outputs/summary.json",
+   "how": "other.general_criticism: complaint_count / complaints_and_cancellations"
+  },
+  "pick_cancel": {
+   "value": 1988,
+   "file": "grading/records.jsonl.gz",
+   "how": "billing.premium_only_restrictions: records with intent = cancellation"
+  },
+  "login_severe": {
+   "value": 1725,
+   "file": "grading/records.jsonl.gz",
+   "how": "access.login_failure: complaints with severity >= 4"
+  },
+  "login_severe_pct": {
+   "value": 91.9,
+   "file": "grading/records.jsonl.gz",
+   "how": "access.login_failure: severity >= 4 / complaint_count"
+  },
+  "top_two_issues": {
+   "value": 17542,
+   "file": "outputs/ranking.csv",
+   "how": "billing.premium_only_restrictions + usability.ads_frequency complaint_count"
+  },
+  "top_two_share_pct": {
+   "value": 26.0,
+   "file": "outputs/ranking.csv",
+   "how": "top two complaint_count / complaints_and_cancellations"
+  },
+  "billing_leaving_reviews": {
+   "value": 2419,
+   "file": "outputs/aggregates.csv",
+   "how": "billing: cancellation_count"
+  },
+  "usability_leaving_reviews": {
+   "value": 1249,
+   "file": "outputs/aggregates.csv",
+   "how": "usability: cancellation_count"
+  },
+  "playback_leaving_reviews": {
+   "value": 517,
+   "file": "outputs/aggregates.csv",
+   "how": "playback: cancellation_count"
+  },
+  "themes_chart": {
+   "value": "top 8 issues by complaint_count",
+   "file": "outputs/ranking.csv",
+   "how": "names from outputs/issue_names.json; share = complaint_count / 67,377"
+  },
+  "quotes": {
+   "value": "3 per theme",
+   "file": "grading/records.jsonl.gz + outputs/analysis_scope.csv.gz",
+   "how": "evidence_quote (exact substring of the review), most review_likes first, then severity, then review ID; quotes over 150 characters skipped; `ref` = first 8 chars of review_id"
+  },
+  "trend_first12_avg": {
+   "value": 2.0,
+   "file": "grading/records.jsonl.gz + outputs/monthly.json",
+   "how": "billing.premium_only_restrictions complaints per month / classified reviews that month: average monthly share in the first 12 months, rounded to a whole percent"
+  },
+  "trend_first12_low": {
+   "value": 1.7,
+   "file": "grading/records.jsonl.gz + outputs/monthly.json",
+   "how": "billing.premium_only_restrictions complaints per month / classified reviews that month: lowest monthly share in the first 12 months"
+  },
+  "trend_first12_high": {
+   "value": 2.3,
+   "file": "grading/records.jsonl.gz + outputs/monthly.json",
+   "how": "billing.premium_only_restrictions complaints per month / classified reviews that month: highest monthly share in the first 12 months"
+  },
+  "trend_peak": {
+   "value": 22.8,
+   "file": "grading/records.jsonl.gz + outputs/monthly.json",
+   "how": "billing.premium_only_restrictions complaints per month / classified reviews that month: highest monthly share"
+  },
+  "trend_last": {
+   "value": 16.2,
+   "file": "grading/records.jsonl.gz + outputs/monthly.json",
+   "how": "billing.premium_only_restrictions complaints per month / classified reviews that month: share in the last (partial) month"
+  },
+  "second_pass_sample": {
+   "value": 2310,
+   "file": "outputs/verification_report.json",
+   "how": "sample_size"
+  },
+  "directly_labeled": {
+   "value": 115513,
+   "file": "grading/records.jsonl.gz",
+   "how": "completed records with no cache_source_id"
+  },
+  "second_pass_topic_pct": {
+   "value": 87.0,
+   "file": "outputs/verification_report.json",
+   "how": "agreement.topic"
+  },
+  "second_pass_intent_pct": {
+   "value": 93.3,
+   "file": "outputs/verification_report.json",
+   "how": "agreement.intent"
+  },
+  "second_pass_severity_pct": {
+   "value": 86.2,
+   "file": "outputs/verification_report.json",
+   "how": "agreement.severity"
+  },
+  "second_pass_range": {
+   "value": "86-93%",
+   "file": "outputs/verification_report.json",
+   "how": "lowest field rounded down, highest rounded to nearest (severity, topic, intent)"
+  },
+  "hand_labels": {
+   "value": 50,
+   "file": "evals/golden_eval.json",
+   "how": "labeled_cases"
+  },
+  "hand_topic_pct": {
+   "value": 54,
+   "file": "evals/golden_eval.json",
+   "how": "agreement_strict_primary_label.topic"
+  },
+  "hand_intent_pct": {
+   "value": 90,
+   "file": "evals/golden_eval.json",
+   "how": "agreement_strict_primary_label.intent"
+  },
+  "hand_severity_pct": {
+   "value": 72,
+   "file": "evals/golden_eval.json",
+   "how": "agreement_strict_primary_label.severity_exact"
+  },
+  "hand_disagreements": {
+   "value": 28,
+   "file": "evals/golden_eval.json",
+   "how": "post_hoc_adjudication.verdicts (sum)"
+  },
+  "hand_my_errors": {
+   "value": 16,
+   "file": "evals/golden_eval.json",
+   "how": "post_hoc_adjudication.verdicts.human_error"
+  },
+  "hand_ambiguous": {
+   "value": 8,
+   "file": "evals/golden_eval.json",
+   "how": "post_hoc_adjudication.verdicts.both_ok"
+  },
+  "hand_model_errors": {
+   "value": 4,
+   "file": "evals/golden_eval.json",
+   "how": "post_hoc_adjudication.verdicts.model_error"
+  },
+  "memo_figures_checked": {
+   "value": 9,
+   "file": "outputs/memo_check.json",
+   "how": "claims"
+  },
+  "memo_figures_matching": {
+   "value": 9,
+   "file": "outputs/memo_check.json",
+   "how": "claims_ok"
+  },
+  "test_reviews_passed": {
+   "value": 8,
+   "file": "evals/system_tests/injection_results.json",
+   "how": "passed"
+  },
+  "test_reviews_total": {
+   "value": 8,
+   "file": "evals/system_tests/injection_results.json",
+   "how": "total"
+  },
+  "interrupted_at": {
+   "value": 23096,
+   "file": "grading/checkpoint_before.json",
+   "how": "completed_ids (count)"
+  },
+  "pipeline_stages": {
+   "value": 6,
+   "file": "pipeline/orchestrate.py",
+   "how": "stage flow: prepare -> enrich -> verify -> group -> rank -> memo"
+  },
+  "model_roles": {
+   "value": 4,
+   "file": "prompts/",
+   "how": "one prompt file per model role: enrich_v1.md, group_v1.md, memo_v1.md, verify_v1.md"
+  },
+  "max_reviews_per_request": {
+   "value": 50,
+   "file": "pipeline/enrich.py",
+   "how": "min(batch_size, 50)"
+  },
+  "severity_scale_max": {
+   "value": 5,
+   "file": "labels/definitions.md",
+   "how": "Severity (integer 1-5)"
+  },
+  "models": {
+   "value": "Claude Haiku 5.5 (label, verify, name issues); Claude Sonnet 5.5 (memo)",
+   "file": "grading/calls.jsonl",
+   "how": "model per role"
+  }
+ }
+}

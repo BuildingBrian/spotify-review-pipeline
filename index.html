@@ -2,873 +2,973 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Case study: a code-orchestrated, multi-role LLM pipeline that turned 660,622 Spotify app reviews into one traceable product recommendation. Evaluation, cost and a full evidence trail.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Spotify Review Pipeline · Brian Arevalo Ramos">
-<meta property="og:description" content="Case study: a code-orchestrated, multi-role LLM pipeline that turned 660,622 Spotify app reviews into one traceable product recommendation. Evaluation, cost and a full evidence trail.">
-<meta property="og:url" content="https://buildingbrian.github.io/spotify-review-pipeline/">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Customer Feedback Analysis Tool: a Spotify case study by Brian Arevalo</title>
+<meta name="description" content="An AI pipeline read 660,622 public Spotify app reviews, classified 149,972 of them, and recommended where a product team should start. Independent case study by Brian Arevalo.">
+<meta name="author" content="Brian Arevalo">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#eef1ff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0a0d1c">
 <link rel="canonical" href="https://buildingbrian.github.io/spotify-review-pipeline/">
-<title>Spotify Review Pipeline</title>
-<meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Brian Arevalo">
+<meta property="og:title" content="Customer Feedback Analysis Tool: a Spotify case study">
+<meta property="og:description" content="An AI pipeline read 660,622 public Spotify app reviews, classified 149,972 of them, and recommended where a product team should start.">
+<meta property="og:url" content="https://buildingbrian.github.io/spotify-review-pipeline/">
+<meta property="og:image" content="https://buildingbrian.github.io/spotify-review-pipeline/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Customer Feedback Analysis Tool. 660,622 reviews ingested, 149,972 classified, one product recommendation.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23e4551f'/%3E%3Crect x='7' y='8' width='18' height='4' rx='2' fill='%23fff'/%3E%3Crect x='7' y='14' width='12' height='4' rx='2' fill='%23fff'/%3E%3Crect x='7' y='20' width='7' height='4' rx='2' fill='%23fff'/%3E%3C/svg%3E">
 <style>
-/* Layout: an evidence ledger. A narrow mono rail names each section; the wide column beside it
-   states a claim and then shows the chart or record that backs it. Numbers carry claim tags. */
+/* ---------- tokens ---------- */
 :root{
-  --bg:#F3F5F8; --surface:#FFFFFF; --ink:#0E1822; --ink-2:#44515F; --ink-3:#627080;
-  --line:#D9E0E7; --line-strong:#B9C3CE; --accent:#1C5CAB;
-  --series-1:#2A78D6; --series-2:#EB6834; --series-3:#1BAF7A;
-  --mark-muted:#A9B4C0; --mark-soft:#D5DCE4; --track:#CDE2FB; --good:#0A7D0A; --flash:#FFF1C2;
-  --font-display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
-  --font-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --font-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  color-scheme: light;
+  --bg:#f7f8fd; --surface:#ffffff; --ink:#101633; --ink-2:#3b4366; --muted:#586082;
+  --line:#e3e6f3; --line-2:#c9cee4; --chip:#eef0fa;
+  --accent:#e4551f; --accent-ink:#ab3b0c; --accent-wash:#fdeee6;
+  --blue:#3457e8; --blue-ink:#2a44c0; --blue-wash:#e8ecff; --violet:#7c5cf0;
+  --bar:#6b7fdc; --bar-soft:#c2c8e6;
+  --btn:#101633; --btn-ink:#ffffff; --on-accent:#101633;
+  --g1:#d5ddff; --g2:#ecdafb; --g3:#ffdfcb;
+  --grad-a:#3457e8; --grad-b:#8a4fe8; --grad-c:#d8480f;
+  --shadow:0 1px 2px rgba(16,22,51,.05), 0 14px 34px -16px rgba(40,60,160,.22);
+  --shadow-lg:0 2px 4px rgba(16,22,51,.05), 0 34px 64px -28px rgba(40,60,160,.38);
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --wrap:1080px; --gutter:20px; --radius:20px; --head:66px;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#0C1117; --surface:#141B23; --ink:#E8EDF2; --ink-2:#B3BEC9; --ink-3:#8A96A3;
-  --line:#242E39; --line-strong:#364250; --accent:#6DA7EC;
-  --series-1:#3987E5; --series-2:#D95926; --series-3:#199E70;
-  --mark-muted:#4D5A6A; --mark-soft:#2A3441; --track:#16304F; --good:#0CA30C; --flash:#3A3214; color-scheme:dark}}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --bg:#0a0d1c; --surface:#14182e; --ink:#eef0fb; --ink-2:#c5cae3; --muted:#9aa1c2;
+    --line:#242a48; --line-2:#363d63; --chip:#1b2040;
+    --accent:#e8683a; --accent-ink:#ffab82; --accent-wash:#33201a;
+    --blue:#6c8aff; --blue-ink:#aebcff; --blue-wash:#1a2350; --violet:#a184ff;
+    --bar:#7387ea; --bar-soft:#414873;
+    --btn:#eef0fb; --btn-ink:#0c1024; --on-accent:#0c1024;
+    --g1:#161e4e; --g2:#251a44; --g3:#3a1f17;
+    --grad-a:#8aa2ff; --grad-b:#b796ff; --grad-c:#ff9462;
+    --shadow:0 1px 2px rgba(0,0,0,.35), 0 14px 34px -16px rgba(0,0,0,.7);
+    --shadow-lg:0 2px 4px rgba(0,0,0,.4), 0 34px 64px -28px rgba(0,0,0,.85);
+  }
+}
 :root[data-theme="dark"]{
-  --bg:#0C1117; --surface:#141B23; --ink:#E8EDF2; --ink-2:#B3BEC9; --ink-3:#8A96A3;
-  --line:#242E39; --line-strong:#364250; --accent:#6DA7EC;
-  --series-1:#3987E5; --series-2:#D95926; --series-3:#199E70;
-  --mark-muted:#4D5A6A; --mark-soft:#2A3441; --track:#16304F; --good:#0CA30C; --flash:#3A3214; color-scheme:dark}
-
-*{box-sizing:border-box}
-[hidden]{display:none!important}
-body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--font-body);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:18px 48px}
-a{color:var(--accent);text-underline-offset:3px;text-decoration-thickness:1px}
-a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
-h1,h2,h3,p,figure,ul,ol{margin:0}
-h1,h2{font-family:var(--font-display);text-wrap:balance;letter-spacing:-.02em}
-h1{font-size:clamp(2.2rem,5.6vw,3.6rem);line-height:1.02;font-weight:700}
-h2{font-size:clamp(1.55rem,3.2vw,2.15rem);line-height:1.1;font-weight:650}
-h3{font:600 1rem/1.3 var(--font-body)}
-p{max-width:68ch}
-.mono{font-family:var(--font-mono);font-size:.82em}
-.muted{color:var(--ink-3)}
-.small{font-size:13px;line-height:1.5}
-
-/* top bar */
-.top{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;align-items:baseline;padding-bottom:14px;border-bottom:1px solid var(--line-strong)}
-.who{display:flex;flex-wrap:wrap;gap:2px 14px;align-items:baseline}
-.who b{font:650 1.05rem/1.2 var(--font-display);letter-spacing:-.01em}
-.who span{font-size:13px;color:var(--ink-2)}
-.toplinks{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px;font-weight:500}
-
-/* hero */
-.hero{display:grid;grid-template-columns:minmax(0,1fr);gap:36px 56px;padding-block:44px 8px;align-items:end}
-@media(min-width:920px){.hero{grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr)}}
-.kicker{font:500 12.5px/1.4 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-bottom:16px}
-.lede{font-size:1.14rem;line-height:1.5;color:var(--ink-2);margin-top:20px;max-width:54ch}
-.byline{font-size:14px;color:var(--ink-2);margin-top:16px;max-width:58ch}
-.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
-.btn{display:inline-flex;align-items:center;gap:6px;font:500 14.5px/1 var(--font-body);padding:11px 15px;border-radius:6px;border:1px solid var(--ink);color:var(--ink);text-decoration:none}
-.btn.solid{background:var(--ink);color:var(--bg)}
-.btn:hover{border-color:var(--accent)}
-.btn.solid:hover{background:var(--accent);border-color:var(--accent);color:#fff}
-
-/* ledger funnel */
-.ledger-cap{font:500 12.5px/1.4 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
-.lrow{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:16px;align-items:baseline;padding:11px 0 12px;border-top:1px solid var(--line)}
-.lrow .lab{font-weight:500;line-height:1.3}
-.lrow .num{font:600 clamp(1.45rem,3vw,1.95rem)/1 var(--font-body);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
-.lrow .sub{grid-column:1/-1;font-size:13px;color:var(--ink-3);margin-top:1px}
-.lrow .bar{grid-column:1/-1;height:8px;margin-top:9px;border-radius:0 4px 4px 0;background:var(--series-1);min-width:3px}
-.lrow.unit{border-top:1px solid var(--line-strong)}
-.lrow.out{background:var(--ink);color:var(--bg);border:0;border-radius:6px;padding:13px 16px 14px;margin-top:4px}
-.lrow.out .sub{color:var(--bg);opacity:.78}
-
-/* proof strip */
-.kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:1px;background:var(--line);border-block:1px solid var(--line-strong);margin-top:40px}
-@media(max-width:940px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:520px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.kpi{background:var(--bg);padding:16px 14px 16px 0}
-.kpi b{display:block;font:600 1.7rem/1.15 var(--font-body);letter-spacing:-.015em}
-.kpi span{display:block;font-size:13px;line-height:1.4;color:var(--ink-2);margin-top:4px}
-@media(min-width:941px){.kpi:not(:first-child){padding-left:14px}}
-@media(max-width:940px){.kpi{padding-left:0}.kpi:not(:nth-child(3n+1)){padding-left:14px}}
-@media(max-width:520px){.kpi:not(:nth-child(3n+1)){padding-left:0}.kpi:nth-child(2n){padding-left:14px}}
-
-.jump{display:flex;flex-wrap:wrap;gap:4px 20px;padding-block:18px 4px;font:500 12.5px/1.6 var(--font-mono);letter-spacing:.06em;text-transform:uppercase}
-.jump a{color:var(--ink-2);text-decoration:none}
-.jump a:hover{color:var(--accent);text-decoration:underline}
-
-/* sections */
-.sec{display:grid;grid-template-columns:minmax(0,1fr);gap:10px 32px;padding-block:48px 8px;margin-top:28px;border-top:1px solid var(--line-strong);scroll-margin-top:12px}
-@media(min-width:980px){.sec{grid-template-columns:128px minmax(0,1fr)}}
-.rail{font:500 12.5px/1.4 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);padding-top:9px}
-.body{display:flex;flex-direction:column;gap:28px;min-width:0}
-.intro{display:flex;flex-direction:column;gap:14px}
-.intro p{font-size:1.06rem;color:var(--ink-2)}
-figure{min-width:0}
-.fig-h{display:flex;flex-direction:column;gap:3px;margin-bottom:14px}
-.fig-h p,figcaption{font-size:13px;line-height:1.5;color:var(--ink-3);max-width:76ch}
-figcaption{margin-top:12px}
-.panel{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:20px;min-width:0}
-@media(max-width:520px){.panel{padding:16px 14px}}
-a.claim{font:500 11px/1 var(--font-mono);color:var(--accent);text-decoration:none;border:1px solid currentColor;border-radius:3px;padding:1px 4px;vertical-align:2px;white-space:nowrap}
-a.claim:hover{background:var(--accent);color:var(--bg)}
-
-/* segmented bar and legend */
-.segbar{display:flex;gap:2px;height:28px}
-.sg{display:flex;align-items:center;min-width:2px;border-radius:4px;padding-left:8px;font:600 13px/1 var(--font-body);color:#fff;overflow:visible;white-space:nowrap}
-.sg.tiny{padding-left:0}
-.s1{background:var(--series-1)}.s2{background:var(--series-2)}.s3{background:var(--series-3)}
-.sm{background:var(--mark-soft);color:var(--ink)}
-.legend{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:6px 20px;margin-top:10px;font-size:13px;color:var(--ink-2)}
-.legend li{display:flex;align-items:center;gap:7px}
-.legend b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
-.sw{width:10px;height:10px;border-radius:2px;flex:none}
-.lk{width:14px;height:0;border-top:2px solid var(--mark-muted);flex:none}
-.lk.main{border-color:var(--series-1)}
-
-/* topic table */
-.tt{display:grid;grid-template-columns:minmax(120px,190px) minmax(0,1fr) 64px 78px 150px;gap:0 16px;align-items:center}
-.tt>.th{font-size:12px;color:var(--ink-3);padding-bottom:8px;line-height:1.3;align-self:end}
-.tt>.r{text-align:right}
-.trow{display:contents}
-.trow>*{padding-block:9px;border-top:1px solid var(--line)}
-.tname b{display:block;font-weight:600;font-size:14.5px}
-.tname span{display:block;font-size:12px;color:var(--ink-3);line-height:1.35}
-.tbarc{display:flex;align-items:center;align-self:stretch}
-.tbar{display:flex;gap:2px;height:14px;min-width:3px}
-.tbar i{display:block;min-width:1px}
-.tbar i:last-child{border-radius:0 4px 4px 0}
-.tnum{text-align:right;font-variant-numeric:tabular-nums;font-size:14px}
-.tnum.strong{font-weight:600}
-.sevc{display:flex;align-items:center;gap:10px;align-self:stretch}
-.sevt{position:relative;flex:1;height:2px;background:var(--line-strong);border-radius:1px}
-.sevt i{position:absolute;top:50%;width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;background:var(--series-1);box-shadow:0 0 0 2px var(--surface)}
-.sevc b{font-weight:600;font-size:14px;font-variant-numeric:tabular-nums;width:32px;text-align:right}
-.sevscale{display:flex;justify-content:space-between;margin-right:42px}
-@media(max-width:760px){
-  .tt{grid-template-columns:minmax(0,1fr) 62px 62px 44px}
-  .tt>.th.sev .sevscale{display:none}
-  .trow>.tname{grid-column:1/-1;border-top:1px solid var(--line);padding-bottom:2px}
-  .trow>.tbarc,.trow>.tnum,.trow>.sevc{border-top:0;padding-top:2px}
-  .sevc .sevt{display:none}
-  .tt>.th.name{display:none}
-  .tt>.th.sev{text-align:right}
+  color-scheme: dark;
+  --bg:#0a0d1c; --surface:#14182e; --ink:#eef0fb; --ink-2:#c5cae3; --muted:#9aa1c2;
+  --line:#242a48; --line-2:#363d63; --chip:#1b2040;
+  --accent:#e8683a; --accent-ink:#ffab82; --accent-wash:#33201a;
+  --blue:#6c8aff; --blue-ink:#aebcff; --blue-wash:#1a2350; --violet:#a184ff;
+  --bar:#7387ea; --bar-soft:#414873;
+  --btn:#eef0fb; --btn-ink:#0c1024; --on-accent:#0c1024;
+  --g1:#161e4e; --g2:#251a44; --g3:#3a1f17;
+  --grad-a:#8aa2ff; --grad-b:#b796ff; --grad-c:#ff9462;
+  --shadow:0 1px 2px rgba(0,0,0,.35), 0 14px 34px -16px rgba(0,0,0,.7);
+  --shadow-lg:0 2px 4px rgba(0,0,0,.4), 0 34px 64px -28px rgba(0,0,0,.85);
+}
+/* The recommendations band is dark in both themes, so it carries its own set of the same tokens. */
+.band{
+  color-scheme: dark;
+  --bg:#0b0f2e; --surface:#151a42; --ink:#f4f5fe; --ink-2:#cdd1ee; --muted:#a6acd2;
+  --line:#2a3066; --line-2:#3e4585; --chip:#20265a;
+  --accent:#e8683a; --accent-ink:#ffb391; --accent-wash:#3a2320;
+  --blue:#7b95ff; --blue-ink:#b6c3ff; --blue-wash:#1e2862; --violet:#a98bff;
+  --bar:#7387ea; --bar-soft:#474e86;
+  --btn:#f4f5fe; --btn-ink:#0b0f2e; --on-accent:#0b0f2e;
+  --g1:#0b0f2e; --g2:#0b0f2e; --g3:#0b0f2e;
+  --grad-a:#8aa2ff; --grad-b:#b796ff; --grad-c:#ff9462;
+  --shadow:0 1px 2px rgba(0,0,0,.35), 0 18px 40px -18px rgba(0,0,0,.75);
+  --shadow-lg:0 2px 4px rgba(0,0,0,.4), 0 34px 64px -28px rgba(0,0,0,.85);
 }
 
-/* explorer */
-.filters{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;margin-bottom:18px}
-.fgroup{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.fgroup>span{font-size:12px;color:var(--ink-3);margin-right:4px}
-.chip{font:500 13px/1 var(--font-body);padding:7px 11px;border:1px solid var(--line-strong);border-radius:999px;background:transparent;color:var(--ink-2);cursor:pointer}
-.chip:hover{border-color:var(--ink-2);color:var(--ink)}
-.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
-.explore{display:grid;grid-template-columns:minmax(0,1fr);gap:28px 32px}
-@media(min-width:900px){.explore{grid-template-columns:minmax(0,1.12fr) minmax(0,1fr)}}
-.col-h{display:flex;justify-content:space-between;gap:12px;align-items:baseline;margin-bottom:6px}
-.col-h span{font-size:12px;color:var(--ink-3)}
-.irow{display:grid;grid-template-columns:22px minmax(0,1fr) minmax(48px,21%) 58px;gap:2px 10px;align-items:center;padding:7px 4px;border-top:1px solid var(--line);border-radius:4px}
-.irow:hover,.irow.hot{background:color-mix(in srgb,var(--series-1) 9%,transparent)}
-.irow .rk{font:500 12px/1 var(--font-mono);color:var(--ink-3);text-align:right}
-.irow .nm{min-width:0}
-.irow .nm b{font-weight:500;font-size:14px;line-height:1.3;display:block}
-.irow .nm .meta{font-size:12px;color:var(--ink-3);line-height:1.35;display:block}
-.irow .nm .meta span{white-space:nowrap}
-.irow .ib{height:12px;display:flex;align-items:center}
-.irow .ib i{display:block;height:12px;min-width:2px;border-radius:0 4px 4px 0;background:var(--mark-muted)}
-.irow.pick .ib i{background:var(--series-1)}
-.irow .vl{text-align:right;font-weight:600;font-size:14px;font-variant-numeric:tabular-nums}
-.tag{display:inline-block;font:500 10.5px/1 var(--font-mono);letter-spacing:.04em;text-transform:uppercase;padding:2px 5px;border-radius:3px;margin-left:6px;vertical-align:1px;border:1px solid var(--line-strong);color:var(--ink-2)}
-.tag.pick{background:var(--series-1);border-color:var(--series-1);color:#fff}
-@media(max-width:520px){.irow{grid-template-columns:20px minmax(0,1fr) 56px}.irow .nm{grid-column:2/4}.irow .ib{grid-column:2/3}.irow .rk{align-self:start;padding-top:4px}}
-.more{margin-top:10px;font:500 13px/1 var(--font-body);padding:8px 12px;border:1px solid var(--line-strong);border-radius:6px;background:transparent;color:var(--ink);cursor:pointer}
-.more:hover{border-color:var(--ink-2)}
-.chart{position:relative;min-width:0}
-.chart svg{display:block;max-width:100%;height:auto;overflow:visible;touch-action:pan-y}
-svg text{font-family:var(--font-body);font-size:11.5px;fill:var(--ink-3)}
-svg .grid{stroke:var(--line);stroke-width:1}
-svg .axis{stroke:var(--line-strong);stroke-width:1}
-svg .pt{fill:var(--mark-muted);stroke:var(--surface);stroke-width:2}
-svg .pt.pick{fill:var(--series-1)}
-svg .pt.on{fill:var(--ink-2)}
-svg .pt.on.pick{fill:var(--series-1)}
-svg .pt.dim{opacity:.22}
-svg .ring{fill:none;stroke:var(--ink);stroke-width:1.5}
-svg .lbl{fill:var(--ink);font-weight:500;font-size:12px}
-svg .ln{fill:none;stroke:var(--mark-muted);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
-svg .ln.main{stroke:var(--series-1)}
-svg .area{fill:var(--series-1);opacity:.1}
-svg .dot{fill:var(--mark-muted);stroke:var(--surface);stroke-width:2}
-svg .dot.main{fill:var(--series-1)}
-svg .cross{stroke:var(--ink-3);stroke-width:1}
-details.tbl{margin-top:10px;font-size:13px}
-details.tbl summary{cursor:pointer;color:var(--accent);font-weight:500;width:max-content}
-.scroll{overflow-x:auto;margin-top:10px}
-table{border-collapse:collapse;width:100%;font-size:13.5px}
-th,td{text-align:left;padding:8px 10px 8px 0;border-top:1px solid var(--line);vertical-align:top}
-thead th{border-top:0;font-size:12px;font-weight:500;color:var(--ink-3);white-space:nowrap}
-td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;padding-right:0;padding-left:10px;white-space:nowrap}
-tr.flash td{animation:flash 1.8s ease-out}
-@keyframes flash{0%,35%{background:var(--flash)}100%{background:transparent}}
-@media(prefers-reduced-motion:reduce){tr.flash td{animation:none;background:var(--flash)}html{scroll-behavior:auto}}
+/* ---------- base ---------- */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:calc(var(--head) + 18px)}
+@media (prefers-reduced-motion: no-preference){html{scroll-behavior:smooth}}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.6 var(--font);
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-wrap:break-word}
+h1,h2,h3,p,ol,ul,figure,blockquote,table{margin:0}
+ol,ul{padding:0;list-style:none}
+a{color:inherit;text-decoration-color:var(--line-2);text-decoration-thickness:1px;text-underline-offset:.2em}
+a:hover{text-decoration-color:currentColor}
+img{max-width:100%;height:auto;display:block}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent-ink);outline-offset:3px;border-radius:6px}
+.wrap{width:100%;max-width:calc(var(--wrap) + 2 * var(--gutter));margin-inline:auto;padding-inline:var(--gutter)}
+.skip{position:absolute;left:12px;top:-60px;z-index:20;background:var(--btn);color:var(--btn-ink);
+  padding:10px 16px;border-radius:12px;text-decoration:none;font-weight:600}
+.skip:focus{top:12px}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
-/* pipeline */
-.stages{list-style:none;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-@media(max-width:860px){.stages{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:560px){.stages{grid-template-columns:minmax(0,1fr)}}
-.stage{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px 16px 14px;display:flex;flex-direction:column;gap:8px}
-.stage-h{display:flex;align-items:center;gap:10px}
-.stage-h i{font:500 12px/1 var(--font-mono);font-style:normal;color:var(--ink-3);border:1px solid var(--line-strong);border-radius:50%;width:24px;height:24px;display:grid;place-items:center;flex:none}
-.stage-h b{font:650 1.1rem/1.2 var(--font-display);letter-spacing:-.01em}
-.own{align-self:flex-start;font:500 11px/1 var(--font-mono);letter-spacing:.04em;text-transform:uppercase;padding:4px 7px;border-radius:3px;border:1px solid var(--line-strong);color:var(--ink-2)}
-.own.model{background:var(--track);border-color:var(--track);color:var(--ink)}
-.stage p{font-size:14px;line-height:1.5;color:var(--ink-2)}
-.hand{margin-top:auto;padding-top:8px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-3)}
-.hand .mono{color:var(--ink-2)}
-.serve{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;font-size:14px;color:var(--ink-2)}
-.serve .node{border:1px solid var(--line-strong);border-radius:6px;padding:7px 11px;background:var(--surface);color:var(--ink);font-weight:500}
-.serve .arr{font-family:var(--font-mono);font-size:12px;color:var(--ink-3)}
-.rules{list-style:none;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 32px}
-@media(max-width:700px){.rules{grid-template-columns:minmax(0,1fr)}}
-.rules li{padding:11px 0;border-top:1px solid var(--line);font-size:14.5px;color:var(--ink-2);line-height:1.5}
-.rules b{color:var(--ink);font-weight:600}
+/* ---------- header: a floating bar ---------- */
+.top{position:sticky;top:0;z-index:10;padding:10px var(--gutter) 0;pointer-events:none}
+.top .wrap{pointer-events:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:56px;
+  max-width:var(--wrap);padding-inline:14px 6px;border:1px solid var(--line);border-radius:18px;
+  background:var(--surface);background:color-mix(in srgb,var(--surface) 76%,transparent);
+  -webkit-backdrop-filter:saturate(1.6) blur(16px);backdrop-filter:saturate(1.6) blur(16px);box-shadow:var(--shadow)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:650;letter-spacing:-.01em;text-decoration:none;min-height:44px}
+.brand svg{flex:none;border-radius:8px}
+.nav{display:flex;align-items:center;gap:2px;font-size:.9375rem}
+.nav a{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:12px;
+  color:var(--ink-2);text-decoration:none}
+.nav a:hover{color:var(--ink);background:var(--chip)}
+.nav .only-wide{display:none}
+.nav .gh{margin-left:6px;padding:0 16px;background:var(--btn);color:var(--btn-ink);font-weight:600}
+.nav .gh:hover{background:var(--btn);color:var(--btn-ink);opacity:.88}
 
-/* evaluation */
-.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
-@media(max-width:940px){.cards{grid-template-columns:minmax(0,1fr)}}
-.card{display:flex;flex-direction:column;gap:14px}
-.card p{font-size:14px;color:var(--ink-2);line-height:1.5}
-.meters{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:11px 12px;align-items:center;font-size:14px}
-.meters .trk{height:8px;border-radius:4px;background:var(--track);overflow:hidden}
-.meters .trk i{display:block;height:100%;border-radius:4px;background:var(--series-1)}
-.meters b{font-weight:600;font-variant-numeric:tabular-nums;text-align:right}
-.checks{list-style:none;padding:0;display:flex;flex-direction:column}
-.checks li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px;padding:9px 0;border-top:1px solid var(--line);font-size:14px;line-height:1.45;color:var(--ink-2)}
-.checks li:first-child{border-top:0;padding-top:0}
-.checks svg{width:16px;height:16px;margin-top:2px;stroke:var(--good);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-.checks b{color:var(--ink);font-weight:600}
+/* ---------- type ---------- */
+.eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:16px;color:var(--accent-ink);
+  font-size:.8125rem;font-weight:650;letter-spacing:.08em;text-transform:uppercase}
+.eyebrow .num{display:inline-grid;place-items:center;min-width:36px;height:24px;padding:0 9px;border-radius:999px;
+  background:var(--blue-wash);color:var(--blue-ink);font-family:var(--mono);font-weight:600;letter-spacing:0}
+h1{font-size:clamp(2.125rem,1.3rem + 3.6vw,3.625rem);line-height:1.05;letter-spacing:-.035em;font-weight:700;
+  text-wrap:balance;max-width:19ch}
+h2{font-size:clamp(1.6875rem,1.25rem + 2.1vw,2.75rem);line-height:1.1;letter-spacing:-.028em;font-weight:700;
+  text-wrap:balance;max-width:22ch}
+h3{font-size:1.1875rem;line-height:1.3;letter-spacing:-.012em;font-weight:650}
+.lead{margin-top:18px;max-width:62ch;color:var(--ink-2);font-size:clamp(1.0625rem,1rem + .35vw,1.25rem);line-height:1.55}
+.lead strong,.prose strong{color:var(--ink);font-weight:650}
+.prose{max-width:62ch;color:var(--ink-2)}
+.prose p + p{margin-top:14px}
+.small{font-size:.875rem;line-height:1.5;color:var(--muted)}
+.hl{color:var(--accent-ink)}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  .hl{background:linear-gradient(90deg,var(--grad-a),var(--grad-b) 48%,var(--grad-c));
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
+    -webkit-box-decoration-break:clone;box-decoration-break:clone}
+}
+@media (forced-colors: active){.hl{background:none;-webkit-text-fill-color:currentColor;color:inherit}}
 
-/* cost */
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border-block:1px solid var(--line-strong)}
-@media(max-width:760px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.stats .kpi:not(:first-child){padding-left:14px}
-@media(max-width:760px){.stats .kpi:nth-child(odd){padding-left:0}}
-.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px 40px;align-items:start}
-@media(max-width:820px){.split{grid-template-columns:minmax(0,1fr)}}
-.split p{font-size:14.5px;color:var(--ink-2)}
-.split p+p{margin-top:12px}
+/* shared pieces */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.topline{position:relative;overflow:hidden}
+.topline::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;
+  background:linear-gradient(90deg,var(--blue),var(--violet) 50%,var(--accent))}
+.ico{display:grid;place-items:center;width:36px;height:36px;border-radius:11px;color:#fff;
+  background:linear-gradient(135deg,#f47a3d,#d9480f)}
+.ico svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ico-b{background:linear-gradient(135deg,#5b7bff,#2f4fd8)}
+.ico-c{background:linear-gradient(135deg,#9a7bff,#6240dd)}
+.ico-d{background:linear-gradient(135deg,#38a5ec,#1670c2)}
 
-/* trace */
-.trace{list-style:none;padding:0;display:flex;flex-direction:column}
-.trace li{display:grid;grid-template-columns:118px minmax(0,1fr);gap:4px 20px;padding:14px 0;border-top:1px solid var(--line)}
-.trace li>span{font:500 12px/1.5 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
-.trace li>div{font-size:14.5px;color:var(--ink-2);min-width:0;overflow-wrap:anywhere}
-.trace b{color:var(--ink);font-weight:600}
-.trace q{color:var(--ink);font-size:1.05rem;quotes:"\201C" "\201D"}
-@media(max-width:600px){.trace li{grid-template-columns:minmax(0,1fr)}}
-.fail{border:1px solid var(--line-strong);border-radius:8px;padding:18px 20px}
-.fail h3{margin-bottom:8px}
-.fail p{font-size:14.5px;color:var(--ink-2)}
-.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px 40px}
-@media(max-width:820px){.two{grid-template-columns:minmax(0,1fr)}}
-.two h3{margin-bottom:6px}
-.plain{list-style:none;padding:0}
-.plain li{padding:10px 0;border-top:1px solid var(--line);font-size:14.5px;line-height:1.5;color:var(--ink-2)}
-footer{margin-top:44px;padding-top:20px;border-top:1px solid var(--line-strong);display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--ink-3)}
-footer p{max-width:86ch}
+/* ---------- hero ---------- */
+.hero{position:relative;isolation:isolate;overflow-x:clip;margin-top:calc(-1 * var(--head));
+  padding-block:calc(var(--head) + clamp(32px,5vw,60px)) clamp(44px,6vw,84px)}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(78% 44% at 6% 0%,var(--g1),transparent 72%),
+    radial-gradient(64% 38% at 98% 4%,var(--g2),transparent 72%),
+    radial-gradient(80% 44% at 84% 64%,var(--g3),transparent 74%),
+    radial-gradient(64% 40% at 2% 76%,var(--g1),transparent 74%);
+  -webkit-mask-image:linear-gradient(#000 calc(100% - 200px),transparent);mask-image:linear-gradient(#000 calc(100% - 200px),transparent)}
+.hero-copy{display:grid;justify-items:start}
+.badge{display:inline-flex;align-items:center;gap:9px;min-height:36px;margin-bottom:20px;padding:5px 14px 5px 6px;
+  border:1px solid var(--line);border-radius:999px;box-shadow:var(--shadow);
+  background:var(--surface);background:color-mix(in srgb,var(--surface) 82%,transparent);
+  color:var(--ink-2);font-size:.8125rem;font-weight:600;line-height:1.2}
+.badge .ico{width:24px;height:24px;border-radius:8px;flex:none}
+.badge .ico svg{width:14px;height:14px}
+.hero .sub{margin-top:20px;max-width:46ch;color:var(--ink-2);font-size:clamp(1.125rem,1rem + .6vw,1.375rem);line-height:1.45;text-wrap:pretty}
+.cta{display:flex;flex-direction:column;gap:12px;width:100%;margin-top:28px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 24px;
+  border-radius:14px;font-weight:600;font-size:1rem;text-decoration:none;border:1px solid transparent;
+  transition:transform .15s ease,background-color .15s ease,border-color .15s ease,box-shadow .15s ease}
+.btn-primary{background:var(--btn);color:var(--btn-ink);box-shadow:0 10px 22px -12px var(--btn)}
+.btn-ghost{border-color:var(--line-2);color:var(--ink);background:var(--surface);box-shadow:var(--shadow)}
+.btn-ghost:hover{background:var(--chip)}
+@media (prefers-reduced-motion: no-preference){.btn:hover{transform:translateY(-1px)}}
+.btn .arr{font-size:1.05em;line-height:1}
 
-#tip{position:fixed;z-index:20;pointer-events:none;background:var(--surface);color:var(--ink);border:1px solid var(--line-strong);border-radius:6px;box-shadow:0 6px 20px rgba(0,0,0,.14);padding:9px 11px;font-size:12.5px;line-height:1.45;max-width:270px}
-#tip .tt-h{font-weight:600;margin-bottom:4px}
-#tip .tt-r{display:grid;grid-template-columns:14px auto minmax(0,1fr);gap:7px;align-items:center}
-#tip .tt-r b{font-weight:600;font-variant-numeric:tabular-nums}
-#tip .tt-r span{color:var(--ink-2)}
-#tip .tt-f{color:var(--ink-3);margin-top:4px}
-#tip .k{height:0;border-top:2px solid var(--mark-muted)}
-#tip .k.main{border-color:var(--series-1)}
+/* headline stats and the answer card */
+.stage{display:grid;gap:14px;margin-top:clamp(32px,5vw,52px)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0}
+.stat{padding:14px 14px 16px;border-radius:18px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow)}
+.stat dd{margin:0}
+.stat .ico{margin-bottom:12px}
+.stat b{display:block;font-size:clamp(1.625rem,1.1rem + 2.2vw,2.125rem);line-height:1.05;letter-spacing:-.035em;font-weight:700;white-space:nowrap}
+.stat .lbl{display:block;margin-top:6px;color:var(--muted);font-size:.8438rem;line-height:1.35;text-wrap:balance}
+.answer{padding:26px 20px 14px;border-radius:22px;box-shadow:var(--shadow-lg)}
+.answer-kicker{display:inline-flex;align-items:center;gap:8px;color:var(--accent-ink);font-size:.75rem;font-weight:650;letter-spacing:.08em;text-transform:uppercase}
+.answer-kicker::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.answer-title{max-width:24ch;margin-top:8px;font-size:1.3125rem;line-height:1.22;letter-spacing:-.02em;font-weight:700;text-wrap:balance}
+.answer-list{display:grid;gap:14px;margin-top:18px}
+.answer-list li{display:grid;grid-template-columns:auto 1fr auto;gap:5px 10px;align-items:baseline}
+.a-rank{font:500 .8125rem/1 var(--mono);color:var(--muted)}
+.a-name{font-size:.9688rem;font-weight:600}
+.a-val{font-variant-numeric:tabular-nums;font-size:.9688rem;font-weight:650}
+.a-bar{grid-column:2 / -1;display:block;height:8px}
+.a-bar i{display:block;height:100%;min-width:3px;border-radius:0 4px 4px 0;background:var(--bar)}
+.answer-list li:first-child .a-bar i{background:var(--accent)}
+.a-note{grid-column:2 / -1;color:var(--muted);font-size:.8125rem;line-height:1.35}
+.answer-link{display:inline-flex;align-items:center;gap:6px;min-height:48px;margin-top:8px;font-size:.9375rem;font-weight:600}
+
+/* ---------- sections ---------- */
+.sec{padding-block:clamp(56px,8vw,112px);border-top:1px solid var(--line)}
+.hero + .sec,.band,.band + .sec{border-top:0}
+.sec-head{margin-bottom:clamp(28px,4vw,48px)}
+
+/* problem: two facts beside the text */
+.split{display:grid;gap:28px}
+.facts{display:grid;gap:12px}
+.fact{padding:18px 20px}
+.fact-a{background:linear-gradient(135deg,var(--blue-wash),var(--surface) 64%)}
+.fact-b{background:linear-gradient(135deg,var(--accent-wash),var(--surface) 64%)}
+.fact b{display:block;font-size:1.75rem;line-height:1.1;letter-spacing:-.03em;font-weight:700}
+.fact span{display:block;margin-top:6px;color:var(--muted);font-size:.9375rem;line-height:1.4}
+.starbar{display:flex;gap:2px;height:10px;margin-top:16px}
+.starbar i{display:block;border-radius:3px;background:var(--bar-soft)}
+.starbar .s-five{flex:0 0 auto;background:var(--blue)}
+.starbar .s-mid{flex:1 1 0}
+.starbar .s-one{flex:0 0 auto;background:var(--accent)}
+.starkey{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:8px;color:var(--muted);font-size:.8125rem}
+.starkey span{display:inline-flex;align-items:center;gap:6px;margin:0;font-size:inherit}
+.starkey i{width:10px;height:10px;border-radius:3px;background:var(--bar-soft)}
+.starkey .k-five{background:var(--blue)}
+.starkey .k-one{background:var(--accent)}
+
+/* how it works: the pipeline diagram */
+.flow-card{padding:clamp(20px,3.4vw,36px);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);
+  background:var(--surface);
+  background:linear-gradient(135deg,color-mix(in srgb,var(--g1) 60%,var(--surface)),var(--surface) 46%,color-mix(in srgb,var(--g3) 60%,var(--surface)))}
+.flow{display:grid;gap:0;counter-reset:step}
+.step{position:relative;display:grid;grid-template-columns:40px 1fr;gap:0 14px;padding-bottom:22px}
+.step::before{counter-increment:step;content:counter(step);grid-row:1 / span 2;width:40px;height:40px;border-radius:50%;
+  display:grid;place-items:center;border:2px solid var(--blue);background:var(--blue-wash);
+  font:600 .9375rem/1 var(--mono);color:var(--blue-ink);z-index:1}
+.step-ai::before{border-color:var(--accent);background:var(--accent-wash);color:var(--accent-ink)}
+.step-both::before{border-color:transparent;color:var(--ink);
+  background:linear-gradient(var(--surface),var(--surface)) padding-box,linear-gradient(135deg,var(--blue),var(--accent)) border-box}
+.step::after{content:"";position:absolute;left:19px;top:40px;bottom:0;width:2px;background:var(--line-2)}
+.step:last-child{padding-bottom:0}
+.step:last-child::after{display:none}
+.step-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px;min-height:40px}
+.step p{grid-column:2;color:var(--ink-2);font-size:1rem;line-height:1.5;max-width:52ch}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:.75rem;font-weight:650;
+  letter-spacing:.02em;white-space:nowrap;background:var(--blue-wash);color:var(--blue-ink)}
+.tag::before{content:"";width:7px;height:7px;border-radius:2px;background:var(--blue)}
+.tag-ai{background:var(--accent-wash);color:var(--accent-ink)}
+.tag-ai::before{border-radius:50%;background:var(--accent)}
+.flow-key{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:26px;color:var(--muted);font-size:.875rem}
+
+details.more{margin-top:28px;border-top:1px solid var(--line)}
+details.more > summary,details.table-view > summary{display:flex;align-items:center;gap:10px;min-height:48px;cursor:pointer;
+  font-weight:600;font-size:.9375rem;color:var(--ink-2);list-style:none}
+details > summary::-webkit-details-marker{display:none}
+details > summary::before{content:"+";display:grid;place-items:center;width:22px;height:22px;border-radius:50%;
+  background:var(--blue-wash);font:600 .9375rem/1 var(--mono);color:var(--blue-ink)}
+details[open] > summary::before{content:"\2212"}
+details.more ul{display:grid;gap:10px;padding:4px 0 8px;max-width:70ch;color:var(--ink-2);font-size:.9688rem;line-height:1.55}
+details.more li{position:relative;padding-left:18px}
+details.more li::before{content:"";position:absolute;left:2px;top:.65em;width:6px;height:6px;border-radius:50%;background:var(--blue)}
+code{font-family:var(--mono);font-size:.875em;background:var(--chip);padding:.1em .35em;border-radius:5px}
+
+/* findings: chart + quotes */
+.chart-card{padding:26px 18px 18px}
+.chart-card figcaption h3{font-size:1.25rem;letter-spacing:-.018em;max-width:34ch;text-wrap:balance}
+.chart-sub{margin-top:6px;color:var(--muted);font-size:.9063rem;line-height:1.45}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:14px;color:var(--ink-2);font-size:.8125rem}
+.legend[hidden]{display:none}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.legend i{width:12px;height:12px;border-radius:0 3px 3px 0;background:var(--bar)}
+.legend .k-pick i{background:var(--accent)}
+.legend .k-catch i{background:var(--bar-soft)}
+.bars{display:grid;gap:2px;margin-top:16px}
+.row{display:grid;grid-template-columns:1fr auto;grid-template-areas:"name val" "track track";align-items:baseline;
+  gap:6px 12px;width:100%;padding:10px 10px 12px;border:0;border-radius:12px;background:transparent;text-align:left;cursor:pointer}
+.row:hover{background:var(--chip)}
+.row[aria-pressed="true"]{background:var(--chip);box-shadow:inset 3px 0 0 var(--ink)}
+.row-name{grid-area:name;font-size:.9688rem;line-height:1.3;font-weight:500;color:var(--ink)}
+.row-val{grid-area:val;font-variant-numeric:tabular-nums;font-size:.9688rem;font-weight:650;color:var(--ink);white-space:nowrap}
+.row-val small{margin-left:6px;font-size:.8125rem;font-weight:500;color:var(--muted)}
+.row-track{grid-area:track;display:block;height:14px}
+.row-fill{display:block;height:100%;min-width:3px;border-radius:0 4px 4px 0;background:var(--bar)}
+.row-pick .row-fill{background:var(--accent)}
+.row-catchall .row-fill{background:var(--bar-soft)}
+.chart-hint{margin-top:10px;color:var(--muted);font-size:.875rem}
+.panel{margin-top:18px;padding:18px 16px;border-radius:16px;background:var(--bg);border:1px solid var(--line)}
+.panel-title{font-size:1.125rem}
+.panel-meta{margin-top:4px;color:var(--muted);font-size:.875rem;line-height:1.45;font-variant-numeric:tabular-nums}
+.panel-desc{margin-top:10px;color:var(--ink-2);font-size:.9688rem;line-height:1.5;max-width:60ch}
+.panel-quotes{display:grid;gap:12px;margin-top:14px}
+.quote{position:relative;padding:14px 16px 14px 20px;border-radius:12px;background:var(--surface);border:1px solid var(--line)}
+.quote::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:3px;border-radius:0 3px 3px 0;
+  background:linear-gradient(var(--blue),var(--accent))}
+.quote blockquote{font-size:1rem;line-height:1.5;color:var(--ink)}
+.quote figcaption{margin-top:8px;color:var(--muted);font-size:.8125rem;line-height:1.4}
+details.table-view{margin-top:14px;border-top:1px solid var(--line)}
+.tscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:.875rem;line-height:1.4}
+th,td{padding:9px 10px 9px 0;border-top:1px solid var(--line);text-align:right;font-variant-numeric:tabular-nums;vertical-align:top}
+thead th{border-top:0;color:var(--muted);font-weight:600;font-size:.8125rem;white-space:nowrap}
+th[scope="row"],thead th:first-child{text-align:left;font-weight:500}
+td:last-child,th:last-child{padding-right:0}
+.source{margin-top:14px;color:var(--muted);font-size:.8125rem;line-height:1.5}
+
+/* recommendations: a dark band with colour behind it */
+.band{position:relative;isolation:isolate;overflow:hidden;background:var(--bg);color:var(--ink)}
+.band::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(760px 540px at -40px -70px,rgba(255,88,44,.50),transparent 70%),
+    radial-gradient(820px 620px at calc(100% + 60px) 40px,rgba(54,98,255,.58),transparent 70%),
+    radial-gradient(700px 520px at 72% calc(100% + 80px),rgba(0,186,255,.26),transparent 70%),
+    radial-gradient(640px 480px at 4% calc(100% + 60px),rgba(150,72,255,.30),transparent 70%)}
+.band .card{border-color:var(--line);background:var(--surface);background:color-mix(in srgb,var(--surface) 88%,transparent);
+  -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.recs{display:grid;gap:16px}
+.rec{position:relative;padding:22px 20px 22px}
+.rec-kicker{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:.8125rem;font-weight:650;letter-spacing:.06em;text-transform:uppercase}
+.rec-kicker b{display:grid;place-items:center;width:28px;height:28px;border-radius:9px;background:var(--chip);color:var(--ink);
+  font:600 .875rem/1 var(--mono);letter-spacing:0}
+.band .rec-1{border:1.5px solid transparent;
+  background:linear-gradient(var(--surface),var(--surface)) padding-box,linear-gradient(135deg,var(--accent),var(--violet) 52%,var(--blue)) border-box}
+.rec-1 .rec-kicker{color:var(--accent-ink)}
+.rec-1 .rec-kicker b{background:var(--accent);color:var(--on-accent)}
+.rec h3{margin-top:12px;font-size:clamp(1.3125rem,1.1rem + .9vw,1.75rem);line-height:1.15;letter-spacing:-.022em;font-weight:700;text-wrap:balance}
+.rec-problem{margin-top:10px;color:var(--ink-2);max-width:56ch}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:0 12px;margin-top:18px;border-top:1px solid var(--line)}
+.kpi{padding-top:12px}
+.kpi b{display:block;font-size:clamp(1.25rem,1rem + 1vw,1.625rem);line-height:1.1;letter-spacing:-.025em;font-weight:700}
+.kpi span{display:block;margin-top:4px;color:var(--muted);font-size:.8125rem;line-height:1.3}
+.rec dl{margin:18px 0 0;display:grid;gap:14px}
+.rec dt{color:var(--muted);font-size:.75rem;font-weight:650;letter-spacing:.07em;text-transform:uppercase}
+.rec dd{margin:4px 0 0;color:var(--ink-2);font-size:.9688rem;line-height:1.5;max-width:58ch}
+.rec dd strong{color:var(--ink);font-weight:650}
+.trend{margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}
+.trend h4{margin:0;font-size:.9688rem;line-height:1.35;font-weight:650;max-width:44ch}
+.trend-plot{margin-top:10px}
+.trend-plot svg{display:block;width:100%;height:auto;overflow:visible}
+.trend .small{margin-top:8px;max-width:60ch}
+.also{margin-top:16px;padding:18px 20px;border:1px dashed var(--line-2);border-radius:var(--radius);color:var(--ink-2);font-size:.9688rem;line-height:1.55}
+.also strong{color:var(--ink);font-weight:650}
+.note{margin-top:20px;max-width:70ch}
+
+/* checks */
+.checks{display:grid;gap:16px}
+.agree{padding:24px 18px 20px}
+.agree h3{font-size:1.125rem}
+.agree table{margin-top:12px;font-size:.9375rem}
+.agree thead th{white-space:normal;line-height:1.3;vertical-align:bottom;text-align:left;padding-right:12px}
+.agree td{text-align:left;padding-right:12px;min-width:92px}
+.agree .val{display:block;font-weight:650;color:var(--ink)}
+.meter{display:block;height:6px;margin-top:6px;border-radius:999px;background:var(--line);overflow:hidden}
+.meter span{display:block;height:100%;border-radius:999px;background:var(--blue)}
+.agree td:nth-child(3) .meter span{background:var(--accent)}
+.agree .small{margin-top:14px}
+.agree .small + .small{margin-top:8px}
+.guards{display:grid;gap:12px}
+.guard{padding:18px 18px}
+.guard .ico{margin-bottom:12px}
+.guard h3{font-size:1.0313rem}
+.guard p{margin-top:6px;color:var(--ink-2);font-size:.9375rem;line-height:1.5}
+.limits{margin-top:28px}
+.limits ul{display:grid;gap:10px;margin-top:12px;max-width:72ch;color:var(--ink-2);font-size:.9688rem;line-height:1.55}
+.limits li{position:relative;padding-left:20px}
+.limits li::before{content:"";position:absolute;left:2px;top:.62em;width:8px;height:2px;background:var(--accent)}
+
+/* dashboard */
+.shot-stage{padding:clamp(14px,4.4vw,52px) clamp(14px,4.4vw,52px) clamp(18px,3vw,30px);border:1px solid var(--line);
+  border-radius:clamp(22px,3vw,32px);background:linear-gradient(135deg,var(--g1),var(--g2) 50%,var(--g3))}
+.shot{overflow:hidden;box-shadow:var(--shadow-lg)}
+.shot-bar{display:flex;align-items:center;gap:6px;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--chip)}
+.shot-bar i{width:9px;height:9px;border-radius:50%;background:var(--line-2)}
+.shot-bar i:nth-child(1){background:var(--accent)}
+.shot-bar i:nth-child(2){background:var(--violet)}
+.shot-bar i:nth-child(3){background:var(--blue)}
+.shot-bar span{margin-left:8px;color:var(--muted);font:500 .75rem/1 var(--mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shot img{width:100%}
+.shot-foot{display:flex;flex-direction:column;gap:14px;padding:20px 4px 0}
+.shot-foot p{color:var(--ink-2);font-size:.9688rem;line-height:1.5;max-width:60ch}
+
+/* about + footer */
+.about{display:grid;gap:22px;padding:clamp(26px,4vw,40px) clamp(20px,4vw,40px);
+  background:linear-gradient(135deg,color-mix(in srgb,var(--g1) 60%,var(--surface)),var(--surface) 46%,color-mix(in srgb,var(--g3) 60%,var(--surface)))}
+.about-who{display:grid;gap:16px;align-items:start}
+.avatar{display:grid;place-items:center;width:56px;height:56px;border-radius:18px;color:#fff;font-weight:700;font-size:1.25rem;letter-spacing:-.02em;
+  background:linear-gradient(135deg,#2f4fd8,#6240dd 55%,#d9480f)}
+.about .prose{font-size:clamp(1.125rem,1rem + .5vw,1.3125rem);line-height:1.5;color:var(--ink)}
+.links{display:flex;flex-wrap:wrap;gap:10px}
+.links .btn{min-height:46px;padding:0 20px;font-size:.9688rem}
+footer{border-top:1px solid var(--line);padding-block:32px 48px;color:var(--muted);font-size:.875rem;line-height:1.6}
+footer p{max-width:76ch}
+footer p + p{margin-top:8px}
+
+/* ---------- motion (CSS only, off when reduced motion is requested) ---------- */
+@media (prefers-reduced-motion: no-preference){
+  @supports (animation-timeline: view()){
+    .reveal{animation:rise linear both;animation-timeline:view();animation-range:entry 0% entry 28%}
+    @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  }
+}
+
+@media (max-width:599px){.panel-quotes .quote:nth-child(n+3){display:none}}
+
+/* ---------- wider screens ---------- */
+@media (min-width:600px){
+  :root{--gutter:28px}
+  .cta{flex-direction:row;flex-wrap:wrap;width:auto}
+  .stat{padding:18px 18px 20px}
+  .facts{grid-template-columns:1fr 1fr}
+  .chart-card{padding:32px 28px 24px}
+  .panel{padding:22px 22px}
+  .rec{padding:28px 28px}
+  .agree{padding:28px 24px 24px}
+  .guards{grid-template-columns:1fr 1fr 1fr}
+  .shot-foot{flex-direction:row;align-items:center;justify-content:space-between}
+  .about-who{grid-template-columns:auto 1fr}
+  .band{margin-inline:clamp(10px,1.6vw,24px);border-radius:clamp(28px,3.4vw,44px)}
+}
+@media (min-width:760px){
+  .nav .only-wide{display:inline-flex}
+  .hero-copy{justify-items:center;text-align:center}
+  .cta{justify-content:center}
+  .stats{grid-template-columns:repeat(4,1fr)}
+  .stat b{font-size:1.75rem}
+  .answer{width:100%;max-width:560px;justify-self:center}
+  .row{grid-template-columns:minmax(200px,300px) 1fr auto;grid-template-areas:"name track val";align-items:center;gap:0 16px;padding:9px 12px}
+  .row-val{min-width:118px;text-align:right}
+  .panel-quotes{grid-template-columns:repeat(3,1fr);align-items:start}
+  .recs{grid-template-columns:1fr 1fr}
+  .rec-1{grid-column:1 / -1;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:0 40px;padding:32px}
+  .rec-1 .trend{margin-top:0;padding-top:0;border-top:0;align-self:end}
+  .checks{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);align-items:start}
+  .guards{grid-template-columns:1fr}
+  .about{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);align-items:start;gap:40px}
+}
+@media (min-width:960px){
+  /* the four stats float, tilted, on either side of the answer card */
+  .stage{grid-template-columns:minmax(0,1fr) 430px minmax(0,1fr);gap:0;align-items:center}
+  .stats{grid-column:1 / -1;grid-row:1;grid-template-columns:minmax(0,1fr) 430px minmax(0,1fr);gap:24px 0;align-self:center}
+  .stat{width:min(100%,246px)}
+  .stat b{font-size:2.125rem}
+  .stat:nth-child(1){grid-column:1;grid-row:1;justify-self:end;transform:translate(10px,-8px) rotate(-7deg)}
+  .stat:nth-child(2){grid-column:1;grid-row:2;justify-self:start;transform:translate(6px,6px) rotate(-4deg)}
+  .stat:nth-child(3){grid-column:3;grid-row:1;justify-self:start;transform:translate(8px,-12px) rotate(7deg)}
+  .stat:nth-child(4){grid-column:3;grid-row:2;justify-self:end;transform:translate(-6px,4px) rotate(4deg)}
+  .answer{grid-column:2;grid-row:1;position:relative;z-index:1;max-width:none;padding:30px 28px 16px}
+  .split{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:56px;align-items:center}
+  .facts{grid-template-columns:1fr}
+  .flow{grid-template-columns:repeat(6,1fr);gap:0 18px}
+  .step{display:block;padding-bottom:0}
+  .step::before{margin-bottom:14px}
+  .step::after{left:52px;right:-18px;top:19px;bottom:auto;width:auto;height:2px}
+  .step-head{display:block;min-height:0}
+  .step-head h3{font-size:1.0625rem}
+  .step-head .tag{margin-top:8px}
+  .step p{margin-top:10px;font-size:.9063rem;line-height:1.5}
+}
+@media (min-width:960px) and (prefers-reduced-motion: no-preference){
+  .stat{animation:drift 7s ease-in-out infinite}
+  .stat:nth-child(2){animation-delay:-2.3s}
+  .stat:nth-child(3){animation-delay:-4.1s}
+  .stat:nth-child(4){animation-delay:-5.6s}
+  @keyframes drift{0%,100%{translate:0 0}50%{translate:0 -7px}}
+}
+@media print{.top{position:static}.hero{margin-top:0;padding-top:24px}.reveal,.stat{animation:none}}
 </style>
-
-<div class="wrap">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
 
 <header class="top">
-  <div class="who"><b>Brian Arevalo Ramos</b><span>Berkeley Haas MBA · Fundamentals of Agentic AI capstone · Fall 2026</span></div>
-  <nav class="toplinks" aria-label="Project links">
-    <a href="https://github.com/BuildingBrian/spotify-review-pipeline" target="_blank" rel="noopener">Code on GitHub ↗</a>
-    <a href="https://spotify-review-dashboard-vert.vercel.app" target="_blank" rel="noopener">Live data dashboard ↗</a>
-  </nav>
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Brian Arevalo, back to top">
+      <svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="bm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f47a3d"/><stop offset="1" stop-color="#d9480f"/></linearGradient></defs><rect width="32" height="32" rx="9" fill="url(#bm)"/><rect x="7" y="8" width="18" height="4" rx="2" fill="#fff"/><rect x="7" y="14" width="12" height="4" rx="2" fill="#fff"/><rect x="7" y="20" width="7" height="4" rx="2" fill="#fff"/></svg>
+      Brian Arevalo
+    </a>
+    <nav class="nav" aria-label="Sections">
+      <a class="only-wide" href="#findings">Findings</a>
+      <a class="only-wide" href="#recommendations">Recommendations</a>
+      <a class="only-wide" href="#method">Method</a>
+      <a class="only-wide" href="#about">About</a>
+      <a class="gh" href="https://github.com/BuildingBrian/spotify-review-pipeline">GitHub <span aria-hidden="true">&#8599;</span></a>
+    </nav>
+  </div>
 </header>
 
-<section class="hero">
-  <div>
-    <p class="kicker">Where should Spotify's next quarter of product effort go?</p>
-    <h1>660,622 app reviews in. One product decision out.</h1>
-    <p class="lede">Four language-model roles, run and checked by code, read 18 months of Google Play reviews and produced one recommendation. Every number in it traces back to the reviews behind it.</p>
-    <p class="byline">Final project for MBA 290T at Berkeley Haas, built with Claude Code as my coding assistant. I set the scope, hand-labeled the test set, judged every disagreement and signed off on the recommendation.</p>
-    <div class="cta">
-      <a class="btn solid" href="https://github.com/BuildingBrian/spotify-review-pipeline" target="_blank" rel="noopener">View the code ↗</a>
-      <a class="btn" href="https://spotify-review-dashboard-vert.vercel.app" target="_blank" rel="noopener">Open the live data dashboard ↗</a>
+<main id="main">
+
+<!-- 1. Hero -->
+<section class="hero" id="top">
+  <div class="wrap">
+    <div class="hero-copy">
+      <p class="badge"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 7h14M5 12h9M5 17h5"/></svg></span>Case study &middot; Customer feedback analysis</p>
+      <h1>An AI tool that reads app reviews and tells product teams <span class="hl">what to fix first.</span></h1>
+      <p class="sub">I tested it on 660,622 public Spotify reviews. It found what frustrates people most and where to start.</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="#findings">See the findings <span class="arr" aria-hidden="true">&darr;</span></a>
+        <a class="btn btn-ghost" href="https://github.com/BuildingBrian/spotify-review-pipeline">View the code on GitHub <span class="arr" aria-hidden="true">&#8599;</span></a>
+      </div>
     </div>
-  </div>
-  <div class="ledger" role="img" aria-label="Funnel: 660,622 reviews ingested, 150,013 sampled, 149,972 labeled, 67,377 complaints and cancellation-intent reviews, 45 issues, 1 recommendation.">
-    <p class="ledger-cap">From raw file to decision</p>
-    <div class="lrow"><span class="lab">Reviews ingested and profiled</span><span class="num">660,622</span><span class="sub">The whole 97.4 MB file, every row hashed and accounted for</span><span class="bar" style="width:100%"></span></div>
-    <div class="lrow"><span class="lab">Sampled for labeling</span><span class="num">150,013</span><span class="sub">A deterministic random sample spread across all 18 months</span><span class="bar" style="width:22.71%"></span></div>
-    <div class="lrow"><span class="lab">Labeled and validated</span><span class="num">149,972</span><span class="sub">99.98% of the sample. 41 set aside with a reason, not guessed</span><span class="bar" style="width:22.7%"></span></div>
-    <div class="lrow"><span class="lab">Complaints and cancellation intent</span><span class="num">67,377</span><span class="sub">The reviews that get grouped into issues</span><span class="bar" style="width:10.2%"></span></div>
-    <div class="lrow unit"><span class="lab">Distinct issues, ranked by code</span><span class="num">45</span></div>
-    <div class="lrow out"><span class="lab">Recommendation</span><span class="num">1</span><span class="sub">Start with free-tier restrictions</span></div>
+
+    <div class="stage">
+      <!-- 2. Headline stats -->
+      <dl class="stats" aria-label="Project at a glance">
+        <div class="stat"><dt class="vh">Reviews ingested</dt><dd><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 5h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-7l-4 3v-3H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg></span><b>660,622</b><span class="lbl">public reviews ingested</span></dd></div>
+        <div class="stat"><dt class="vh">Reviews analyzed</dt><dd><span class="ico ico-b" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12.5V5a1 1 0 0 1 1-1h7.5l8 8-8.5 8.5-8-8z"/><circle cx="8.5" cy="8.5" r="1.2"/></svg></span><b>149,972</b><span class="lbl">reviews classified by AI</span></dd></div>
+        <div class="stat"><dt class="vh">Pipeline stages</dt><dd><span class="ico ico-c" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2.2"/><circle cx="12" cy="12" r="2.2"/><circle cx="19" cy="12" r="2.2"/><path d="M7.2 12h2.6M14.2 12h2.6"/></svg></span><b>6</b><span class="lbl">pipeline stages, 4 of them using AI</span></dd></div>
+        <div class="stat"><dt class="vh">Verification agreement</dt><dd><span class="ico ico-d" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.4l2.7 2.7L16 9.6"/></svg></span><b>86&ndash;93%</b><span class="lbl">agreement when a second AI pass checked a sample blind</span></dd></div>
+      </dl>
+
+  <aside class="card answer topline" aria-labelledby="answer-title">
+        <p class="answer-kicker">What it found</p>
+        <h2 class="answer-title" id="answer-title">Free&#8209;plan restrictions are the largest specific complaint.</h2>
+        <ol class="answer-list">
+          <li><span class="a-rank" aria-hidden="true">1</span><span class="a-name">Free&#8209;plan restrictions</span><span class="a-val">9,469</span>
+            <span class="a-bar" aria-hidden="true"><i style="width:100%"></i></span>
+            <span class="a-note">14.1% of all complaints</span></li>
+          <li><span class="a-rank" aria-hidden="true">2</span><span class="a-name">Ad frequency</span><span class="a-val">8,073</span>
+            <span class="a-bar" aria-hidden="true"><i style="width:85.3%"></i></span>
+            <span class="a-note">12.0% of all complaints</span></li>
+          <li><span class="a-rank" aria-hidden="true">3</span><span class="a-name">Login failures</span><span class="a-val">1,877</span>
+            <span class="a-bar" aria-hidden="true"><i style="width:19.8%"></i></span>
+            <span class="a-note">2.8% of all complaints, and the most severe</span></li>
+        </ol>
+        <a class="answer-link" href="#recommendations">See the three recommendations <span aria-hidden="true">&rarr;</span></a>
+      </aside>
+    </div>
   </div>
 </section>
 
-<div class="kpis">
-  <div class="kpi"><b>99.98%</b><span>of sampled reviews labeled and validated</span></div>
-  <div class="kpi"><b>$6.30</b><span>total model spend across 2,426 API calls</span></div>
-  <div class="kpi"><b>1 h 45 min</b><span>of model run time, end to end</span></div>
-  <div class="kpi"><b>86–93%</b><span>agreement with a blind second labeling pass on 2,310 reviews</span></div>
-  <div class="kpi"><b>20 / 20</b><span>deliberately wrong labels caught</span></div>
-  <div class="kpi"><b>9 / 9</b><span>memo numbers matched a recomputation</span></div>
-</div>
-
-<nav class="jump" aria-label="Sections">
-  <a href="#finding">Finding</a><a href="#pipeline">Pipeline</a><a href="#evaluation">Evaluation</a><a href="#cost">Cost</a><a href="#trace">Trace</a><a href="#role">Role</a>
-</nav>
-
-<section class="sec" id="finding">
-  <div class="rail">Finding</div>
-  <div class="body">
-    <div class="intro">
-      <h2>Start with free-tier restrictions</h2>
-      <p>Features locked behind Premium, such as skip limits, forced shuffle and no song choice, are the top specific issue: 9,469 complaints <a class="claim" href="#claims" data-c="C1">C1</a> and a severity sum of 26,088 <a class="claim" href="#claims" data-c="C2">C2</a>. Only a catch-all bucket of generic criticism ranks higher <a class="claim" href="#claims" data-c="C4">C4</a>, and it gives a product team nothing to act on. Billing also has more cancellation-intent reviews than any other topic.</p>
+<!-- 3. The problem -->
+<section class="sec" id="problem" aria-labelledby="h-problem">
+  <div class="wrap split">
+    <div>
+      <p class="eyebrow"><span class="num" aria-hidden="true">01</span> The problem</p>
+      <h2 id="h-problem">No team can read 660,622 reviews.</h2>
+      <div class="lead prose">
+        <p>That is how many public Google Play reviews the Spotify app collected from May 2022 to November 2023. Star ratings do not say what to fix: most reviews are either five stars or one star.</p>
+        <p>The useful detail is in what people wrote, and there is too much of it to read. Without a way to read it all, a team hears the loudest complaint, not the most common or the most serious one.</p>
+      </div>
     </div>
-
-    <figure>
-      <div class="fig-h"><h3>What 149,972 labeled reviews turned out to be</h3></div>
-      <div class="segbar" role="img" aria-label="Complaint 61,099, cancellation intent 6,278, praise, requests and unclear 82,595.">
-        <span class="sg s1" style="flex:61099 1 0">40.7%</span>
-        <span class="sg s2 tiny" style="flex:6278 1 0"></span>
-        <span class="sg sm" style="flex:82595 1 0">55.1%</span>
-      </div>
-      <ul class="legend">
-        <li><i class="sw s1"></i>Complaint <b>61,099</b></li>
-        <li><i class="sw s2"></i>Cancellation intent <b>6,278</b> (4.2%)</li>
-        <li><i class="sw sm"></i>Praise, requests and unclear <b>82,595</b></li>
-      </ul>
-      <figcaption>The 67,377 complaint and cancellation-intent reviews are the ones grouped into issues and ranked. Cancellation intent is what a reviewer says, not observed churn.</figcaption>
-    </figure>
-
-    <figure>
-      <div class="fig-h"><h3>Complaints by topic</h3><p>Each bar stacks complaints, then reviews that also state an intent to cancel. Severity uses a fixed 1 to 5 scale, where 4 means a core task is blocked.</p></div>
-      <ul class="legend" style="margin:0 0 12px"><li><i class="sw s1"></i>Complaint</li><li><i class="sw s2"></i>Cancellation intent</li></ul>
-      <div class="tt" id="topics">
-        <div class="th name">Topic</div><div class="th bar"></div><div class="th r">Total</div><div class="th r">Cancellation intent</div><div class="th sev">Mean severity<div class="sevscale"><span>1</span><span>3</span><span>5</span></div></div>
-      </div>
-      <figcaption>Billing carries 2,419 cancellation-intent reviews, more than any other topic and about twice usability's 1,249. Access problems are the most severe but reach far fewer reviewers.</figcaption>
-    </figure>
-
-    <figure class="panel">
-      <div class="fig-h"><h3>All 45 issues</h3><p>Priority score is complaint count times mean severity, which equals the sum of severities. Ties break by issue ID, so code can rebuild the ranking without calling a model.</p></div>
-      <div class="filters">
-        <div class="fgroup" id="f-topic" role="group" aria-label="Filter by topic"><span>Topic</span></div>
-        <div class="fgroup" id="f-metric" role="group" aria-label="Rank by"><span>Rank by</span>
-          <button class="chip" id="m-sum" data-m="sum" aria-pressed="true">Priority score</button>
-          <button class="chip" id="m-n" data-m="n" aria-pressed="false">Complaints</button>
-          <button class="chip" id="m-mean" data-m="m6" aria-pressed="false">Mean severity</button>
-        </div>
-      </div>
-      <div class="explore">
-        <div>
-          <div class="col-h"><h3 id="list-title">Top issues</h3><span id="list-metric">Priority score</span></div>
-          <div id="ilist"></div>
-          <button class="more" id="more" aria-expanded="false">Show all</button>
-        </div>
-        <div>
-          <div class="col-h"><h3>Reach against severity</h3><span>one dot per issue</span></div>
-          <div class="chart" id="scatter"></div>
-          <p class="small muted" style="margin-top:8px">Login failure is the most severe issue but has about a fifth of the complaints that free-tier restrictions have <a class="claim" href="#claims" data-c="C7">C7</a> <a class="claim" href="#claims" data-c="C8">C8</a>. Ads are the closest companion issue and overlap with the free-tier experience <a class="claim" href="#claims" data-c="C6">C6</a>.</p>
-        </div>
-      </div>
-    </figure>
-
-    <figure>
-      <div class="fig-h"><h3>Billing complaints rose from about 3% to 26% of monthly reviews</h3><p>Complaints in each topic as a share of that month's labeled reviews, May 2022 to November 2023.</p></div>
-      <ul class="legend" style="margin:0 0 6px"><li><i class="lk main"></i>Billing</li><li><i class="lk"></i>Usability, playback, catalog, access, downloads, support</li></ul>
-      <div class="chart" id="trend"></div>
-      <details class="tbl"><summary>View as table</summary><div class="scroll"><table id="trend-table"></table></div></details>
-      <figcaption>Free-tier restrictions alone reached 22.8% of reviews in October 2023, up from about 2% a year earlier. The catch-all topic is left off the chart; it peaked at 46.2% in July 2023. Months marked * are partial. These are shares of self-selected public reviews, not of users.</figcaption>
-    </figure>
+    <div class="facts">
+      <div class="card fact fact-a reveal"><b>89,104</b><span>reviews arrived in October 2023 alone, the busiest month</span></div>
+      <div class="card fact fact-b reveal"><b>45.3% and 36.7%</b><span>are five-star and one-star reviews. A rating shows the mood, not the cause.</span>
+        <div class="starbar" role="img" aria-label="Bar showing the share of reviews by star rating: five-star on the left, one-star on the right, everything else in between."><i class="s-five" style="width:45.3%"></i><i class="s-mid"></i><i class="s-one" style="width:36.7%"></i></div>
+        <p class="starkey" aria-hidden="true"><span><i class="k-five"></i>Five-star</span><span><i></i>Two to four stars</span><span><i class="k-one"></i>One-star</span></p></div>
+    </div>
   </div>
 </section>
 
-<section class="sec" id="pipeline">
-  <div class="rail">Pipeline</div>
-  <div class="body">
-    <div class="intro">
-      <h2>Code runs the process. Models only read language.</h2>
-      <p>Counting, validation, grouping and ranking are deterministic code. A model is called only where a sentence has to be read or written. Each role has its own prompt, inputs and outputs, and code checks what each one returns.</p>
+<!-- 4. How it works -->
+<section class="sec" id="how" aria-labelledby="h-how">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow"><span class="num" aria-hidden="true">02</span> How it works</p>
+      <h2 id="h-how">Code runs the process. AI only reads the language.</h2>
+      <p class="lead">Six stages, each with one job. AI does the reading and the writing. Plain code does the counting, the ranking, and the checking, so the numbers do not depend on an AI getting arithmetic right.</p>
     </div>
-    <ol class="stages">
-      <li class="stage"><div class="stage-h"><i>1</i><b>Prepare</b></div><span class="own">Code</span><p>Reads all 660,622 rows in 27 seconds, hashes each one, profiles the file and picks the sample. Empty texts are quarantined. No source row is dropped.</p><div class="hand">Hands off <span class="mono">pending review IDs</span></div></li>
-      <li class="stage"><div class="stage-h"><i>2</i><b>Enrich</b></div><span class="own model">Model · Claude Haiku 5.5</span><p>Labels up to 50 reviews per request with topic, intent, severity, sentiment and an evidence quote. Code checks every field and requires the quote to be an exact substring of the review.</p><div class="hand">Hands off <span class="mono">validated labels</span></div></li>
-      <li class="stage"><div class="stage-h"><i>3</i><b>Verify</b></div><span class="own model">Model · Haiku 5.5, separate prompt</span><p>Relabels a random 2% sample without seeing the first answer. Code compares the two and writes the disagreement report.</p><div class="hand">Hands off <span class="mono">verification_report.json</span></div></li>
-      <li class="stage"><div class="stage-h"><i>4</i><b>Group</b></div><span class="own">Code, model names only</span><p>Code assigns each complaint to one issue. A model only writes the plain-language issue names and cannot change membership.</p><div class="hand">Hands off <span class="mono">membership.csv</span></div></li>
-      <li class="stage"><div class="stage-h"><i>5</i><b>Rank</b></div><span class="own">Code</span><p>Sums severity per issue and sorts. One command rebuilds the identical ranking from saved files with no model call.</p><div class="hand">Hands off <span class="mono">ranking.csv</span></div></li>
-      <li class="stage"><div class="stage-h"><i>6</i><b>Recommend</b></div><span class="own model">Model · Claude Sonnet 5.5</span><p>Writes the memo from the top of the ranking, topic totals and 18 representative reviews only. Code recomputes every cited number and rejects any review ID it was not given.</p><div class="hand">Hands off <span class="mono">memo.md + claims.csv</span></div></li>
+    <div class="flow-card reveal">
+    <ol class="flow" aria-label="The 6 pipeline stages, in order">
+      <li class="step reveal"><div class="step-head"><h3>Prepare</h3><span class="tag">Code</span></div>
+        <p>Loads all 660,622 reviews and draws a random sample of 150,000 to analyze.</p></li>
+      <li class="step step-ai reveal"><div class="step-head"><h3>Label</h3><span class="tag tag-ai">AI</span></div>
+        <p>Reads each review and tags its topic, its intent, and how severe the problem is, with an exact quote as proof.</p></li>
+      <li class="step step-ai reveal"><div class="step-head"><h3>Verify</h3><span class="tag tag-ai">AI</span></div>
+        <p>A second AI pass re-labels 2,310 reviews without seeing the first answers. Code compares the two.</p></li>
+      <li class="step step-both reveal"><div class="step-head"><h3>Group</h3><span class="tag">Code</span> <span class="tag tag-ai">AI</span></div>
+        <p>Code sorts the complaints into 45 issues. AI only writes a plain name for each one.</p></li>
+      <li class="step reveal"><div class="step-head"><h3>Rank</h3><span class="tag">Code</span></div>
+        <p>Scores each issue by how many people raised it and how severe it is.</p></li>
+      <li class="step step-both reveal"><div class="step-head"><h3>Recommend</h3><span class="tag tag-ai">AI</span> <span class="tag">Code</span></div>
+        <p>AI drafts the recommendation from the ranked numbers. Code re-checks every figure it cites.</p></li>
     </ol>
-    <div>
-      <h3 style="margin-bottom:10px">How the results are served</h3>
-      <div class="serve"><span class="node">Saved outputs</span><span class="arr">load →</span><span class="node">Postgres on Neon</span><span class="arr">read-only →</span><span class="node">FastAPI on Vercel</span><span class="arr">JSON →</span><span class="node">Data dashboard</span></div>
-      <p class="small muted" style="margin-top:8px">The <a href="https://spotify-review-dashboard-vert.vercel.app" target="_blank" rel="noopener">live data dashboard</a> lets a reader open any issue or review ID and see its full record. It makes no model calls.</p>
+    <p class="flow-key"><span><span class="tag">Code</span> fixed rules, same answer every run</span><span><span class="tag tag-ai">AI</span> a language model reading or writing text</span></p>
     </div>
-    <div>
-      <h3 style="margin-bottom:4px">Guardrails that ran in the real job</h3>
-      <ul class="rules">
-        <li><b>Bounded requests.</b> At most 50 reviews and 7,800 output tokens per call.</li>
-        <li><b>A hard spend cap.</b> Worst-case cost is reserved before each call and work stops at $15.</li>
-        <li><b>Retry once, then quarantine.</b> 41 records ended quarantined with a reason: 13 empty texts and 28 failed quote checks.</li>
-        <li><b>Backoff on API errors.</b> 2 of 2,426 calls failed and were retried.</li>
-        <li><b>Reuse of identical text.</b> 34,459 reviews reused an already validated result, with the source recorded.</li>
-        <li><b>Checkpoint and resume.</b> Stopped on purpose at 23,096 reviews and resumed without relabeling any.</li>
+
+    <details class="more">
+      <summary>Technical detail for engineers</summary>
+      <ul>
+        <li>Four separate AI roles, each with its own prompt: label, verify, name issues, write the memo. Labeling, verification, and naming use Claude Haiku 5.5. The memo uses Claude Sonnet 5.5. See <a href="https://github.com/BuildingBrian/spotify-review-pipeline/tree/main/prompts">prompts/</a>.</li>
+        <li>At most 50 reviews per request. Code validates every answer: labels must come from a fixed list, and the quote must match the review word for word. A bad answer is retried once, then set aside with a reason.</li>
+        <li>State is saved after every batch. The real run was interrupted at 23,096 reviews and resumed without re-sending a single completed one.</li>
+        <li>34,459 reviews had text identical to another review and reused its validated labels.</li>
+        <li>The ranking can be rebuilt from saved files with one command and no AI calls: <code>python -m pipeline rerank</code>.</li>
+        <li>Python, SQLite for run state, FastAPI and Postgres for the dashboard. Code: <a href="https://github.com/BuildingBrian/spotify-review-pipeline/tree/main/pipeline">pipeline/</a>. Label definitions: <a href="https://github.com/BuildingBrian/spotify-review-pipeline/blob/main/labels/definitions.md">labels/definitions.md</a>. Full write-up: <a href="https://github.com/BuildingBrian/spotify-review-pipeline#readme">README</a>.</li>
       </ul>
-    </div>
+    </details>
   </div>
 </section>
 
-<section class="sec" id="evaluation">
-  <div class="rail">Evaluation</div>
-  <div class="body">
-    <div class="intro">
-      <h2>Checked three ways, with the misses left in</h2>
-      <p>A recommendation built on model labels is only as good as the labels. These are the measured agreement levels, including the low one.</p>
+<!-- 5. What users said -->
+<section class="sec" id="findings" aria-labelledby="h-findings">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow"><span class="num" aria-hidden="true">03</span> What users said</p>
+      <h2 id="h-findings">Two issues make up 26.0% of all complaints.</h2>
+      <p class="lead">Of 149,972 classified reviews, <strong>67,377 (44.9%)</strong> were complaints or said the writer was leaving. The pipeline sorted those into 45 issues. Free-plan limits and ads lead every other specific issue by a wide margin.</p>
     </div>
-    <div class="cards">
-      <div class="panel card">
-        <h3>A second pass, working blind</h3>
-        <p>A separate prompt relabeled 2,310 random reviews without seeing the first answer.</p>
-        <div class="meters" role="img" aria-label="Agreement: intent 93.3%, topic 87.0%, severity 86.2%.">
-          <span>Intent</span><span class="trk"><i style="width:93.3%"></i></span><b>93.3%</b>
-          <span>Topic</span><span class="trk"><i style="width:87.0%"></i></span><b>87.0%</b>
-          <span>Severity</span><span class="trk"><i style="width:86.2%"></i></span><b>86.2%</b>
+
+    <figure class="card chart-card topline reveal" aria-labelledby="chart-title">
+      <figcaption>
+        <h3 id="chart-title">Free&#8209;plan limits and ads are the two largest specific complaints</h3>
+        <p class="chart-sub">Number of complaints by issue, top 8 of 45. Percentages are shares of all 67,377 complaints.</p>
+      </figcaption>
+      <p class="legend" id="chart-legend" aria-hidden="true" hidden><span class="k-pick"><i></i>Recommended focus</span><span><i></i>Other issues</span><span class="k-catch"><i></i>No specific problem named</span></p>
+      <ol class="bars" id="chart"></ol>
+      <p class="chart-hint" id="chart-hint" hidden>Select an issue to read what people wrote.</p>
+      <div class="panel" id="panel" aria-live="polite"><h3 class="panel-title">Free tier features too restricted</h3><p class="panel-meta">9,469 complaints &middot; 14.1% of all complaints &middot; average severity 2.76 of 5</p><p class="panel-desc">Customers feel basic features like skipping, searching, and repeating are locked behind Premium.</p><div class="panel-quotes"><figure class="quote"><blockquote>&ldquo;using the app without the membership is not fun. It will play songs that you don&#x27;t have on your playlists, as well as constant ads&rdquo;</blockquote><figcaption>Google Play review, Sep 2023 &middot; 2,922 people found it helpful</figcaption></figure><figure class="quote"><blockquote>&ldquo;will look for alternative apps or platforms instead of Spotify&rdquo;</blockquote><figcaption>Google Play review, Nov 2023 &middot; 1,694 people found it helpful</figcaption></figure><figure class="quote"><blockquote>&ldquo;on phone it&#x27;s so limited without premium. Only 6 skips per hour, you can&#x27;t adjust the place on the song&rdquo;</blockquote><figcaption>Google Play review, Mar 2023 &middot; 1,603 people found it helpful</figcaption></figure></div></div>
+      <details class="table-view" id="chart-table" open>
+        <summary>View the numbers as a table</summary>
+        <div class="tscroll">
+          <table>
+            <caption class="vh">Top 8 issues by number of complaints</caption>
+            <thead><tr><th scope="col">Issue</th><th scope="col">Complaints</th><th scope="col">Share</th><th scope="col">Avg. severity</th></tr></thead>
+            <tbody>
+<tr><th scope="row">General dissatisfaction with the app</th><td>20,437</td><td>30.3%</td><td>1.98</td></tr>
+<tr><th scope="row">Free tier features too restricted</th><td>9,469</td><td>14.1%</td><td>2.76</td></tr>
+<tr><th scope="row">Excessive and disruptive ads</th><td>8,073</td><td>12.0%</td><td>2.14</td></tr>
+<tr><th scope="row">Missing playback controls and options</th><td>2,438</td><td>3.6%</td><td>2.76</td></tr>
+<tr><th scope="row">Playback stopping or wrong song playing</th><td>2,200</td><td>3.3%</td><td>3.26</td></tr>
+<tr><th scope="row">Unable to log in</th><td>1,877</td><td>2.8%</td><td>3.91</td></tr>
+<tr><th scope="row">Disliked UI redesign and removed features</th><td>1,797</td><td>2.7%</td><td>2.46</td></tr>
+<tr><th scope="row">Limited queue and playlist control</th><td>1,659</td><td>2.5%</td><td>2.71</td></tr>
+            </tbody>
+          </table>
         </div>
-        <p>310 of the 318 severity disagreements were one point apart.</p>
-      </div>
-      <div class="panel card">
-        <h3>My own labels, working blind</h3>
-        <p>I hand-labeled 50 reviews before seeing any model output.</p>
-        <div class="meters" role="img" aria-label="Agreement: intent 90%, severity 72%, topic 54%.">
-          <span>Intent</span><span class="trk"><i style="width:90%"></i></span><b>90%</b>
-          <span>Severity</span><span class="trk"><i style="width:72%"></i></span><b>72%</b>
-          <span>Topic</span><span class="trk"><i style="width:54%"></i></span><b>54%</b>
-        </div>
-        <p>I then judged all 28 disagreements against the written definitions:</p>
+      </details>
+      <p class="source">Issue names were written by the pipeline. Quotes are word for word from public reviews, chosen by a fixed rule: the reviews other people marked helpful most often. Source: <a href="https://github.com/BuildingBrian/spotify-review-pipeline/blob/main/outputs/ranking.csv">outputs/ranking.csv</a>, <a href="data.json">data behind this chart</a>.</p>
+    </figure>
+  </div>
+</section>
+
+<!-- 6. Recommendations -->
+<section class="sec band" id="recommendations" aria-labelledby="h-recs">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow"><span class="num" aria-hidden="true">04</span> Recommendations</p>
+      <h2 id="h-recs">Start with the free plan.</h2>
+      <p class="lead">Three priorities, ordered by a simple score: how many people raised the issue times how severe it is. Each one starts from the user's problem, then the evidence, then who it reaches.</p>
+    </div>
+
+    <div class="recs">
+      <article class="card rec rec-1 reveal" aria-labelledby="rec-1">
         <div>
-          <div class="segbar" role="img" aria-label="16 my label was wrong, 8 ambiguous, 4 model was wrong.">
-            <span class="sg s1" style="flex:16 1 0">16</span>
-            <span class="sg s2" style="flex:8 1 0">8</span>
-            <span class="sg s3" style="flex:4 1 0">4</span>
+          <p class="rec-kicker"><b aria-hidden="true">1</b> Priority 1 &middot; Main investment</p>
+          <h3 id="rec-1">Start with free&#8209;plan restrictions</h3>
+          <p class="rec-problem">People on the free plan say basic controls are locked behind Premium: limited skips, forced shuffle, and no way to pick a specific song.</p>
+          <div class="kpis">
+            <div class="kpi"><b>9,469</b><span>complaints</span></div>
+            <div class="kpi"><b>14.1%</b><span>of all complaints</span></div>
+            <div class="kpi"><b>2.76</b><span>avg. severity, of 5</span></div>
           </div>
-          <ul class="legend"><li><i class="sw s1"></i>My label was wrong</li><li><i class="sw s2"></i>Ambiguous</li><li><i class="sw s3"></i>Model was wrong</li></ul>
+          <dl>
+            <div><dt>Evidence</dt><dd>The largest specific issue in the data. <strong>1,988</strong> of these reviews say the writer is leaving or switching apps. Billing is the topic with the most &ldquo;I am leaving&rdquo; reviews: 2,419, against 1,249 for usability and 517 for playback.</dd></div>
+            <div><dt>Who it reaches</dt><dd>Free-plan listeners. No other specific issue draws as many complaints, so this is where a fix would answer the most people.</dd></div>
+          </dl>
         </div>
-        <p>That review came after I saw the model's answers, so it is reported apart from the blind scores. Most topic misses were generic praise or criticism that I had filed under a specific topic.</p>
-      </div>
-      <div class="panel card">
-        <h3>Tests built to break it</h3>
-        <ul class="checks">
-          <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 4.8"/></svg><span><b>20 of 20</b> wrong labels planted in a test copy were flagged by the comparison.</span></li>
-          <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 4.8"/></svg><span><b>8 of 8</b> prompt-injection and edge-case reviews were handled correctly. A review saying to ignore all instructions was labeled as the crash complaint it was.</span></li>
-          <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 4.8"/></svg><span><b>9 of 9</b> numbers in the memo matched a recomputation from saved files, with no unknown review IDs.</span></li>
-          <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 4.8"/></svg><span><b>Interrupted at 23,096 reviews</b> and resumed. None of the finished reviews were sent to the model again.</span></li>
-          <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 4.8"/></svg><span><b>Malformed output and rate limits</b> were simulated. Bad records were quarantined and rate-limited calls were retried.</span></li>
-        </ul>
-      </div>
+        <div class="trend">
+          <h4>These complaints rose from about 2% of monthly reviews to 22.8% in October 2023</h4>
+          <div class="trend-plot" id="trend" role="img" aria-label="Line chart. Free-plan restriction complaints as a share of each month's classified reviews stayed between 1.7% and 2.3% from May 2022 to April 2023, then rose to 22.8% in October 2023 and 16.2% in November 2023."></div>
+          <p class="small">Free-plan restriction complaints as a share of each month's classified reviews. They stayed between 1.7% and 2.3% for the first 12 months. The first and last months are partial.</p>
+          <details class="table-view">
+            <summary>View monthly values</summary>
+            <div class="tscroll">
+              <table>
+                <caption class="vh">Free-plan restriction complaints by month</caption>
+                <thead><tr><th scope="col">Month</th><th scope="col">Complaints</th><th scope="col">Reviews classified</th><th scope="col">Share</th></tr></thead>
+                <tbody>
+<tr><th scope="row">May 2022</th><td>67</td><td>3,572</td><td>1.9%</td></tr>
+<tr><th scope="row">Jun 2022</th><td>120</td><td>6,882</td><td>1.7%</td></tr>
+<tr><th scope="row">Jul 2022</th><td>166</td><td>7,453</td><td>2.2%</td></tr>
+<tr><th scope="row">Aug 2022</th><td>144</td><td>7,038</td><td>2.0%</td></tr>
+<tr><th scope="row">Sep 2022</th><td>117</td><td>6,087</td><td>1.9%</td></tr>
+<tr><th scope="row">Oct 2022</th><td>111</td><td>6,258</td><td>1.8%</td></tr>
+<tr><th scope="row">Nov 2022</th><td>141</td><td>6,110</td><td>2.3%</td></tr>
+<tr><th scope="row">Dec 2022</th><td>137</td><td>7,186</td><td>1.9%</td></tr>
+<tr><th scope="row">Jan 2023</th><td>120</td><td>6,452</td><td>1.9%</td></tr>
+<tr><th scope="row">Feb 2023</th><td>104</td><td>4,654</td><td>2.2%</td></tr>
+<tr><th scope="row">Mar 2023</th><td>126</td><td>6,224</td><td>2.0%</td></tr>
+<tr><th scope="row">Apr 2023</th><td>115</td><td>5,745</td><td>2.0%</td></tr>
+<tr><th scope="row">May 2023</th><td>199</td><td>6,364</td><td>3.1%</td></tr>
+<tr><th scope="row">Jun 2023</th><td>319</td><td>6,221</td><td>5.1%</td></tr>
+<tr><th scope="row">Jul 2023</th><td>295</td><td>19,412</td><td>1.5%</td></tr>
+<tr><th scope="row">Aug 2023</th><td>227</td><td>7,038</td><td>3.2%</td></tr>
+<tr><th scope="row">Sep 2023</th><td>1,157</td><td>9,586</td><td>12.1%</td></tr>
+<tr><th scope="row">Oct 2023</th><td>4,558</td><td>20,016</td><td>22.8%</td></tr>
+<tr><th scope="row">Nov 2023</th><td>1,246</td><td>7,674</td><td>16.2%</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </details>
+        </div>
+      </article>
+
+      <article class="card rec reveal" aria-labelledby="rec-2">
+        <p class="rec-kicker"><b aria-hidden="true">2</b> Priority 2 &middot; Do alongside</p>
+        <h3 id="rec-2">Address ad frequency in the same effort</h3>
+        <p class="rec-problem">People say ads are too frequent, play back to back, and interrupt listening.</p>
+        <div class="kpis">
+          <div class="kpi"><b>8,073</b><span>complaints</span></div>
+          <div class="kpi"><b>12.0%</b><span>of all complaints</span></div>
+          <div class="kpi"><b>2.14</b><span>avg. severity, of 5</span></div>
+        </div>
+        <dl>
+          <div><dt>Evidence</dt><dd>The second-largest specific issue. Severity is lower: people are annoyed, but the app still works.</dd></div>
+          <div><dt>Who it reaches</dt><dd>It overlaps with the free-plan complaints in priority 1, so the two can be studied and fixed together.</dd></div>
+        </dl>
+      </article>
+
+      <article class="card rec reveal" aria-labelledby="rec-3">
+        <p class="rec-kicker"><b aria-hidden="true">3</b> Priority 3 &middot; Targeted fix</p>
+        <h3 id="rec-3">Fix login failures</h3>
+        <p class="rec-problem">People cannot get past the login screen, or keep getting logged out, even with the right password.</p>
+        <div class="kpis">
+          <div class="kpi"><b>1,877</b><span>complaints</span></div>
+          <div class="kpi"><b>2.8%</b><span>of all complaints</span></div>
+          <div class="kpi"><b>3.91</b><span>avg. severity, of 5</span></div>
+        </div>
+        <dl>
+          <div><dt>Evidence</dt><dd>The most severe issue in the data. <strong>1,725 of 1,877</strong> (91.9%) were rated 4 or 5, meaning a core task is blocked.</dd></div>
+          <div><dt>Who it reaches</dt><dd>A small group, but one that cannot use the product at all. A focused repair, not the main investment.</dd></div>
+        </dl>
+      </article>
     </div>
+
+    <p class="also reveal"><strong>Considered and not prioritized.</strong> Playback that stops or plays the wrong song drew 2,200 complaints at an average severity of 3.26. It is severe, but it reaches far fewer people than the free-plan issue. The largest group of all, 20,437 complaints of general dissatisfaction, names no specific problem, so there is nothing to act on.</p>
+    <p class="small note">Priority scores: 26,088, 17,269, 7,340, and 7,169 for playback. Severity runs from 1 to 5: a 3 means a feature is restricted but usable, a 4 means a core task is blocked. These priorities say where to look first. The data has no revenue, plan, or churn figures, so I did not estimate business impact.</p>
   </div>
 </section>
 
-<section class="sec" id="cost">
-  <div class="rail">Cost</div>
-  <div class="body">
-    <div class="intro">
-      <h2>149,972 reviews labeled for $6.30</h2>
-      <p>A 100-review pilot set the forecast before any money was spent at scale. The full run came in under it.</p>
+<!-- 7. How I checked the work -->
+<section class="sec" id="method" aria-labelledby="h-method">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow"><span class="num" aria-hidden="true">05</span> How I checked the work</p>
+      <h2 id="h-method">Three checks, with the weak spots left in.</h2>
+      <p class="lead">The labels come from AI, so I tested them against a second AI pass and against my own hand labels. Neither check makes the labels ground truth.</p>
     </div>
-    <div class="stats">
-      <div class="kpi"><b>$6.30</b><span>measured model spend, all stages</span></div>
-      <div class="kpi"><b>$0.042</b><span>per 1,000 reviews labeled</span></div>
-      <div class="kpi"><b>8% under</b><span>the $6.86 forecast from the pilot</span></div>
-      <div class="kpi"><b>$15</b><span>hard cap enforced in code</span></div>
-    </div>
-    <div class="split">
-      <div class="scroll" style="margin-top:0">
-        <table>
-          <thead><tr><th>Stage</th><th>Model</th><th class="n">Calls</th><th class="n">Cost</th></tr></thead>
-          <tbody>
-            <tr><td>Enrich</td><td>Claude Haiku 5.5</td><td class="n">2,328</td><td class="n">$6.14</td></tr>
-            <tr><td>Verify</td><td>Claude Haiku 5.5</td><td class="n">94</td><td class="n">$0.10</td></tr>
-            <tr><td>Name issues</td><td>Claude Haiku 5.5</td><td class="n">2</td><td class="n">$0.005</td></tr>
-            <tr><td>Write memo</td><td>Claude Sonnet 5.5</td><td class="n">2</td><td class="n">$0.05</td></tr>
-          </tbody>
-        </table>
+
+    <div class="checks">
+      <div class="card agree topline reveal">
+        <h3>How often the labels agreed</h3>
+        <div class="tscroll">
+          <table>
+            <caption class="vh">Agreement with the pipeline's labels, by field</caption>
+            <thead><tr><th scope="col">Field</th><th scope="col">Second AI pass, 2,310 reviews</th><th scope="col">My hand labels, 50 reviews</th></tr></thead>
+            <tbody>
+<tr><th scope="row">Topic</th><td><span class="val">87.0%</span><span class="meter" aria-hidden="true"><span style="width:87.0%"></span></span></td><td><span class="val">54%</span><span class="meter" aria-hidden="true"><span style="width:54.0%"></span></span></td></tr>
+<tr><th scope="row">Intent</th><td><span class="val">93.3%</span><span class="meter" aria-hidden="true"><span style="width:93.3%"></span></span></td><td><span class="val">90%</span><span class="meter" aria-hidden="true"><span style="width:90.0%"></span></span></td></tr>
+<tr><th scope="row">Severity</th><td><span class="val">86.2%</span><span class="meter" aria-hidden="true"><span style="width:86.2%"></span></span></td><td><span class="val">72%</span><span class="meter" aria-hidden="true"><span style="width:72.0%"></span></span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="small"><strong>Second AI pass.</strong> A separate prompt re-labeled a random 2% sample without seeing the first answers. It uses the same AI model, so it measures consistency, not truth.</p>
+        <p class="small"><strong>My hand labels.</strong> I labeled 50 reviews before seeing any AI output. Afterward I reviewed the 28 reviews where we disagreed: 16 were my own labels breaking the written definitions, 8 were ambiguous, and 4 were AI errors. I did that review after seeing the AI's answers, so I report it separately.</p>
       </div>
-      <div>
-        <p>The pilot labeled 100 reviews in 61 seconds for $0.03. Rerunning it on saved results made 0 model calls.</p>
-        <p>The full run beat the forecast for two reasons: 34,459 reviews with identical text reused a validated result, and 9.3 million input tokens were read from the prompt cache at a tenth of the price.</p>
-        <p>Labeling took about 100 minutes on up to six parallel workers. Verification, grouping, ranking and the memo took 5 more.</p>
+
+      <div class="guards">
+        <div class="card guard reveal"><span class="ico ico-b" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 7H6v5h4c0 2.5-1.2 4-3.5 5M19 7h-4v5h4c0 2.5-1.2 4-3.5 5"/></svg></span><h3>Every label needs an exact quote</h3><p>Code rejects a label unless its quote matches the review word for word. 41 of 150,013 reviews were set aside: 13 were empty and 28 had quotes that did not match.</p></div>
+        <div class="card guard reveal"><span class="ico ico-c" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 1-14.2 5M4 12a8 8 0 0 1 14.2-5"/><path d="M18.5 3.5V7H15M5.5 20.5V17H9"/></svg></span><h3>Every number is recomputed</h3><p>Code recomputed all 9 figures cited in the recommendation memo from the saved data. All 9 matched.</p></div>
+        <div class="card guard reveal"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.6-3.3 8.2-8 9-4.7-.8-8-4.4-8-9V6l8-3z"/><path d="M9 12l2.2 2.2L15.2 10"/></svg></span><h3>Tested with hostile input</h3><p>8 of 8 written test reviews were labeled correctly, including two that ordered the AI to change its labels.</p></div>
       </div>
     </div>
+
+    <div class="limits">
+      <h3>What this cannot tell you</h3>
+      <ul>
+        <li>These are public reviews from people who chose to write one, between May 2022 and November 2023. They are not a sample of all users.</li>
+        <li>&ldquo;I am leaving&rdquo; is what people wrote, not what they did. The data has no revenue, plan, or churn figures.</li>
+        <li>My own topic labels matched the AI's only 54% of the time, and 50 reviews is a small test.</li>
+        <li>The second AI pass checked topic, intent, and severity. It did not check the finer issue label that the ranking uses.</li>
+        <li>The largest group, 20,437 complaints (30.3%), names no specific problem. How reviews split between that group and the specific issues is the least certain part.</li>
+      </ul>
+    </div>
+
+    <details class="more">
+      <summary>Evidence files for engineers</summary>
+      <ul>
+        <li>Second-pass report: <a href="https://github.com/BuildingBrian/spotify-review-pipeline/blob/main/outputs/verification_report.json">outputs/verification_report.json</a></li>
+        <li>Hand-label comparison and every disagreement: <a href="https://github.com/BuildingBrian/spotify-review-pipeline/blob/main/evals/golden_eval.md">evals/golden_eval.md</a></li>
+        <li>Memo number check: <a href="https://github.com/BuildingBrian/spotify-review-pipeline/blob/main/outputs/memo_check.json">outputs/memo_check.json</a>. The memo itself: <a href="https://github.com/BuildingBrian/spotify-review-pipeline/blob/main/memo.md">memo.md</a></li>
+        <li>Test reviews and results: <a href="https://github.com/BuildingBrian/spotify-review-pipeline/tree/main/evals/system_tests">evals/system_tests/</a></li>
+        <li>Where each number on this page comes from: the <code>sources</code> section of <a href="data.json">data.json</a>, built from commit <code>4ec916f</code>.</li>
+      </ul>
+    </details>
   </div>
 </section>
 
-<section class="sec" id="trace">
-  <div class="rail">Trace</div>
-  <div class="body">
-    <div class="intro">
-      <h2>One review, followed from source to recommendation</h2>
-      <p>Any number in the memo can be walked back to the reviews behind it. This is one real review at each step.</p>
+<!-- 8. Dashboard -->
+<section class="sec" id="dashboard" aria-labelledby="h-dash">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow"><span class="num" aria-hidden="true">06</span> Dashboard</p>
+      <h2 id="h-dash">Every issue, with the reviews behind it.</h2>
+      <p class="lead">The pipeline loads its results into a database. A live dashboard reads from it, so anyone can open an issue and read the reviews it was built from.</p>
     </div>
-    <ol class="trace">
-      <li><span>Source</span><div><q>why remove the most BASIC needs for free users.</q><br>One star, 17 October 2023. Review <span class="mono">e0a90a21-ae9c-4274-8946-f89b223f7b68</span>, row hash <span class="mono">bfe29e36…</span></div></li>
-      <li><span>Enrich</span><div>Labeled in a batch of 50 as <b>billing</b>, <b>premium-only restrictions</b>, <b>complaint</b>, <b>severity 3</b>, sentiment −0.7. The evidence quote is the full text and passes the exact-substring check.</div></li>
-      <li><span>Verify</span><div>It fell in the blind 2% sample. The second prompt said billing, complaint, severity 3, agreeing on all three fields.</div></li>
-      <li><span>Group</span><div>Code assigned it to issue <span class="mono">billing.premium_only_restrictions</span>.</div></li>
-      <li><span>Rank</span><div>That issue ranks 2 of 45: <b>9,469</b> complaints, severity sum <b>26,088</b>, mean severity <b>2.755096</b>.</div></li>
-      <li><span>Memo</span><div>The memo cites those three numbers as claims <a class="claim" href="#claims" data-c="C1">C1</a> <a class="claim" href="#claims" data-c="C2">C2</a> <a class="claim" href="#claims" data-c="C3">C3</a>. Code recomputed each one from the saved files.</div></li>
-    </ol>
-    <div class="fail">
-      <h3>One that failed, and what happened to it</h3>
-      <p>A reviewer wrote <q>only down side is of you want to play any song you want you'll need premium</q>. The model's evidence quote silently corrected “of” to “if”, so it was no longer an exact substring of the source. Code rejected it, retried once and quarantined it. A later recovery pass mapped near-identical quotes back to the original characters and recovered 48 of 76 such reviews. This one stayed quarantined after three attempts and is counted as not labeled.</p>
-    </div>
-    <figure id="claims" style="scroll-margin-top:16px">
-      <div class="fig-h"><h3>Every number the memo cites</h3><p>Each claim ID in the memo points to one row here, and each row is recomputed from the ranking and membership files.</p></div>
-      <div class="scroll" style="margin-top:0"><table><thead><tr><th>Claim</th><th>Issue</th><th>Metric</th><th class="n">Value</th><th class="n">Recomputed</th></tr></thead><tbody id="claims-body"></tbody></table></div>
+    <figure class="shot-stage reveal">
+      <div class="card shot">
+      <div class="shot-bar" aria-hidden="true"><i></i><i></i><i></i><span>spotify-review-dashboard-vert.vercel.app</span></div>
+      <a href="https://spotify-review-dashboard-vert.vercel.app"><picture><source srcset="dashboard-dark.webp" media="(prefers-color-scheme: dark)"><img src="dashboard.webp" width="1776" height="1290" loading="lazy" decoding="async" alt="Screenshot of the dashboard: a bar chart of complaints by product area, a chart of complaint share by month, and the top of the ranked issue table."></picture></a>
+      </div>
+      <figcaption class="shot-foot">
+        <p>All 45 issues, ranked. It reads saved results only and makes no AI calls.</p>
+        <a class="btn btn-primary" href="https://spotify-review-dashboard-vert.vercel.app">Open the live dashboard <span class="arr" aria-hidden="true">&#8599;</span></a>
+      </figcaption>
     </figure>
   </div>
 </section>
 
-<section class="sec" id="role">
-  <div class="rail">Role</div>
-  <div class="body">
-    <div class="intro"><h2>What I did, and what the evidence cannot say</h2></div>
-    <div class="two">
-      <div>
-        <h3>My part</h3>
-        <ul class="plain">
-          <li>Set the scope and chose the tools: 150,000 reviews against a 100,000 minimum, a small model for labeling, a larger one only for the memo, and a $15 spend cap.</li>
-          <li>Hand-labeled the 50-review test set blind, using the same written definitions the models used.</li>
-          <li>Judged all 28 disagreements and reported that step as after the fact.</li>
-          <li>Read the memo against the evidence and agreed with its recommendation before submitting.</li>
-          <li>Built it with Claude Code as my coding assistant.</li>
-        </ul>
+<!-- 9. About -->
+<section class="sec" id="about" aria-labelledby="h-about">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow"><span class="num" aria-hidden="true">07</span> About</p>
+      <h2 id="h-about">Brian Arevalo</h2>
+    </div>
+    <div class="card about topline reveal">
+      <div class="about-who">
+      <span class="avatar" aria-hidden="true">BA</span>
+      <div class="prose">
+        <p>I am an MBA candidate at Berkeley Haas and a former Army Captain. I built this project to practice product work the way I think it should be done: user problem first, evidence second, recommendation third.</p>
+      </div>
       </div>
       <div>
-        <h3>Limits</h3>
-        <ul class="plain">
-          <li>These are self-selected public reviews from May 2022 to November 2023, not a sample of users.</li>
-          <li>There is no revenue, plan or churn data, so business impact is unknown.</li>
-          <li>Labels are model-assigned, at the agreement levels shown above.</li>
-          <li>The ranking rewards volume, which is why a catch-all sits at rank 1 and is set aside.</li>
-          <li>149,972 of 660,622 reviews were labeled. The rest were ingested, profiled and hashed only.</li>
-        </ul>
+        <div class="links">
+          <a class="btn btn-ghost" href="https://github.com/BuildingBrian">GitHub <span class="arr" aria-hidden="true">&#8599;</span></a>
+          <a class="btn btn-ghost" href="https://www.linkedin.com/in/brianarevalo">LinkedIn <span class="arr" aria-hidden="true">&#8599;</span></a>
+        </div>
+        <p class="small" style="margin-top:18px;max-width:52ch">Project notes: I built this as my capstone for the Agentic AI course at Berkeley Haas, with Claude Code as a coding assistant. I chose the scope and tools, hand-labeled the test set, and reviewed the recommendation.</p>
       </div>
     </div>
   </div>
 </section>
 
-<footer>
-  <p>Data: “3.4 Million Spotify Google Store Reviews” by BwandoWando on Kaggle (CC0), course extract of 660,622 reviews. Independent coursework. Not affiliated with or endorsed by Spotify.</p>
-  <p>Every figure on this page is computed from the saved outputs in <a href="https://github.com/BuildingBrian/spotify-review-pipeline" target="_blank" rel="noopener">the repository</a> (github.com/BuildingBrian/spotify-review-pipeline @ 4ec916f).</p>
-</footer>
-</div>
+</main>
 
-<div id="tip" hidden></div>
+<!-- 10. Footer -->
+<footer>
+  <div class="wrap">
+    <p>Independent case study. Not affiliated with or endorsed by Spotify. Built from publicly available app reviews.</p>
+    <p>Every number on this page is computed from the project's saved outputs. <a href="data.json">See the data and its sources</a>.</p>
+  </div>
+</footer>
 
 <script>
-(function(){
-"use strict";
-var D = {"pick":{"id":"billing.premium_only_restrictions"},"catchall":{"id":"other.general_criticism"},"issues":[{"id":"other.general_criticism","topic":"other","name":"General dissatisfaction with the app","n":20437,"sum":40494,"mean":1.98,"mean6":"1.981406"},{"id":"billing.premium_only_restrictions","topic":"billing","name":"Free tier features too restricted","n":9469,"sum":26088,"mean":2.76,"mean6":"2.755096"},{"id":"usability.ads_frequency","topic":"usability","name":"Excessive and disruptive ads","n":8073,"sum":17269,"mean":2.14,"mean6":"2.139106"},{"id":"access.login_failure","topic":"access","name":"Unable to log in","n":1877,"sum":7340,"mean":3.91,"mean6":"3.910495"},{"id":"playback.stops_or_pauses","topic":"playback","name":"Playback stopping or wrong song playing","n":2200,"sum":7169,"mean":3.26,"mean6":"3.258636"},{"id":"usability.controls_widgets","topic":"usability","name":"Missing playback controls and options","n":2438,"sum":6737,"mean":2.76,"mean6":"2.763331"},{"id":"playback.crashes","topic":"playback","name":"App crashes and freezes","n":1629,"sum":5485,"mean":3.37,"mean6":"3.367096"},{"id":"usability.playlist_queue_management","topic":"usability","name":"Limited queue and playlist control","n":1659,"sum":4496,"mean":2.71,"mean6":"2.710066"},{"id":"usability.ui_redesign","topic":"usability","name":"Disliked UI redesign and removed features","n":1797,"sum":4424,"mean":2.46,"mean6":"2.461881"},{"id":"catalog.missing_content","topic":"catalog","name":"Songs missing or unplayable","n":1647,"sum":4237,"mean":2.57,"mean6":"2.572556"},{"id":"playback.skipping_glitches","topic":"playback","name":"Songs skipping or playing wrong tracks","n":1275,"sum":3750,"mean":2.94,"mean6":"2.941176"},{"id":"playback.other","topic":"playback","name":"Miscellaneous playback failures","n":1185,"sum":3514,"mean":2.97,"mean6":"2.965401"},{"id":"catalog.recommendations_shuffle","topic":"catalog","name":"Unwanted recommendations and shuffle behavior","n":1384,"sum":3173,"mean":2.29,"mean6":"2.292630"},{"id":"billing.price","topic":"billing","name":"Premium subscription price too high","n":1443,"sum":3007,"mean":2.08,"mean6":"2.083853"},{"id":"catalog.lyrics","topic":"catalog","name":"Lyrics missing or inaccurate","n":1106,"sum":2716,"mean":2.46,"mean6":"2.455696"},{"id":"playback.device_integration","topic":"playback","name":"Device, Bluetooth, and casting issues","n":925,"sum":2694,"mean":2.91,"mean6":"2.912432"},{"id":"usability.other","topic":"usability","name":"Unwanted autoplay and default settings","n":815,"sum":2042,"mean":2.51,"mean6":"2.505521"},{"id":"downloads.offline_mode","topic":"downloads","name":"Offline mode playback failures","n":561,"sum":1818,"mean":3.24,"mean6":"3.240642"},{"id":"playback.connection_errors","topic":"playback","name":"Connection errors and false offline status","n":547,"sum":1786,"mean":3.27,"mean6":"3.265082"},{"id":"usability.navigation_layout","topic":"usability","name":"Confusing navigation and layout","n":720,"sum":1778,"mean":2.47,"mean6":"2.469444"},{"id":"billing.subscription_activation","topic":"billing","name":"Premium activation and payment failures","n":447,"sum":1524,"mean":3.41,"mean6":"3.409396"},{"id":"access.other","topic":"access","name":"False no-internet connection errors","n":445,"sum":1511,"mean":3.4,"mean6":"3.395506"},{"id":"downloads.downloads_disappearing","topic":"downloads","name":"Downloaded songs disappearing","n":407,"sum":1398,"mean":3.43,"mean6":"3.434889"},{"id":"downloads.download_failure","topic":"downloads","name":"Downloads fail or get stuck","n":450,"sum":1373,"mean":3.05,"mean6":"3.051111"},{"id":"catalog.search","topic":"catalog","name":"Search and wrong-track playback","n":475,"sum":1309,"mean":2.76,"mean6":"2.755789"},{"id":"billing.charges_refunds","topic":"billing","name":"Unexpected charges and refund problems","n":349,"sum":1285,"mean":3.68,"mean6":"3.681948"},{"id":"playback.buffering_lag","topic":"playback","name":"Buffering, lag, and slow performance","n":475,"sum":1270,"mean":2.67,"mean6":"2.673684"},{"id":"access.account_locked_or_hacked","topic":"access","name":"Account locked, hacked, or deleted","n":262,"sum":992,"mean":3.79,"mean6":"3.786260"},{"id":"playback.audio_quality","topic":"playback","name":"Poor audio quality and volume issues","n":413,"sum":989,"mean":2.39,"mean6":"2.394673"},{"id":"other.unrelated_or_political","topic":"other","name":"Off-topic political or religious complaints","n":504,"sum":726,"mean":1.44,"mean6":"1.440476"},{"id":"billing.plans_family_student","topic":"billing","name":"Family, duo, and student plan problems","n":262,"sum":634,"mean":2.42,"mean6":"2.419847"},{"id":"catalog.other","topic":"catalog","name":"Playlist and catalog display issues","n":264,"sum":620,"mean":2.35,"mean6":"2.348485"},{"id":"other.other","topic":"other","name":"Post-update breakage and missing Wrapped","n":226,"sum":488,"mean":2.16,"mean6":"2.159292"},{"id":"billing.other","topic":"billing","name":"Miscellaneous billing and upsell complaints","n":199,"sum":415,"mean":2.09,"mean6":"2.085427"},{"id":"playback.battery_resources","topic":"playback","name":"Excessive battery and resource drain","n":157,"sum":407,"mean":2.59,"mean6":"2.592357"},{"id":"access.signup","topic":"access","name":"Account signup failures","n":104,"sum":370,"mean":3.56,"mean6":"3.557692"},{"id":"downloads.storage","topic":"downloads","name":"SD card download storage problems","n":124,"sum":347,"mean":2.8,"mean6":"2.798387"},{"id":"catalog.podcasts","topic":"catalog","name":"Podcast playback and organization problems","n":136,"sum":345,"mean":2.54,"mean6":"2.536765"},{"id":"access.third_party_login","topic":"access","name":"Google and Facebook login issues","n":83,"sum":316,"mean":3.81,"mean6":"3.807229"},{"id":"downloads.other","topic":"downloads","name":"Local files and download notification issues","n":107,"sum":278,"mean":2.6,"mean6":"2.598131"},{"id":"support.unhelpful_response","topic":"support","name":"Support fails to resolve issues","n":84,"sum":218,"mean":2.6,"mean6":"2.595238"},{"id":"other.general_praise","topic":"other","name":"General praise with minor complaints","n":112,"sum":195,"mean":1.74,"mean6":"1.741071"},{"id":"access.password_reset","topic":"access","name":"Password reset problems and repeated prompts","n":46,"sum":168,"mean":3.65,"mean6":"3.652174"},{"id":"support.no_response","topic":"support","name":"No response from customer support","n":38,"sum":106,"mean":2.79,"mean6":"2.789474"},{"id":"support.other","topic":"support","name":"Mixed feedback on customer support","n":21,"sum":47,"mean":2.24,"mean6":"2.238095"}],"topics":[{"topic":"access","completed":2949,"n":2817,"cancel":144,"mean":3.8,"share":4.2},{"topic":"usability","completed":19125,"n":15502,"cancel":1249,"mean":2.37,"share":23.0},{"topic":"playback","completed":10838,"n":8806,"cancel":517,"mean":3.07,"share":13.1},{"topic":"downloads","completed":2468,"n":1649,"cancel":78,"mean":3.16,"share":2.4},{"topic":"catalog","completed":14035,"n":5012,"cancel":175,"mean":2.47,"share":7.4},{"topic":"billing","completed":14026,"n":12169,"cancel":2419,"mean":2.71,"share":18.1},{"topic":"support","completed":249,"n":143,"cancel":16,"mean":2.59,"share":0.2},{"topic":"other","completed":86282,"n":21279,"cancel":1680,"mean":1.97,"share":31.6}],"claims":[{"id":"C1","issue":"billing.premium_only_restrictions","metric":"complaint_count","value":"9469","name":"Free tier features too restricted"},{"id":"C2","issue":"billing.premium_only_restrictions","metric":"severity_sum","value":"26088","name":"Free tier features too restricted"},{"id":"C3","issue":"billing.premium_only_restrictions","metric":"mean_severity","value":"2.755096","name":"Free tier features too restricted"},{"id":"C4","issue":"other.general_criticism","metric":"severity_sum","value":"40494","name":"General dissatisfaction with the app"},{"id":"C5","issue":"access.login_failure","metric":"priority_score","value":"7340","name":"Unable to log in"},{"id":"C6","issue":"usability.ads_frequency","metric":"priority_score","value":"17269","name":"Excessive and disruptive ads"},{"id":"C7","issue":"access.login_failure","metric":"mean_severity","value":"3.910495","name":"Unable to log in"},{"id":"C8","issue":"access.login_failure","metric":"complaint_count","value":"1877","name":"Unable to log in"},{"id":"C9","issue":"playback.stops_or_pauses","metric":"priority_score","value":"7169","name":"Playback stopping or wrong song playing"}],"trend_facts":{"billing_first12_min":2.91,"billing_first12_max":3.76,"billing_first12_avg":3.3,"billing_peak":26.34,"billing_peak_month":"2023-10","pick_peak":22.77,"pick_peak_month":"2023-10","other_peak":46.18,"other_peak_month":"2023-07"},"trend":{"months":["2022-05","2022-06","2022-07","2022-08","2022-09","2022-10","2022-11","2022-12","2023-01","2023-02","2023-03","2023-04","2023-05","2023-06","2023-07","2023-08","2023-09","2023-10","2023-11"],"completed":[3572,6882,7453,7038,6087,6258,6110,7186,6452,4654,6224,5745,6364,6221,19412,7038,9586,20016,7674],"series":{"billing":[3.16,2.99,3.29,3.61,3.22,2.91,3.76,3.38,3.13,3.72,3.39,3.29,4.57,6.56,2.43,5.31,14.36,26.34,19.95],"usability":[8.82,9.24,9.1,10.27,9.79,10.71,11.1,9.82,8.01,11.11,16.18,14.27,9.85,10.59,4.95,10.71,12.76,12.41,12.14],"playback":[9.1,8.36,11.18,6.89,6.14,5.27,5.92,9.28,8.09,5.95,5.56,5.97,5.45,5.8,2.67,6.12,5.39,3.95,5.24],"catalog":[3.0,2.98,3.72,2.54,2.99,2.81,3.06,4.12,3.04,3.12,4.16,4.73,4.84,5.08,1.71,3.84,4.89,3.09,2.84],"access":[1.82,1.47,2.84,1.52,1.25,1.5,1.52,1.7,2.53,1.61,1.04,1.34,2.53,3.26,1.33,4.02,2.7,1.38,1.65],"downloads":[1.51,1.51,1.99,1.42,1.23,1.37,1.34,1.13,1.19,1.07,1.38,1.48,1.45,1.32,0.6,1.35,0.9,0.51,0.61],"support":[0.14,0.09,0.09,0.11,0.07,0.02,0.18,0.15,0.12,0.11,0.06,0.1,0.05,0.11,0.04,0.14,0.11,0.1,0.12]}}};
-var NS = "http://www.w3.org/2000/svg";
-var $ = function(s, r){ return (r || document).querySelector(s); };
-var fmt = function(n){ return Number(n).toLocaleString("en-US"); };
-var TOPIC = {usability:"Usability", billing:"Billing", playback:"Playback", catalog:"Catalog", access:"Access", downloads:"Downloads", support:"Support", other:"Other"};
-var TDESC = {usability:"Controls, navigation, playlists, ad interruptions", billing:"Price, charges, paywalls, Premium-only features", playback:"Stops, crashes, lag, audio quality", catalog:"Missing songs, search, recommendations, lyrics", access:"Login, signup, password, account access", downloads:"Offline listening, saved music", support:"Contacting support and its response", other:"Catch-all: generic praise or criticism, off-topic text"};
-var PICK = D.pick.id, CATCH = D.catchall.id;
-var SHORT = {}; SHORT[PICK] = "Free-tier restrictions"; SHORT[CATCH] = "Catch-all"; SHORT["usability.ads_frequency"] = "Ads"; SHORT["access.login_failure"] = "Login failure";
-D.issues.forEach(function(i){ i.m6 = parseFloat(i.mean6); });
-var state = {topic:"all", metric:"sum", all:false, hot:null};
+(function () {
+  var chart = document.getElementById('chart');
+  var panel = document.getElementById('panel');
+  if (!chart || !panel || !window.fetch) return;
 
-function h(tag, attrs){
-  var e = document.createElement(tag), k, i;
-  for (k in (attrs || {})) {
-    var v = attrs[k];
-    if (v === null || v === undefined || v === false) continue;
-    if (k === "class") e.className = v; else if (k === "text") e.textContent = v; else if (k === "style") e.style.cssText = v; else e.setAttribute(k, v);
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
   }
-  for (i = 2; i < arguments.length; i++) { var c = arguments[i]; if (c === null || c === undefined) continue; e.append(c.nodeType ? c : document.createTextNode(String(c))); }
-  return e;
-}
-function s(tag, attrs){
-  var e = document.createElementNS(NS, tag), k, i;
-  for (k in (attrs || {})) { if (k === "text") e.textContent = attrs[k]; else e.setAttribute(k, attrs[k]); }
-  for (i = 2; i < arguments.length; i++) if (arguments[i]) e.append(arguments[i]);
-  return e;
-}
+  function num(n) { return n.toLocaleString('en-US'); }
 
-/* tooltip: values lead, labels follow; text set with textContent only */
-var tip = $("#tip");
-function showTip(cx, cy, title, rows, foot){
-  var kids = [h("div", {class:"tt-h", text:title})];
-  rows.forEach(function(r){ kids.push(h("div", {class:"tt-r"}, h("i", {class:"k" + (r[2] ? " main" : "")}), h("b", {text:r[0]}), h("span", {text:r[1]}))); });
-  if (foot) kids.push(h("div", {class:"tt-f", text:foot}));
-  tip.replaceChildren.apply(tip, kids);
-  tip.hidden = false;
-  var r = tip.getBoundingClientRect(), vw = document.documentElement.clientWidth;
-  var left = cx + 14; if (left + r.width > vw - 8) left = cx - r.width - 14; if (left < 8) left = 8;
-  var top = cy - r.height - 12; if (top < 8) top = cy + 18;
-  tip.style.left = left + "px"; tip.style.top = top + "px";
-}
-function hideTip(){ tip.hidden = true; }
+  function showTheme(t, sevMax) {
+    panel.textContent = '';
+    panel.appendChild(el('h3', 'panel-title', t.name));
+    panel.appendChild(el('p', 'panel-meta', num(t.n) + ' complaints · ' + t.share.toFixed(1) +
+      '% of all complaints · average severity ' + t.mean.toFixed(2) + ' of ' + sevMax));
+    panel.appendChild(el('p', 'panel-desc', t.desc));
+    var quotes = el('div', 'panel-quotes');
+    t.quotes.forEach(function (q) {
+      var f = el('figure', 'quote');
+      f.appendChild(el('blockquote', null, '“' + q.text + '”'));
+      f.appendChild(el('figcaption', null, 'Google Play review, ' + q.month + ' · ' + num(q.helpful) +
+        ' people found it helpful'));
+      quotes.appendChild(f);
+    });
+    panel.appendChild(quotes);
+  }
 
-/* topic table */
-function renderTopics(){
-  var root = $("#topics");
-  var rows = D.topics.slice().sort(function(a, b){ return (a.topic === "other") - (b.topic === "other") || b.n - a.n; });
-  var max = Math.max.apply(null, rows.map(function(r){ return r.n; }));
-  rows.forEach(function(r){
-    var bar = h("div", {class:"tbar", style:"width:" + (100 * r.n / max).toFixed(2) + "%"},
-      h("i", {class:"s1", style:"flex:" + (r.n - r.cancel) + " 1 0"}), h("i", {class:"s2", style:"flex:" + r.cancel + " 1 0"}));
-    root.append(h("div", {class:"trow"},
-      h("div", {class:"tname"}, h("b", {text:TOPIC[r.topic]}), h("span", {text:TDESC[r.topic]})),
-      h("div", {class:"tbarc"}, bar),
-      h("div", {class:"tnum strong", text:fmt(r.n)}),
-      h("div", {class:"tnum", text:fmt(r.cancel)}),
-      h("div", {class:"sevc"}, h("span", {class:"sevt"}, h("i", {style:"left:" + (100 * (r.mean - 1) / 4).toFixed(1) + "%"})), h("b", {text:r.mean.toFixed(2)}))));
-  });
-}
+  function drawChart(d) {
+    var max = Math.max.apply(null, d.themes.map(function (t) { return t.n; }));
+    var buttons = [];
+    d.themes.forEach(function (t) {
+      var li = el('li');
+      var b = el('button', 'row row-' + t.kind);
+      b.type = 'button';
+      b.setAttribute('aria-pressed', t.kind === 'pick' ? 'true' : 'false');
+      b.setAttribute('aria-label', t.name + ': ' + num(t.n) + ' complaints, ' + t.share.toFixed(1) +
+        '% of all complaints. Show what people wrote.');
+      b.appendChild(el('span', 'row-name', t.name));
+      var track = el('span', 'row-track');
+      var fill = el('span', 'row-fill');
+      fill.style.width = (100 * t.n / max).toFixed(2) + '%';
+      track.appendChild(fill);
+      b.appendChild(track);
+      var val = el('span', 'row-val', num(t.n));
+      val.appendChild(el('small', null, t.share.toFixed(1) + '%'));
+      b.appendChild(val);
+      b.addEventListener('click', function () {
+        buttons.forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+        showTheme(t, d.severity_max);
+      });
+      buttons.push(b);
+      li.appendChild(b);
+      chart.appendChild(li);
+    });
+    var hint = document.getElementById('chart-hint');
+    if (hint) hint.hidden = false;
+    var legend = document.getElementById('chart-legend');
+    if (legend) legend.hidden = false;
+    var table = document.getElementById('chart-table');
+    if (table) table.open = false;
+  }
 
-/* filters */
-function renderFilters(){
-  var g = $("#f-topic");
-  ["all", "billing", "usability", "playback", "catalog", "access", "downloads", "support", "other"].forEach(function(t){
-    var b = h("button", {class:"chip", id:"t-" + t, "data-t":t, "aria-pressed": t === state.topic ? "true" : "false", text: t === "all" ? "All" : TOPIC[t]});
-    g.append(b);
-  });
-  g.addEventListener("click", function(e){ var b = e.target.closest("button[data-t]"); if (!b) return; state.topic = b.dataset.t; state.all = false; sync(); });
-  $("#f-metric").addEventListener("click", function(e){ var b = e.target.closest("button[data-m]"); if (!b) return; state.metric = b.dataset.m; sync(); });
-  $("#more").addEventListener("click", function(){ state.all = !state.all; renderList(); });
-}
-function sync(){
-  document.querySelectorAll("#f-topic button").forEach(function(b){ b.setAttribute("aria-pressed", b.dataset.t === state.topic ? "true" : "false"); });
-  document.querySelectorAll("#f-metric button").forEach(function(b){ b.setAttribute("aria-pressed", b.dataset.m === state.metric ? "true" : "false"); });
-  renderList(); renderScatter();
-}
-function current(){
-  var key = state.metric;
-  return D.issues.filter(function(i){ return state.topic === "all" || i.topic === state.topic; })
-    .sort(function(a, b){ return b[key] - a[key] || (a.id < b.id ? -1 : 1); });
-}
-
-/* ranked list */
-function renderList(){
-  var key = state.metric, list = current(), shown = state.all ? list : list.slice(0, 10);
-  var max = key === "m6" ? 4 : list[0][key];
-  var root = $("#ilist");
-  root.replaceChildren.apply(root, shown.map(function(i, idx){
-    var frac = key === "m6" ? (i.m6 - 1) / 4 : i[key] / max;
-    var name = h("b", {text:i.name});
-    if (i.id === PICK) name.append(h("span", {class:"tag pick", text:"Recommended"}));
-    if (i.id === CATCH) name.append(h("span", {class:"tag", text:"Catch-all"}));
-    var row = h("div", {class:"irow" + (i.id === PICK ? " pick" : ""), "data-id":i.id},
-      h("span", {class:"rk", text:String(idx + 1)}),
-      h("div", {class:"nm"}, name, h("span", {class:"meta"}, h("span", {text:TOPIC[i.topic] + " · "}), h("span", {text:fmt(i.n) + " complaints · "}), h("span", {text:"severity " + i.mean.toFixed(2)}))),
-      h("div", {class:"ib"}, h("i", {style:"width:" + (100 * frac).toFixed(1) + "%"})),
-      h("span", {class:"vl", text: key === "m6" ? i.mean.toFixed(2) : fmt(i[key])}));
-    row.addEventListener("pointerenter", function(){ hot(i.id); });
-    row.addEventListener("pointerleave", function(){ hot(null); });
-    return row;
-  }));
-  $("#list-metric").textContent = key === "sum" ? "Priority score" : key === "n" ? "Complaints" : "Mean severity, 1 to 5";
-  $("#list-title").textContent = (state.all || list.length <= 10 ? "All " + list.length : "Top 10 of " + list.length) + (state.topic === "all" ? " issues" : " " + TOPIC[state.topic].toLowerCase() + " issues");
-  var more = $("#more");
-  more.hidden = list.length <= 10;
-  more.textContent = state.all ? "Show top 10" : "Show all " + list.length;
-  more.setAttribute("aria-expanded", state.all ? "true" : "false");
-}
-function hot(id){
-  state.hot = id;
-  document.querySelectorAll("#ilist .irow").forEach(function(r){ r.classList.toggle("hot", r.dataset.id === id); });
-  var ring = $("#scatter .ring");
-  if (!ring) return;
-  var p = id && scat.pos[id];
-  if (p) { ring.setAttribute("cx", p[0]); ring.setAttribute("cy", p[1]); ring.removeAttribute("visibility"); } else ring.setAttribute("visibility", "hidden");
-}
-
-/* scatter: reach (log) against mean severity */
-var scat = {pos:{}};
-var meas = document.createElement("canvas").getContext("2d");
-function textW(t){ meas.font = '500 12px "IBM Plex Sans", system-ui, sans-serif'; return meas.measureText(t).width; }
-function renderScatter(){
-  var box = $("#scatter"), W = box.clientWidth;
-  if (!W) return;
-  var H = Math.round(Math.max(300, Math.min(430, W * 1.0)));
-  var m = {t:26, r:14, b:44, l:34};
-  var lx = function(v){ return Math.log(v) / Math.LN10; }, x0 = lx(14), x1 = lx(32000), y0 = 1.25, y1 = 4.2;
-  var x = function(v){ return m.l + (W - m.l - m.r) * (lx(v) - x0) / (x1 - x0); };
-  var y = function(v){ return m.t + (H - m.t - m.b) * (1 - (v - y0) / (y1 - y0)); };
-  var svg = s("svg", {viewBox:"0 0 " + W + " " + H, width:W, height:H, role:"img", "aria-label":"Scatter of " + D.issues.length + " issues: complaint count on a log scale against mean severity. The ranked list beside it carries the same values."});
-  [1.5, 2, 2.5, 3, 3.5, 4].forEach(function(v){
-    svg.append(s("line", {class:"grid", x1:m.l, x2:W - m.r, y1:y(v), y2:y(v)}));
-    svg.append(s("text", {x:m.l - 8, y:y(v) + 4, "text-anchor":"end", text: v % 1 ? v.toFixed(1) : String(v)}));
-  });
-  [100, 1000, 10000].forEach(function(v){
-    svg.append(s("line", {class:"grid", x1:x(v), x2:x(v), y1:m.t, y2:H - m.b}));
-    svg.append(s("text", {x:x(v), y:H - m.b + 16, "text-anchor":"middle", text:fmt(v)}));
-  });
-  svg.append(s("line", {class:"axis", x1:m.l, x2:W - m.r, y1:H - m.b, y2:H - m.b}));
-  svg.append(s("text", {x:0, y:12, text:"Mean severity (1 to 5)"}));
-  svg.append(s("text", {x:W - m.r, y:H - 6, "text-anchor":"end", text:"Complaints, log scale"}));
-  var active = function(i){ return state.topic === "all" || i.topic === state.topic; };
-  var pts = D.issues.slice().sort(function(a, b){ return (active(a) - active(b)) || ((a.id === PICK) - (b.id === PICK)); });
-  scat.pos = {};
-  pts.forEach(function(i){
-    var px = x(i.n), py = y(i.m6);
-    scat.pos[i.id] = [px, py];
-    svg.append(s("circle", {class:"pt" + (i.id === PICK ? " pick" : "") + (active(i) ? (state.topic === "all" ? "" : " on") : " dim"), cx:px.toFixed(1), cy:py.toFixed(1), r:5}));
-  });
-  svg.append(s("circle", {class:"ring", r:8.5, visibility:"hidden"}));
-  /* direct labels: a few named points, placed greedily where they clear other marks */
-  var want = state.topic === "all" ? [PICK, "access.login_failure", "usability.ads_frequency", CATCH]
-    : D.issues.filter(active).sort(function(a, b){ return b.sum - a.sum; }).slice(0, 3).map(function(i){ return i.id; });
-  var boxes = D.issues.filter(active).map(function(i){ var p = scat.pos[i.id]; return [p[0] - 6, p[1] - 6, p[0] + 6, p[1] + 6, i.id]; });
-  want.forEach(function(id){
-    var i = D.issues.filter(function(q){ return q.id === id; })[0], p = scat.pos[id];
-    var t = state.topic === "all" ? (SHORT[id] || i.name) : (SHORT[id] && id !== CATCH ? SHORT[id] : i.name), w = textW(t) + 2;
-    var mid = Math.max(m.l + 4 + w / 2, Math.min(p[0], W - 4 - w / 2)); /* keep centred labels inside the plot */
-    var cands = [[p[0] + 10, p[1] + 4, "start"], [p[0] - 10, p[1] + 4, "end"], [mid, p[1] - 11, "middle"], [mid, p[1] + 20, "middle"]];
-    if (id === CATCH) cands = [cands[3], cands[1], cands[2]];
-    var done = false;
-    for (var c = 0; c < cands.length && !done; c++) {
-      var a = cands[c], bx0 = a[2] === "start" ? a[0] : a[2] === "end" ? a[0] - w : a[0] - w / 2, r = [bx0, a[1] - 11, bx0 + w, a[1] + 3];
-      if (r[0] < m.l + 2 || r[2] > W - 2 || r[1] < m.t - 8 || r[3] > H - m.b - 2) continue;
-      var clash = boxes.some(function(b){ return b[4] !== id && r[0] < b[2] && r[2] > b[0] && r[1] < b[3] && r[3] > b[1]; });
-      if (clash) continue;
-      svg.append(s("text", {class:"lbl", x:a[0].toFixed(1), y:a[1].toFixed(1), "text-anchor":a[2], text:t}));
-      boxes.push(r.concat(["lbl"]));
-      done = true;
+  function drawTrend(d) {
+    var box = document.getElementById('trend');
+    if (!box) return;
+    var NS = 'http://www.w3.org/2000/svg';
+    var pct = d.trend.pct, labels = d.trend.labels;
+    function s(tag, attrs, text) {
+      var n = document.createElementNS(NS, tag);
+      for (var k in attrs) n.setAttribute(k, attrs[k]);
+      if (text != null) n.textContent = text;
+      return n;
     }
-    if (!done && id === PICK && state.topic === "all") { /* narrow plots: stack the key label on two lines above its point */
-      var w2 = Math.max(textW("Free-tier"), textW("restrictions")) + 2, cx = Math.max(m.l + 4 + w2 / 2, Math.min(p[0], W - 4 - w2 / 2));
-      var tx = s("text", {class:"lbl", x:cx.toFixed(1), y:(p[1] - 25).toFixed(1), "text-anchor":"middle"},
-        s("tspan", {x:cx.toFixed(1), text:"Free-tier"}), s("tspan", {x:cx.toFixed(1), dy:14, text:"restrictions"}));
-      svg.append(tx);
-      boxes.push([cx - w2 / 2, p[1] - 36, cx + w2 / 2, p[1] - 8, "lbl"]);
+    function render() {
+      var w = Math.max(240, Math.round(box.clientWidth)), h = 150;
+      var padL = 2, padR = 6, padT = 30, padB = 24;
+      var top = Math.max.apply(null, pct);
+      var x = function (i) { return padL + i * (w - padL - padR) / (pct.length - 1); };
+      var y = function (v) { return padT + (1 - v / top) * (h - padT - padB); };
+      var pts = pct.map(function (v, i) { return x(i).toFixed(1) + ',' + y(v).toFixed(1); });
+      var svg = s('svg', { viewBox: '0 0 ' + w + ' ' + h, width: w, height: h, 'aria-hidden': 'true', focusable: 'false' });
+      svg.appendChild(s('line', { x1: padL, x2: w - padR, y1: h - padB, y2: h - padB, stroke: 'var(--line-2)', 'stroke-width': 1 }));
+      var defs = s('defs', {}), grad = s('linearGradient', { id: 'trend-fill', x1: 0, y1: 0, x2: 0, y2: 1 });
+      [['0', '.5'], ['1', '0']].forEach(function (p) {
+        var stop = s('stop', { offset: p[0] });
+        stop.style.stopColor = 'var(--accent)';
+        stop.style.stopOpacity = p[1];
+        grad.appendChild(stop);
+      });
+      defs.appendChild(grad);
+      svg.appendChild(defs);
+      svg.appendChild(s('polygon', { points: padL + ',' + (h - padB) + ' ' + pts.join(' ') + ' ' + x(pct.length - 1).toFixed(1) + ',' + (h - padB),
+        fill: 'url(#trend-fill)' }));
+      svg.appendChild(s('polyline', { points: pts.join(' '), fill: 'none', stroke: 'var(--accent)', 'stroke-width': 2,
+        'stroke-linejoin': 'round', 'stroke-linecap': 'round' }));
+      var pi = pct.indexOf(top);
+      svg.appendChild(s('circle', { cx: x(pi), cy: y(top), r: 5, fill: 'var(--accent)', stroke: 'var(--surface)', 'stroke-width': 2 }));
+      var t1 = { 'font-size': 13, 'font-weight': 650, fill: 'var(--ink)', 'font-family': 'inherit' };
+      var t2 = { 'font-size': 12, fill: 'var(--muted)', 'font-family': 'inherit' };
+      var peak = s('text', Object.assign({ x: x(pi) - 10, y: y(top) + 4, 'text-anchor': 'end' }, t1), top.toFixed(1) + '%');
+      svg.appendChild(peak);
+      svg.appendChild(s('text', Object.assign({ x: x(pi) - 10, y: y(top) + 20, 'text-anchor': 'end' }, t2), d.trend.peak_label));
+      svg.appendChild(s('text', Object.assign({ x: padL, y: y(pct[0]) - 10 }, t1), pct[0].toFixed(1) + '%'));
+      svg.appendChild(s('text', Object.assign({ x: padL, y: h - 6 }, t2), labels[0]));
+      svg.appendChild(s('text', Object.assign({ x: w - padR, y: h - 6, 'text-anchor': 'end' }, t2), labels[labels.length - 1]));
+      box.textContent = '';
+      box.appendChild(svg);
     }
-  });
-  /* nearest-point hover layer */
-  var hit = s("rect", {x:0, y:0, width:W, height:H, fill:"transparent"});
-  hit.addEventListener("pointermove", function(e){
-    var r = svg.getBoundingClientRect(), k = W / r.width, mx = (e.clientX - r.left) * k, my = (e.clientY - r.top) * k, best = null, bd = 34 * 34;
-    D.issues.forEach(function(i){ if (!active(i)) return; var p = scat.pos[i.id], d = (p[0] - mx) * (p[0] - mx) + (p[1] - my) * (p[1] - my); if (d < bd) { bd = d; best = i; } });
-    if (!best) { hideTip(); hot(null); return; }
-    hot(best.id);
-    showTip(e.clientX, e.clientY, best.name, [[fmt(best.n), "complaints", best.id === PICK], [best.mean.toFixed(2), "mean severity", best.id === PICK], [fmt(best.sum), "priority score", best.id === PICK]], TOPIC[best.topic] + " · " + best.id);
-  });
-  hit.addEventListener("pointerleave", function(){ hideTip(); hot(null); });
-  svg.append(hit);
-  box.replaceChildren(svg);
-  if (state.hot) hot(state.hot);
-}
+    render();
+    var timer;
+    window.addEventListener('resize', function () { clearTimeout(timer); timer = setTimeout(render, 120); });
+  }
 
-/* trend: one emphasized line, the rest as context */
-var MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-var MONL = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-var CTX = ["usability", "playback", "catalog", "access", "downloads", "support"];
-function renderTrend(){
-  var box = $("#trend"), W = box.clientWidth;
-  if (!W) return;
-  var narrow = W < 540, H = narrow ? 250 : 310;
-  var m = {t:14, r:narrow ? 70 : 92, b:30, l:36};
-  var T = D.trend, n = T.months.length, ymax = 30;
-  var x = function(i){ return m.l + (W - m.l - m.r) * i / (n - 1); };
-  var y = function(v){ return m.t + (H - m.t - m.b) * (1 - v / ymax); };
-  var svg = s("svg", {viewBox:"0 0 " + W + " " + H, width:W, height:H, role:"img", "aria-label":"Line chart of monthly complaint share by topic. Billing rises from about " + D.trend_facts.billing_first12_avg.toFixed(0) + " percent to " + D.trend_facts.billing_peak.toFixed(0) + " percent in October 2023. A table view follows."});
-  [0, 10, 20, 30].forEach(function(v){
-    svg.append(s("line", {class: v ? "grid" : "axis", x1:m.l, x2:W - m.r, y1:y(v), y2:y(v)}));
-    svg.append(s("text", {x:m.l - 8, y:y(v) + 4, "text-anchor":"end", text: v ? v + "%" : "0"}));
-  });
-  var step = narrow ? 6 : 3;
-  T.months.forEach(function(mo, i){
-    if (i % step) return;
-    var edge = i === 0 || i === n - 1;
-    svg.append(s("text", {x:x(i), y:H - 8, "text-anchor": i === 0 ? "start" : i === n - 1 ? "end" : "middle", text: MON[+mo.slice(5) - 1] + " " + mo.slice(2, 4) + (edge ? "*" : "")}));
-  });
-  var path = function(arr){ return arr.map(function(v, i){ return (i ? "L" : "M") + x(i).toFixed(1) + " " + y(v).toFixed(1); }).join(""); };
-  CTX.forEach(function(t){ svg.append(s("path", {class:"ln", d:path(T.series[t])})); });
-  var b = T.series.billing;
-  svg.append(s("path", {class:"area", d:path(b) + "L" + x(n - 1).toFixed(1) + " " + y(0) + "L" + x(0) + " " + y(0) + "Z"}));
-  svg.append(s("path", {class:"ln main", d:path(b)}));
-  [["usability", "Usability", 0], ["playback", "Playback", 0], ["billing", "Billing " + b[n - 1].toFixed(0) + "%", 1]].forEach(function(e){
-    var v = T.series[e[0]][n - 1];
-    svg.append(s("circle", {class:"dot" + (e[2] ? " main" : ""), cx:x(n - 1), cy:y(v), r:4}));
-    svg.append(s("text", {class:"lbl", x:x(n - 1) + 9, y:y(v) + 4, text:e[1]}));
-  });
-  var cross = s("g", {visibility:"hidden"});
-  var cl = s("line", {class:"cross", y1:m.t, y2:H - m.b}); cross.append(cl);
-  var cdots = ["billing"].concat(CTX).map(function(t){ var c = s("circle", {class:"dot" + (t === "billing" ? " main" : ""), r:4}); cross.append(c); return [t, c]; });
-  svg.append(cross);
-  var hit = s("rect", {x:m.l - 6, y:0, width:W - m.l - m.r + 12, height:H, fill:"transparent"});
-  hit.addEventListener("pointermove", function(e){
-    var r = svg.getBoundingClientRect(), mx = (e.clientX - r.left) * (W / r.width);
-    var i = Math.max(0, Math.min(n - 1, Math.round((mx - m.l) / (W - m.l - m.r) * (n - 1))));
-    cl.setAttribute("x1", x(i)); cl.setAttribute("x2", x(i));
-    cdots.forEach(function(d){ d[1].setAttribute("cx", x(i)); d[1].setAttribute("cy", y(T.series[d[0]][i])); });
-    cross.removeAttribute("visibility");
-    var rows = ["billing"].concat(CTX).map(function(t){ return [T.series[t][i].toFixed(1) + "%", TOPIC[t], t === "billing", T.series[t][i]]; }).sort(function(p, q){ return q[3] - p[3]; });
-    var mo = T.months[i];
-    showTip(e.clientX, e.clientY, MONL[+mo.slice(5) - 1] + " " + mo.slice(0, 4), rows, fmt(T.completed[i]) + " labeled reviews" + (i === 0 || i === n - 1 ? " (partial month)" : ""));
-  });
-  hit.addEventListener("pointerleave", function(){ cross.setAttribute("visibility", "hidden"); hideTip(); });
-  svg.append(hit);
-  box.replaceChildren(svg);
-}
-function renderTrendTable(){
-  var T = D.trend, cols = ["billing"].concat(CTX), tb = $("#trend-table");
-  var head = h("tr", {}, h("th", {text:"Month"}));
-  cols.forEach(function(t){ head.append(h("th", {class:"n", text:TOPIC[t]})); });
-  head.append(h("th", {class:"n", text:"Labeled reviews"}));
-  var body = h("tbody");
-  T.months.forEach(function(mo, i){
-    var tr = h("tr", {}, h("td", {text:MON[+mo.slice(5) - 1] + " " + mo.slice(0, 4)}));
-    cols.forEach(function(t){ tr.append(h("td", {class:"n", text:T.series[t][i].toFixed(1) + "%"})); });
-    tr.append(h("td", {class:"n", text:fmt(T.completed[i])}));
-    body.append(tr);
-  });
-  tb.append(h("thead", {}, head), body);
-}
-
-/* claims ledger */
-function renderClaims(){
-  var METRIC = {complaint_count:"Complaint count", severity_sum:"Severity sum", mean_severity:"Mean severity", priority_score:"Priority score"};
-  var body = $("#claims-body");
-  D.claims.forEach(function(c){
-    body.append(h("tr", {id:"claim-" + c.id},
-      h("td", {}, h("span", {class:"mono", text:c.id})),
-      h("td", {}, c.name, h("br"), h("span", {class:"mono muted", text:c.issue})),
-      h("td", {text:METRIC[c.metric] || c.metric}),
-      h("td", {class:"n", text: c.metric === "mean_severity" ? c.value : fmt(c.value)}),
-      h("td", {class:"n", text:"Matches"})));
-  });
-  document.addEventListener("click", function(e){
-    var a = e.target.closest && e.target.closest("a.claim"); if (!a) return;
-    var row = document.getElementById("claim-" + a.dataset.c); if (!row) return;
-    e.preventDefault();
-    row.scrollIntoView({block:"center"});
-    row.classList.remove("flash"); void row.offsetWidth; row.classList.add("flash");
-  });
-}
-
-renderTopics(); renderFilters(); renderList(); renderScatter(); renderTrend(); renderTrendTable(); renderClaims();
-var raf = 0, lastW = 0;
-function redraw(){ cancelAnimationFrame(raf); raf = requestAnimationFrame(function(){ renderScatter(); renderTrend(); }); }
-if (window.ResizeObserver) new ResizeObserver(function(){ var w = document.documentElement.clientWidth; if (w !== lastW) { lastW = w; redraw(); } }).observe(document.documentElement);
-else window.addEventListener("resize", redraw);
-if (document.fonts && document.fonts.ready) document.fonts.ready.then(redraw);
+  fetch('data.json').then(function (r) {
+    if (!r.ok) throw new Error('data.json ' + r.status);
+    return r.json();
+  }).then(function (d) {
+    drawChart(d);
+    drawTrend(d);
+  }).catch(function () { /* the table and the text carry every number without the chart */ });
 })();
 </script>
-
+</body>
 </html>
