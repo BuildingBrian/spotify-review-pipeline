@@ -1,3 +1,7 @@
+<div align="center">
+  <a href="https://github.com/BuildingBrian"><img src=".github/arcade/banner.svg" width="100%" alt="spotify-review-pipeline: 150k Spotify reviews in, one product recommendation out. A BuildingBrian project."></a>
+</div>
+
 # Where should Spotify's next quarter of product effort go?
 
 A code-orchestrated, multi-role LLM pipeline that turns 660,622 Spotify Google Play reviews (May 2022 – Nov 2023) into a traceable product recommendation. Agentic AI final assignment, Brian Arevalo Ramos.
@@ -173,3 +177,12 @@ Full details are in [cost/report.md](cost/report.md); it is regenerated offline 
 `pipeline/` stages and CLI · `prompts/` role prompts (enrich, verify, group, memo) · `labels/` shared definitions · `outputs/` saved handoffs (manifest, ingestion, scope, verification, issues, membership, aggregates, ranking, memo pack, memo check, run log) · `grading/` standardized export · `evals/` golden set, checker report, system tests, resume evidence · `cost/` calculator and pilot evidence · `dashboard/` backend and frontend · `memo.md` the decision memo.
 
 Built with Claude Code (Claude Opus 5.5) as a coding assistant. Brian chose the scope and tools, hand-labeled the golden set, adjudicated the disagreements, and reviewed and agreed with the memo's recommendation.
+
+<p align="center">
+  <a href="https://github.com/BuildingBrian"><img src=".github/arcade/btn-stages.svg" alt="Back to stage select: github.com/BuildingBrian"></a>
+  <a href="https://buildingbrian.github.io/BuildingBrian/"><img src=".github/arcade/btn-play.svg" alt="Play Vapor Strike, the arcade game behind the profile"></a>
+</p>
+
+<div align="center">
+  <a href="https://github.com/BuildingBrian"><img src=".github/arcade/footer.svg" width="100%" alt="Thank you for playing. A BuildingBrian project."></a>
+</div>
