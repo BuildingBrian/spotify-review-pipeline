@@ -9,7 +9,8 @@ sys.path.insert(0, os.path.dirname(__file__))
 from fastapi import FastAPI, HTTPException, Query  # noqa: E402
 from fastapi.responses import FileResponse  # noqa: E402
 
-from _db import connect, q  # noqa: E402
+from _db import connect  # noqa: E402
+from _db import q as _run  # noqa: E402
 
 api = FastAPI(title="Spotify review pipeline API")
 
@@ -33,6 +34,23 @@ def db():
     if _conn is None:
         _conn = connect()
     return _conn
+
+
+def q(conn, sql, params=()):
+    """Run a read query. The database closes idle connections, and a warm server instance would keep
+    using the dead one. So if a query fails, close that connection, open a new one and retry once.
+    A second failure is raised as usual, so real errors are not hidden."""
+    global _conn
+    try:
+        return _run(conn, sql, params)
+    except Exception:
+        try:
+            conn.close()
+        except Exception:
+            pass
+        if _conn is conn:       # another request may already have replaced it
+            _conn = None
+        return _run(db(), sql, params)
 
 
 def metrics():
